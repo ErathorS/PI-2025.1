@@ -6,14 +6,10 @@ public class Pegar_e_Soltar_Itens : MonoBehaviour
     [SerializeField] Transform ObjtGrabPointTransform;
     [SerializeField] LayerMask pickupLayerMask;
     ObjetoSeguravel objetoSeguravel;
-    public float pickupDistance = 10f;
+    float pickupDistance = 2f;
 
     void Update()
     {
-        // if (Physics.Raycast(PlayerCameraTransform.position, PlayerCameraTransform.forward, out RaycastHit raycastHit, pickupDistance, pickupLayerMask))
-        // {
-        //         Debug.Log(raycastHit.transform.name);
-        // }
         if (Input.GetKeyDown(KeyCode.E)) // Verifica se a tecla "E" foi pressionada
         {
             if(objetoSeguravel == null) // Se já estiver segurando um objeto, solta-o
