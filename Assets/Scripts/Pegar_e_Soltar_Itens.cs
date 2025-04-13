@@ -3,19 +3,31 @@ using UnityEngine;
 public class Pegar_e_Soltar_Itens : MonoBehaviour
 {
     [SerializeField] Transform PlayerCameraTransform;
-    [SerializeField] LayerMask pickableLayerMask;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [SerializeField] Transform ObjtGrabPointTransform;
+    [SerializeField] LayerMask pickupLayerMask;
+    ObjetoSeguravel objetoSeguravel;
+    float pickupDistance = 2f;
 
-    // Update is called once per frame
     void Update()
     {
-        // if(Input.GetKey(KeyCode.E)){
-        //     float pickupDistance = 2f;
-        //     Physics.Raycast(PlayerCameraTransform.position, PlayerCameraTransform.forward, out RaycastHit raycasthit, pickupDistance);
-        // }
+        if (Input.GetKeyDown(KeyCode.E)) // Verifica se a tecla "E" foi pressionada
+        {
+            if(objetoSeguravel == null) // Se já estiver segurando um objeto, solta-o
+            {
+                if (Physics.Raycast(PlayerCameraTransform.position, PlayerCameraTransform.forward, out RaycastHit raycastHit, pickupDistance, pickupLayerMask))
+                {
+                    if (raycastHit.transform.TryGetComponent(out objetoSeguravel))
+                    {
+                        objetoSeguravel.pegar(ObjtGrabPointTransform);
+                        Debug.Log(raycastHit.transform.name);
+                    }
+                }
+            }
+            else // Caso contrário, tenta pegar um novo objeto
+            {
+                objetoSeguravel.soltar();
+                objetoSeguravel = null;
+            }
+        }
     }
 }
