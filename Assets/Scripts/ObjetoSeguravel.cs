@@ -23,7 +23,7 @@ public class ObjetoSeguravel : MonoBehaviour
     {
         if(objtGrabPointTransform != null)
         {
-            Vector3 newPosition = Vector3.Lerp(transform.position, objtGrabPointTransform.position, Time.deltaTime * 10f);
+            Vector3 newPosition = Vector3.Lerp(transform.position, objtGrabPointTransform.position, Time.deltaTime * 25f);
             objetoRigidbody.MovePosition(newPosition);
         }
     }

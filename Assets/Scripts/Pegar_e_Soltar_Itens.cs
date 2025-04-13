@@ -6,7 +6,7 @@ public class Pegar_e_Soltar_Itens : MonoBehaviour
     [SerializeField] Transform ObjtGrabPointTransform;
     [SerializeField] LayerMask pickupLayerMask;
     ObjetoSeguravel objetoSeguravel;
-    float pickupDistance = 2f;
+    public float pickupDistance = 6.5f;
 
     void Update()
     {
