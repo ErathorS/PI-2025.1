@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: de84d33901bb741428ef56cc5c865337
+guid: 59402c89114aaaf47b7eac2b4f79b180
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material
+    second: {fileID: 2100000, guid: af26e1c38aa01004f83dbe1343ffe4e2, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -16,6 +21,8 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
