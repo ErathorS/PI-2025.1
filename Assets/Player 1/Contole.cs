@@ -208,17 +208,6 @@ public partial class @Contole: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3292d596-4b6c-43d4-9960-0d489d15fd67"",
-                    ""path"": ""<Touchscreen>/Press"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""IniciarDialogo"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""d13a3788-af93-4bd3-aa34-5be83107b02d"",
                     ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",

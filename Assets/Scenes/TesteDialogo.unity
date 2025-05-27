@@ -2097,18 +2097,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2018900576}
-        m_TargetAssemblyTypeName: Dialogo, Assembly-CSharp
-        m_MethodName: IniciarDialogo
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
     m_ActionId: 562cd4f4-ebdd-44a5-83f6-042e370011db
     m_ActionName: Player/New action[/Keyboard/e]
   - m_PersistentCalls:
@@ -2168,6 +2156,10 @@ MonoBehaviour:
   botaoInteragir: {fileID: 586970409}
   painelDialogo: {fileID: 394448052}
   textoDialogo: {fileID: 646182390}
+  linhasDialogo:
+  - "Ol\xE1, viajante!"
+  - "Voc\xEA est\xE1 pronto para uma nova aventura?"
+  - Boa sorte no seu caminho!
 --- !u!4 &2112568475 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 90bed3160dd5e4d4bb8c6d4a9018857c, type: 3}
