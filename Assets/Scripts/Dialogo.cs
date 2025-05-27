@@ -9,6 +9,7 @@ public class Dialogo : MonoBehaviour
     public GameObject botaoInteragir; // Botão "Falar" (opcional)
     public GameObject painelDialogo;  // Painel de diálogo
     public TMP_Text textoDialogo;     // Texto do diálogo
+     public IndicadorNpc indicadorNPC;
 
     [Header("Configuração do Diálogo")]
     [SerializeField] private string[] linhasDialogo = {
@@ -50,14 +51,16 @@ public class Dialogo : MonoBehaviour
 
     private void IniciarDialogo()
     {
-        falando = true;
-        painelDialogo.SetActive(true);
-        linhaAtual = 0;
-        textoDialogo.text = linhasDialogo[linhaAtual];
-        
-        // Desativa o botão "Falar" (se existir)
-        if (botaoInteragir != null)
-            botaoInteragir.SetActive(false);
+       if (falando) return;
+
+              botaoInteragir.SetActive(false);
+              painelDialogo.SetActive(true);
+              linhaAtual = 0;
+            textoDialogo.text = linhasDialogo[linhaAtual];
+             falando = true;
+
+        if (indicadorNPC != null)
+         indicadorNPC.MarcarComoConversado();
     }
 
     private void AvancarDialogo()
