@@ -142,17 +142,6 @@
                 },
                 {
                     "name": "",
-                    "id": "8f482ae2-7fea-49ef-b620-cbcb8730d4e5",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Camera",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "c04a35cf-63dc-4124-97bf-81e93931a569",
                     "path": "<Gamepad>/buttonWest",
                     "interactions": "",

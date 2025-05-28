@@ -9,7 +9,7 @@ public class Player_Move : MonoBehaviour
     public float runSpeed = 9f;
 
     [Header("Referências")]
-    [SerializeField] Animator animator;
+    Animator animator;
 
     Rigidbody rb;
     Vector2 moveInput;
