@@ -1,10 +1,11 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Pulo : MonoBehaviour
 {
     Rigidbody rb;
     public float jumpStrength = 2;
-    [SerializeField] Animator animator; 
+    [SerializeField] Animator animator;
     GroundCheck groundCheck;
 
     void Reset()
@@ -16,13 +17,15 @@ public class Pulo : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+
         if (animator == null)
             animator = GetComponentInChildren<Animator>();
     }
 
-    void LateUpdate()
+    public void OnJump(InputAction.CallbackContext context)
     {
-        if (Input.GetButtonDown("Jump") && (!groundCheck || groundCheck.isGrounded))
+        // Só pula se apertar o botão e estiver no chão
+        if (context.performed && (!groundCheck || groundCheck.isGrounded))
         {
             rb.AddForce(Vector3.up * 100 * jumpStrength);
             animator.SetTrigger("Jump");
