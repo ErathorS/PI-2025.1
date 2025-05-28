@@ -11,10 +11,10 @@ public class Controle_da_Camera : MonoBehaviour
     Vector2 frameVelocity;
 
 
-    void Reset()
-    {
-        character = GetComponentInParent<Player_Move>().transform;
-    }
+    // void Reset()
+    // {
+    //     character = GetComponentInParent<Player_Move>().transform;
+    // }
 
     void Start()
     {
