@@ -1653,27 +1653,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: cfaef1c7db1dbc2488ba1f9bed212361, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.75
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cfaef1c7db1dbc2488ba1f9bed212361, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.75
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cfaef1c7db1dbc2488ba1f9bed212361, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.75
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cfaef1c7db1dbc2488ba1f9bed212361, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.56
+      value: -5.15
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cfaef1c7db1dbc2488ba1f9bed212361, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.0350027
+      value: -0.18
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cfaef1c7db1dbc2488ba1f9bed212361, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.26
+      value: 8.83
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cfaef1c7db1dbc2488ba1f9bed212361, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1703,13 +1703,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cfaef1c7db1dbc2488ba1f9bed212361, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: cfaef1c7db1dbc2488ba1f9bed212361, type: 3}
       propertyPath: m_LightProbeUsage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cfaef1c7db1dbc2488ba1f9bed212361, type: 3}
       propertyPath: m_Name
-      value: PI MC 2
+      value: Player 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2340,9 +2344,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 5
   runSpeed: 9
-  runningKey: 304
   animator: {fileID: 0}
-  freeLookCamera: {fileID: 400197938}
 --- !u!95 &2037484015
 Animator:
   serializedVersion: 5
@@ -2524,6 +2526,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 2114283753834967213}
   - {fileID: 1221041499}
-  - {fileID: 1370750088}
   - {fileID: 279571967}
   - {fileID: 2023475091}
+  - {fileID: 1370750088}
