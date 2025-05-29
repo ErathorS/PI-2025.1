@@ -1040,6 +1040,22 @@ PrefabInstance:
       propertyPath: indicadorNPC
       value: 
       objectReference: {fileID: 26785547}
+    - target: {fileID: 4783337842117858727, guid: 9bd86cba90fd4344ca7e212e69d12809, type: 3}
+      propertyPath: linhasDialogo.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4783337842117858727, guid: 9bd86cba90fd4344ca7e212e69d12809, type: 3}
+      propertyPath: linhasDialogo.Array.data[4]
+      value: Boa sorte no seu caminho!
+      objectReference: {fileID: 0}
+    - target: {fileID: 4783337842117858727, guid: 9bd86cba90fd4344ca7e212e69d12809, type: 3}
+      propertyPath: linhasDialogo.Array.data[5]
+      value: Boa sorte no seu caminho!
+      objectReference: {fileID: 0}
+    - target: {fileID: 4783337842117858727, guid: 9bd86cba90fd4344ca7e212e69d12809, type: 3}
+      propertyPath: linhasDialogo.Array.data[6]
+      value: Boa sorte no seu caminho!
+      objectReference: {fileID: 0}
     - target: {fileID: 5873304063641438005, guid: 9bd86cba90fd4344ca7e212e69d12809, type: 3}
       propertyPath: m_Name
       value: Player 1
