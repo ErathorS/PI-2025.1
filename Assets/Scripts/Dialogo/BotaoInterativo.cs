@@ -4,10 +4,30 @@ using UnityEngine;
 
 public class BotaoInterativo : MonoBehaviour
 {
-   public void ExecutarAcao()
+    public GameObject Parada;
+    public static bool StateSemaforo = false;
+    private void Start()
+    {
+        StateSemaforo = false;
+    }
+    public void ExecutarAcao()
     {
         Debug.Log("Ação do objeto interativo executada: " + name);
-        // Aqui você pode fazer algo: abrir uma porta, tocar um som, etc.
+        if (gameObject.name == "Semaforo") 
+        {
+            switch (StateSemaforo) 
+            {
+                case false:
+                    print("ligando");
+                    Parada.SetActive(true);
+                    StateSemaforo = true;
+                    break;
+                case true:
+                    print("Desligando");
+                    Parada.SetActive(false);
+                    StateSemaforo = false;
+                    break;
+            }
+        }
     }
-    
 }

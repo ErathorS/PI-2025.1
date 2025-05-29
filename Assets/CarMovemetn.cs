@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class CarMovemetn : MonoBehaviour
 {
-    public float DeSlow;
+    public float DeSlow = 0;
+    public Vector3 SpawnPlayer = new Vector3(-2.5f, -0.001f, -7.4f);
     // Start is called before the first frame update
     void Start()
     {
@@ -15,25 +16,40 @@ public class CarMovemetn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        transform.Translate(transform.right * Time.deltaTime * DeSlow);
         RaycastHit hit;
-        
-        if (Physics.Raycast(transform.position, transform.right, out hit, 15) && hit.transform.CompareTag("Stop Car"))
+
+        if (Physics.Raycast(transform.position, transform.right, out hit, 15))
         {
-            if(Vector3.Distance(transform.position, hit.transform.position) <= 5f) 
+            if (Vector3.Distance(transform.position, hit.transform.position) <= 5f && hit.transform.CompareTag("Stop Car"))
             {
                 DeSlow = 0;
             }
-            else 
+            else if (hit.transform.CompareTag("Stop Car"))
             {
                 DeSlow = Vector3.Distance(transform.position, hit.transform.position) * 0.5f;
             }
-            
+            if (hit.transform.CompareTag("Respawn"))
+            {
+                transform.position = new Vector3(transform.position.x - Random.Range(120, 150), transform.position.y, transform.position.z);
+            }
+            if (hit.transform.CompareTag("Player") && DeSlow > 5 && (Vector3.Distance(transform.position, hit.transform.position) < 5))
+            {
+                hit.collider.gameObject.transform.position = SpawnPlayer;
+            }
+            if (DeSlow < 15 && !hit.transform.CompareTag("Player") && !hit.transform.CompareTag("Respawn") && !hit.transform.CompareTag("Stop Car"))
+            {
+                DeSlow += 0.1f;
+            }
+
         }
         else 
         {
-            DeSlow = 10;
+            if (DeSlow < 15)
+            {
+                DeSlow += 0.1f;
+            }
         }
-        transform.Translate(transform.right * Time.deltaTime * DeSlow);
-
     }
 }
