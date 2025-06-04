@@ -12,21 +12,22 @@ public class BotaoInterativo : MonoBehaviour
     }
     public void ExecutarAcao()
     {
-        Debug.Log("Ação do objeto interativo executada: " + name);
-        if (gameObject.name == "Semaforo") 
+        //Debug.Log("Ação do objeto interativo executada: " + name);
+        if (gameObject.name == "Semaforo Botao")
         {
-            switch (StateSemaforo) 
+            switch (StateSemaforo)
             {
-                case false:
-                    print("ligando");
-                    Parada.SetActive(true);
-                    StateSemaforo = true;
-                    break;
                 case true:
-                    print("Desligando");
+                    //print("Desligando");
                     Parada.SetActive(false);
                     StateSemaforo = false;
                     break;
+                case false:
+                    //print("ligando");
+                    Parada.SetActive(true);
+                    StateSemaforo = true;
+                    break;
+
             }
         }
     }

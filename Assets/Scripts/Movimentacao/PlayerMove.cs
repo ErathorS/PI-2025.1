@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Player_Move : MonoBehaviour
+public class PlayerMove : MonoBehaviour
 {
     [Header("Velocidade")]
     public float walkSpeed = 5f;
