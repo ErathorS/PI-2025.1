@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using Photon.Pun;
 using TMPro.EditorUtilities;
 using UnityEngine;
-using Photon.Pun;
 using Unity.VisualScripting;
+using Photon.Realtime;
 
 public class Menu : MonoBehaviourPunCallbacks
 {
@@ -22,7 +22,7 @@ public class Menu : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         MudaMenu(_menuLobby.gameObject);
-        _menuLobby.AtualizarLista();
+        _menuLobby.photonView.RPC("AtualizarLista", RpcTarget.All);
     }
     public void MudaMenu(GameObject menu)
     {
@@ -30,5 +30,20 @@ public class Menu : MonoBehaviourPunCallbacks
         _menuLobby.gameObject.SetActive(false);
         menu.SetActive(true);
     }
-   
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+
+        _menuLobby.AtualizarLista();
+
+
+    }
+    public void SairDoLobby()
+    {
+        GestorDeRede.Instancia.SairDoLobby();
+        MudaMenu(_menuEntrada.gameObject);
+    }
+    public void ComecaJogo(string nomeCena)
+    {
+        GestorDeRede.Instancia.photonView.RPC("ComecaJogo",RpcTarget.All, nomeCena);
+    }
 }
