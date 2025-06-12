@@ -7,6 +7,7 @@ using System;
 public class GestorDeRede : MonoBehaviourPunCallbacks
 {
     public static GestorDeRede Instancia { get; private set; }
+   
     void Awake()
     {
         if (Instancia != null && Instancia != this)

@@ -23,6 +23,7 @@ public class Menu : MonoBehaviourPunCallbacks
     {
         MudaMenu(_menuLobby.gameObject);
         _menuLobby.photonView.RPC("AtualizarLista", RpcTarget.All);
+        
     }
     public void MudaMenu(GameObject menu)
     {
@@ -30,6 +31,7 @@ public class Menu : MonoBehaviourPunCallbacks
         _menuLobby.gameObject.SetActive(false);
         menu.SetActive(true);
     }
+    
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
 

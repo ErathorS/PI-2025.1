@@ -10,11 +10,11 @@ public class MenuEntrada : MonoBehaviour
     public void CriarSala()
     {
         GestorDeRede.Instancia.CriarSala(_nomeDaSala.text);
-        GestorDeRede.Instancia.MudarNick(_nomeDaSala.text);
+        GestorDeRede.Instancia.MudarNick(_nomeDoJogador.text);
     }
     public void EntrarSala()
     {
-        GestorDeRede.Instancia.EntrarSala(_nomeDaSala.text);
+          GestorDeRede.Instancia.MudarNick(_nomeDoJogador.text);
           GestorDeRede.Instancia.EntrarSala(_nomeDaSala.text);
     }
 }

@@ -9,9 +9,7 @@ public class MenuLobby : MonoBehaviourPunCallbacks
 {
     [SerializeField] private Text _listaDeJogadores;
     [SerializeField] private Button _comecaJogo;
-
-    public object PhotonView { get; internal set; }
-
+    
     [PunRPC]
     public void AtualizarLista()
     {
