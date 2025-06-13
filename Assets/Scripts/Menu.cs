@@ -44,9 +44,9 @@ public class Menu : MonoBehaviourPunCallbacks
         GestorDeRede.Instancia.SairDoLobby();
         MudaMenu(_menuEntrada.gameObject);
     }
-    [PunRPC]
+    
     public void ComecaJogo(string nomeCena)
     {
-        GestorDeRede.Instancia.photonView.RPC("ComecaJogo", RpcTarget.All, nomeCena);
+        GestorDeRede.Instancia.photonView.RPC("Comecajogo", RpcTarget.All, nomeCena);
     }
 }
