@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
@@ -8,7 +7,7 @@ public class ManagerGamer : MonoBehaviourPunCallbacks
 {
     public static ManagerGamer Instancia { get; private set; }
 
-    [SerializeField] private GameObject _prefabJogador; // arraste o prefab aqui pelo Inspector
+    [SerializeField] private string _LocalizacaoPrefab = "Jogador"; 
     [SerializeField] private Transform[] _spawns;
 
     private int _jogadoresEmJogo = 0;
@@ -28,14 +27,15 @@ public class ManagerGamer : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        _jogadores = new List<Player_Move>(); 
         photonView.RPC("AdicionaJogador", RpcTarget.AllBuffered);
-        _jogadores = new List<Player_Move>();
     }
 
     [PunRPC]
     private void AdicionaJogador()
     {
         _jogadoresEmJogo++;
+
         if (_jogadoresEmJogo == PhotonNetwork.PlayerList.Length)
         {
             CriarJogador();
@@ -44,17 +44,13 @@ public class ManagerGamer : MonoBehaviourPunCallbacks
 
     private void CriarJogador()
     {
-        // Verifica se o prefab está corretamente atribuído
-        if (_prefabJogador == null)
-        {
-            Debug.LogError("O prefab do jogador não está atribuído no Inspector.");
-            return;
-        }
+        GameObject jogadorObj = PhotonNetwork.Instantiate(
+            _LocalizacaoPrefab,
+            _spawns[Random.Range(0, _spawns.Length)].position,
+            Quaternion.identity
+        );
 
-        // Instancia usando o nome do prefab (Photon exige que esteja na pasta Resources)
-        GameObject jogadorObj = PhotonNetwork.Instantiate(_prefabJogador.name, _spawns[Random.Range(0, _spawns.Length)].position, Quaternion.identity);
         Player_Move jogador = jogadorObj.GetComponent<Player_Move>();
-
         jogador.photonView.RPC("Inicializa", RpcTarget.All, PhotonNetwork.LocalPlayer);
     }
 }

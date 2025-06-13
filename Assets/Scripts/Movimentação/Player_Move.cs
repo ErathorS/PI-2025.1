@@ -11,31 +11,40 @@ public class Player_Move : MonoBehaviourPunCallbacks
     public float runSpeed = 9f;
 
     [Header("Referências")]
-    Animator animator;
+    private Animator animator;
     private Player _photonPlayer;
     private int _id;
-    Rigidbody rb;
-    Vector2 moveInput;
-    bool isRunning;
+    private Rigidbody rb;
+    private Vector2 moveInput;
+    private bool isRunning;
 
-    float currentSpeed;
+    private float currentSpeed;
+
     [PunRPC]
     public void Inicializa(Player player)
     {
         _photonPlayer = player;
         _id = player.ActorNumber;
-        ManagerGamer.Instancia.Jogadores.Add(this);
-        if (!photonView.IsMine)
+
+        if (photonView.IsMine)
+        {
+            ManagerGamer.Instancia.Jogadores.Add(this);
+        }
+        else
+        {
             rb.isKinematic = true;
+        }
     }
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
 
+        animator = GetComponentInChildren<Animator>();
         if (animator == null)
-            animator = GetComponentInChildren<Animator>();
+            Debug.LogWarning("Animator não encontrado no jogador: " + gameObject.name);
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -50,14 +59,18 @@ public class Player_Move : MonoBehaviourPunCallbacks
 
     void FixedUpdate()
     {
-        Vector3 inputDir = new Vector3(moveInput.x, 0, moveInput.y).normalized;
+        if (!photonView.IsMine) return; // Somente o jogador local controla
 
+        Vector3 inputDir = new Vector3(moveInput.x, 0, moveInput.y).normalized;
         currentSpeed = isRunning ? runSpeed : walkSpeed;
         Vector3 move = transform.TransformDirection(inputDir) * currentSpeed * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + move);
 
-        bool isWalking = inputDir.magnitude > 0;
-        animator.SetBool("isWalking", isWalking);
-        animator.SetBool("isRunning", isWalking && isRunning);
+        if (animator != null)
+        {
+            bool isWalking = inputDir.magnitude > 0;
+            animator.SetBool("isWalking", isWalking);
+            animator.SetBool("isRunning", isWalking && isRunning);
+        }
     }
 }
