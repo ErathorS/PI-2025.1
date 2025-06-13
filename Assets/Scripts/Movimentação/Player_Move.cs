@@ -1,8 +1,10 @@
+using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Player_Move : MonoBehaviour
+public class Player_Move : MonoBehaviourPunCallbacks
 {
     [Header("Velocidade")]
     public float walkSpeed = 5f;
@@ -10,13 +12,22 @@ public class Player_Move : MonoBehaviour
 
     [Header("Referências")]
     Animator animator;
-
+    private Player _photonPlayer;
+    private int _id;
     Rigidbody rb;
     Vector2 moveInput;
     bool isRunning;
 
     float currentSpeed;
-
+    [PunRPC]
+    public void Inicializa(Player player)
+    {
+        _photonPlayer = player;
+        _id = player.ActorNumber;
+        ManagerGamer.Instancia.Jogadores.Add(this);
+        if (!photonView.IsMine)
+            rb.isKinematic = true;
+    }
     void Awake()
     {
         rb = GetComponent<Rigidbody>();

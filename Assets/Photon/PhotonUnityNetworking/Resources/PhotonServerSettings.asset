@@ -42,6 +42,9 @@ MonoBehaviour:
   - RespawnSpaceship
   - Comejogo
   - Comecajogo
+  - AdicionaJogador
+  - Inicializa
+  - ComecaJogo
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
