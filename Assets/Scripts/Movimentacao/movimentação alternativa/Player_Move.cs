@@ -38,6 +38,7 @@ public class Player_Move : MonoBehaviour
 
     void Update()
     {
+
         // Verifica se o jogador está no chão
         isGrounded = controller.isGrounded;
         if (isGrounded && velocity.y < 0)
@@ -59,6 +60,9 @@ public class Player_Move : MonoBehaviour
         // Move o jogador
         controller.Move(move * currentSpeed * Time.deltaTime);
 
+        // Determina a velocidade atual
+        currentSpeed = canRun && Input.GetKey(runningKey) ? runSpeed : walkSpeed;
+
 
         // Aplica gravidade
         velocity.y += gravity * Time.deltaTime;
@@ -78,10 +82,6 @@ public class Player_Move : MonoBehaviour
         }
     }
 
-    public void OnRun()
-    {
-        // Determina a velocidade atual
-        currentSpeed = canRun && Input.GetKey(runningKey) ? runSpeed : walkSpeed;
-    }
+
 
 }

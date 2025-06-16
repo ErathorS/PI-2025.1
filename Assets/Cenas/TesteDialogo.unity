@@ -1535,7 +1535,7 @@ MonoBehaviour:
   jumpHeight: 1.5
   gravity: -9.81
   cameraTransform: {fileID: 6332954200782520537}
-  joystick: {fileID: 4557396009885046661}
+  joystickMovement: {fileID: 4557396009885046661}
 --- !u!143 &1594732989706863158
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2360,6 +2360,7 @@ MonoBehaviour:
   character: {fileID: 6589604556952297310}
   sensitivity: 2
   smoothing: 1.5
+  joystickRotation: {fileID: 0}
 --- !u!223 &4393518868804238200
 Canvas:
   m_ObjectHideFlags: 0
