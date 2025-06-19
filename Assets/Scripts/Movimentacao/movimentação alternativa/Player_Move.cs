@@ -43,8 +43,7 @@ public class Player_Move : MonoBehaviour
         {
             velocity.y = -2f; // Garante que o jogador permaneça no chão
         }
-        print(joystickMovement.Horizontal);
-        print(joystickMovement.Vertical);
+        
         // Entrada de movimento
         float horizontal = joystickMovement.Horizontal; 
         float vertical = joystickMovement.Vertical; 

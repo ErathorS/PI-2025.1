@@ -9,6 +9,7 @@ TagManager:
   - BotaoInterativo
   - IgnoreCollision
   - Stop Car
+  - Coletaveis
   layers:
   - Default
   - TransparentFX
