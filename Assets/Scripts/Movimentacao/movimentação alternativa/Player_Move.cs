@@ -1,6 +1,5 @@
-using UnityEngine;
-using UnityEngine.InputSystem;
 using Photon.Pun;
+using UnityEngine;
 
 public class Player_Move : MonoBehaviourPun
 {
@@ -28,14 +27,14 @@ public class Player_Move : MonoBehaviourPun
     private Animator animator;
     public bool IsWalking { get; private set; }
 
-    private PhotonView photonView;
+    private PhotonView _view;
 
-    void Start()
+    private void Start()
     {
-        photonView = GetComponent<PhotonView>();
+        _view = GetComponent<PhotonView>();
 
         // Se este player não for o dono, desativa controles e câmera
-        if (!photonView.IsMine)
+        if (!_view.IsMine)
         {
             GetComponent<Player_Move>().enabled = false;
 
@@ -54,10 +53,10 @@ public class Player_Move : MonoBehaviourPun
         }
     }
 
-    void Update()
+    private void Update()
     {
         // Só executa se for o dono do personagem
-        if (!photonView.IsMine) return;
+        if (!_view.IsMine) return;
 
         // Verifica se está no chão
         isGrounded = controller.isGrounded;
@@ -95,7 +94,7 @@ public class Player_Move : MonoBehaviourPun
     public void OnJump()
     {
         // Apenas se for dono e estiver no chão
-        if (!photonView.IsMine || !isGrounded) return;
+        if (!_view.IsMine || !isGrounded) return;
 
         velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
     }
