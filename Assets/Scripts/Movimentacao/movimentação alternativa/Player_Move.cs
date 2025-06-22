@@ -13,8 +13,9 @@ public class Player_Move : MonoBehaviourPun
     public float jumpHeight = 1.5f;
     public float gravity = -9.81f;
 
-    [Header("Referência da Câmera")]
+    [Header("coisas para destruir")]
     public Transform cameraTransform;
+    [SerializeField] private GameObject _ui;
 
     [Header("Referência do Joystick")]
     public FixedJoystick joystickMovement;
@@ -38,9 +39,9 @@ public class Player_Move : MonoBehaviourPun
         {
             GetComponent<Player_Move>().enabled = false;
 
-            if (cameraTransform != null)
-                cameraTransform.gameObject.SetActive(false);
-
+            //if (cameraTransform != null) cameraTransform.gameObject.SetActive(false);
+            Destroy(cameraTransform.gameObject);
+            Destroy(_ui);
             return;
         }
 
