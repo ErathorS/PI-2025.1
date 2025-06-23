@@ -1,17 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.InputSystem;
 
 public class Dialogo : MonoBehaviour
 {
     [Header("Referências")]
-    public GameObject botaoInteragir; // Botão "Falar" (opcional)
-    public GameObject painelDialogo;  // Painel de diálogo
-    public TMP_Text textoDialogo;     // Texto do diálogo
-     public IndicadorNpc indicadorNPC;
+    public Button botaoInteragir;         // Botão que o jogador toca para falar/avançar
+    public GameObject painelDialogo;      // Painel de fundo do texto
+    public TMP_Text textoDialogo;         // Componente de texto (TextMeshPro)
+    public IndicadorNpc indicadorNPC;     // (Opcional) controle do NPC
 
-    [Header("Configuração do Diálogo")]
+    [Header("Linhas do Diálogo")]
+    [TextArea(2, 4)]
     [SerializeField] private string[] linhasDialogo = {
         "",
         "Olá, viajante!",
@@ -25,48 +25,42 @@ public class Dialogo : MonoBehaviour
 
     void Start()
     {
-        botaoInteragir.SetActive(false);
+        botaoInteragir.gameObject.SetActive(false);
         painelDialogo.SetActive(false);
+
+        botaoInteragir.onClick.AddListener(AoClicarNoBotao);
     }
 
-    // Chamado pelo Input System (configurado no Inspector)
-    public void OnToque(InputAction.CallbackContext context)
+    void OnDestroy()
     {
-        // Só avança se:
-        // 1. O toque foi concluído (performed)
-        // 2. O jogador está perto do NPC
-        // 3. O diálogo já começou
-        if (!context.performed || !jogadorPerto) 
-            return;
+        botaoInteragir.onClick.RemoveListener(AoClicarNoBotao);
+    }
 
+    private void AoClicarNoBotao()
+    {
         if (!falando)
         {
-            IniciarDialogo(); // Primeiro toque: inicia o diálogo
+            IniciarDialogo(); // primeiro clique
         }
         else
         {
-            AvancarDialogo(); // Toques seguintes: avança o texto
+            AvancarDialogo(); // próximos cliques
         }
     }
 
     private void IniciarDialogo()
     {
-       if (falando) return;
+        linhaAtual = 0;
+        painelDialogo.SetActive(true);
+        textoDialogo.text = linhasDialogo[linhaAtual];
+        falando = true;
 
-              botaoInteragir.SetActive(false);
-              painelDialogo.SetActive(true);
-              linhaAtual = 0;
-            textoDialogo.text = linhasDialogo[linhaAtual];
-             falando = true;
-
-        if (indicadorNPC != null)
-         indicadorNPC.MarcarComoConversado();
+        indicadorNPC?.MarcarComoConversado();
     }
 
     private void AvancarDialogo()
     {
         linhaAtual++;
-        
         if (linhaAtual < linhasDialogo.Length)
         {
             textoDialogo.text = linhasDialogo[linhaAtual];
@@ -81,36 +75,22 @@ public class Dialogo : MonoBehaviour
     {
         painelDialogo.SetActive(false);
         falando = false;
-        
-        // Reativa o botão "Falar" se o jogador ainda estiver perto
-        if (jogadorPerto && botaoInteragir != null)
-            botaoInteragir.SetActive(true);
+        linhaAtual = 0;
+        // Botão continua ativo, pode recomeçar a conversa se quiser
     }
 
-    void OnTriggerEnter(Collider other)
+    public void MostrarBotao()
     {
-        if (other.CompareTag("Npc"))
-        {
-            jogadorPerto = true;
-            
-            // Mostra o botão "Falar" (opcional)
-            if (botaoInteragir != null && !falando)
-                botaoInteragir.SetActive(true);
-        }
+        jogadorPerto = true;
+        botaoInteragir.gameObject.SetActive(true);
     }
 
-    void OnTriggerExit(Collider other)
+    public void EsconderTudo()
     {
-        if (other.CompareTag("Npc"))
-        {
-            jogadorPerto = false;
-            
-            // Esconde o botão e fecha o diálogo se sair do NPC
-            if (botaoInteragir != null)
-                botaoInteragir.SetActive(false);
-            
-            if (falando)
-                FinalizarDialogo();
-        }
+        jogadorPerto = false;
+        botaoInteragir.gameObject.SetActive(false);
+        painelDialogo.SetActive(false);
+        falando = false;
+        linhaAtual = 0;
     }
 }

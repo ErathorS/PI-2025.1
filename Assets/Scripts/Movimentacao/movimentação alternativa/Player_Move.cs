@@ -13,37 +13,30 @@ public class Player_Move : MonoBehaviourPun
     public float jumpHeight = 1.5f;
     public float gravity = -9.81f;
 
-    [Header("coisas para destruir")]
+    [Header("Outros")]
     public Transform cameraTransform;
     [SerializeField] private GameObject _ui;
-
-    [Header("Referência do Joystick")]
     public FixedJoystick joystickMovement;
 
     private CharacterController controller;
     private Vector3 velocity;
     private bool isGrounded;
     private float currentSpeed;
-
     private Animator animator;
-    public bool IsWalking { get; private set; }
-
     private PhotonView _view;
+
+    private Dialogo npcDialogoAtual; // <- Referência ao NPC atual
 
     private void Start()
     {
-        _view = GetComponent<PhotonView>();
+        // _view = GetComponent<PhotonView>();
 
-        // Se este player não for o dono, desativa controles e câmera
-        if (!_view.IsMine)
-        {
-            GetComponent<Player_Move>().enabled = false;
-
-            //if (cameraTransform != null) cameraTransform.gameObject.SetActive(false);
-            Destroy(cameraTransform.gameObject);
-            Destroy(_ui);
-            return;
-        }
+        // if (!_view.IsMine)
+        // {
+        //     Destroy(cameraTransform.gameObject);
+        //     Destroy(_ui);
+        //     return;
+        // }
 
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
@@ -56,47 +49,60 @@ public class Player_Move : MonoBehaviourPun
 
     private void Update()
     {
-        // Só executa se for o dono do personagem
-        if (!_view.IsMine) return;
+        // if (!_view.IsMine) return;
 
-        // Verifica se está no chão
         isGrounded = controller.isGrounded;
         if (isGrounded && velocity.y < 0)
         {
-            velocity.y = -2f; // Garante que o jogador fique grudado no chão
+            velocity.y = -2f;
         }
 
-        // Entrada de movimento via joystick
         float horizontal = joystickMovement.Horizontal;
         float vertical = joystickMovement.Vertical;
 
-        // Direção com base na câmera
         Vector3 direction = new Vector3(horizontal, 0f, vertical);
         direction = Vector3.ClampMagnitude(direction, 1f);
 
         Vector3 move = cameraTransform.right * direction.x + cameraTransform.forward * direction.z;
         move.y = 0f;
 
-        // Determina velocidade atual
         currentSpeed = canRun && Input.GetKey(runningKey) ? runSpeed : walkSpeed;
-
-        // Move o jogador
         controller.Move(move * currentSpeed * Time.deltaTime);
 
-        // Aplica gravidade
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-        // Atualiza animação
-        IsWalking = direction.magnitude > 0f;
-        animator.SetBool("IsWalking", IsWalking);
+        animator.SetBool("IsWalking", direction.magnitude > 0f);
     }
 
     public void OnJump()
     {
-        // Apenas se for dono e estiver no chão
-        if (!_view.IsMine || !isGrounded) return;
-
+        // if (!_view.IsMine || !isGrounded) return;
         velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // if (!_view.IsMine) return;
+
+        // Detecta se colidiu com um NPC que tenha o script Dialogo
+        Dialogo dialogo = other.GetComponent<Dialogo>();
+        if (dialogo != null)
+        {
+            npcDialogoAtual = dialogo;
+            npcDialogoAtual.MostrarBotao(); // <- Mostra botão no Canvas
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        // if (!_view.IsMine) return;
+
+        Dialogo dialogo = other.GetComponent<Dialogo>();
+        if (dialogo != null && dialogo == npcDialogoAtual)
+        {
+            npcDialogoAtual.EsconderTudo(); // <- Esconde botão/painel se sair
+            npcDialogoAtual = null;
+        }
     }
 }
