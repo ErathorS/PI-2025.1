@@ -2532,10 +2532,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85319ad306aaa5948b6eadb62a46c46d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  botaoInteragir: {fileID: 4985214077556529842}
-  painelDialogo: {fileID: 2846821667836677857}
-  textoDialogo: {fileID: 7014472553886218698}
+  botaoInteragir1: {fileID: 0}
+  botaoInteragir2: {fileID: 0}
+  painelDialogo1: {fileID: 0}
+  painelDialogo2: {fileID: 0}
+  textoDialogo1: {fileID: 0}
+  textoDialogo2: {fileID: 0}
   indicadorNPC: {fileID: 0}
+  dialogoGlobal: 0
   linhasDialogo:
   - "Ol\xE1, viajante!"
   - "Voc\xEA est\xE1 pronto para uma nova aventura?"

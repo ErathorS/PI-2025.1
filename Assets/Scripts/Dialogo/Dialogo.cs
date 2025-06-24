@@ -1,17 +1,24 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.InputSystem;
+using Photon.Pun;
 
-public class Dialogo : MonoBehaviour
+public class Dialogo : MonoBehaviourPun
 {
     [Header("Referências")]
-    public GameObject botaoInteragir; // Botão "Falar" (opcional)
-    public GameObject painelDialogo;  // Painel de diálogo
-    public TMP_Text textoDialogo;     // Texto do diálogo
-     public IndicadorNpc indicadorNPC;
+    public Button botaoInteragir1;
+    public Button botaoInteragir2;
+    public GameObject painelDialogo1;
+    public GameObject painelDialogo2;
+    public TMP_Text textoDialogo1;
+    public TMP_Text textoDialogo2;
+    public IndicadorNpc indicadorNPC;
 
-    [Header("Configuração do Diálogo")]
+    [Header("Configuração")]
+    public bool dialogoGlobal = false; // <- NOVO: define se é local ou global
+
+    [Header("Linhas do Diálogo")]
+    [TextArea(2, 4)]
     [SerializeField] private string[] linhasDialogo = {
         "",
         "Olá, viajante!",
@@ -20,97 +27,112 @@ public class Dialogo : MonoBehaviour
     };
 
     private int linhaAtual = 0;
-    private bool jogadorPerto = false;
     private bool falando = false;
+    private bool jogadorPerto = false;
+
+    private PhotonView photonViewDoIniciador; // <- Quem iniciou o diálogo
 
     void Start()
     {
-        botaoInteragir.SetActive(false);
-        painelDialogo.SetActive(false);
+        botaoInteragir1.gameObject.SetActive(false);
+        painelDialogo1.SetActive(false);
+
+        botaoInteragir1.onClick.AddListener(AoClicarNoBotao);
     }
 
-    // Chamado pelo Input System (configurado no Inspector)
-    public void OnToque(InputAction.CallbackContext context)
+    void OnDestroy()
     {
-        // Só avança se:
-        // 1. O toque foi concluído (performed)
-        // 2. O jogador está perto do NPC
-        // 3. O diálogo já começou
-        if (!context.performed || !jogadorPerto) 
-            return;
+        botaoInteragir1.onClick.RemoveListener(AoClicarNoBotao);
+    }
 
-        if (!falando)
+    private void AoClicarNoBotao()
+    {
+        if (!dialogoGlobal)
         {
-            IniciarDialogo(); // Primeiro toque: inicia o diálogo
+            if (!falando) IniciarDialogoLocal();
+            else AvancarDialogoLocal();
         }
         else
         {
-            AvancarDialogo(); // Toques seguintes: avança o texto
+            if (!falando) photonView.RPC("IniciarDialogoGlobal", RpcTarget.AllBuffered, PhotonNetwork.LocalPlayer.ActorNumber);
+            else if (photonViewDoIniciador != null && photonViewDoIniciador.IsMine)
+                photonView.RPC("AvancarDialogoGlobal", RpcTarget.AllBuffered);
         }
     }
 
-    private void IniciarDialogo()
+    private void IniciarDialogoLocal()
     {
-       if (falando) return;
-
-              botaoInteragir.SetActive(false);
-              painelDialogo.SetActive(true);
-              linhaAtual = 0;
-            textoDialogo.text = linhasDialogo[linhaAtual];
-             falando = true;
-
-        if (indicadorNPC != null)
-         indicadorNPC.MarcarComoConversado();
+        linhaAtual = 0;
+        painelDialogo1.SetActive(true);
+        textoDialogo1.text = linhasDialogo[linhaAtual];
+        falando = true;
+        indicadorNPC?.MarcarComoConversado();
     }
 
-    private void AvancarDialogo()
+    private void AvancarDialogoLocal()
     {
         linhaAtual++;
-        
         if (linhaAtual < linhasDialogo.Length)
         {
-            textoDialogo.text = linhasDialogo[linhaAtual];
+            textoDialogo1.text = linhasDialogo[linhaAtual];
         }
         else
         {
-            FinalizarDialogo();
+            FinalizarDialogoLocal();
         }
     }
 
-    private void FinalizarDialogo()
+    private void FinalizarDialogoLocal()
     {
-        painelDialogo.SetActive(false);
+        painelDialogo1.SetActive(false);
         falando = false;
-        
-        // Reativa o botão "Falar" se o jogador ainda estiver perto
-        if (jogadorPerto && botaoInteragir != null)
-            botaoInteragir.SetActive(true);
+        linhaAtual = 0;
     }
 
-    void OnTriggerEnter(Collider other)
+    [PunRPC]
+    private void IniciarDialogoGlobal(int actorID)
     {
-        if (other.CompareTag("Npc"))
+        linhaAtual = 0;
+        painelDialogo1.SetActive(true);
+        painelDialogo2.SetActive(true);
+        textoDialogo1.text = linhasDialogo[linhaAtual];
+        textoDialogo2.text = linhasDialogo[linhaAtual];
+        falando = true;
+
+        photonViewDoIniciador = PhotonView.Find(PhotonNetwork.CurrentRoom.GetPlayer(actorID).ActorNumber);
+    }
+
+    [PunRPC]
+    private void AvancarDialogoGlobal()
+    {
+        linhaAtual++;
+        if (linhaAtual < linhasDialogo.Length)
         {
-            jogadorPerto = true;
-            
-            // Mostra o botão "Falar" (opcional)
-            if (botaoInteragir != null && !falando)
-                botaoInteragir.SetActive(true);
+            textoDialogo1.text = linhasDialogo[linhaAtual];
+            textoDialogo2.text = linhasDialogo[linhaAtual];
+        }
+        else
+        {
+            painelDialogo1.SetActive(false);
+            painelDialogo2.SetActive(false);
+            falando = false;
+            linhaAtual = 0;
         }
     }
 
-    void OnTriggerExit(Collider other)
+    public void MostrarBotao()
     {
-        if (other.CompareTag("Npc"))
-        {
-            jogadorPerto = false;
-            
-            // Esconde o botão e fecha o diálogo se sair do NPC
-            if (botaoInteragir != null)
-                botaoInteragir.SetActive(false);
-            
-            if (falando)
-                FinalizarDialogo();
-        }
+        jogadorPerto = true;
+        botaoInteragir1.gameObject.SetActive(true);
+    }
+
+    public void EsconderTudo()
+    {
+        jogadorPerto = false;
+        botaoInteragir1.gameObject.SetActive(false);
+        painelDialogo1.SetActive(false);
+        painelDialogo2.SetActive(false);
+        falando = false;
+        linhaAtual = 0;
     }
 }

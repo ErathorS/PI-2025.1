@@ -5,17 +5,24 @@ namespace FuroDeNoticia
 {
     public class SpawnPlayers : MonoBehaviour
     {
-        [SerializeField] private GameObject _playerPrefab;
-
         private void Start()
         {
-            if (PhotonNetwork.IsConnected)
+            if (!PhotonNetwork.IsConnected)
             {
-                PhotonNetwork.Instantiate(_playerPrefab.name, Vector3.zero, Quaternion.identity);
+                Debug.LogError("Photon Network is not connected. Cannot spawn player.");
                 return;
             }
 
-            Debug.LogError("Photon Network is not connected. Cannot spawn player.");
+            string prefabName = "PI MC 1"; // padrão para o primeiro jogador
+
+            // Define um prefab diferente para o segundo jogador em diante
+            if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
+            {
+                prefabName = "PI MC 2";
+            }
+
+            Vector3 spawnPos = new Vector3(Random.Range(-2, 2), 0f, Random.Range(-2, 2));
+            PhotonNetwork.Instantiate(prefabName, spawnPos, Quaternion.identity);
         }
     }
 }
