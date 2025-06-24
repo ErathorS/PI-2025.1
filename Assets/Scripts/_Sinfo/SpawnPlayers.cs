@@ -21,7 +21,7 @@ namespace FuroDeNoticia
                 prefabName = "PI MC 2";
             }
 
-            Vector3 spawnPos = new Vector3(Random.Range(-5, 5), 1f, Random.Range(-5, 5));
+            Vector3 spawnPos = new Vector3(Random.Range(-2, 2), 0f, Random.Range(-2, 2));
             PhotonNetwork.Instantiate(prefabName, spawnPos, Quaternion.identity);
         }
     }

@@ -1,7 +1,7 @@
 using Photon.Pun;
 using UnityEngine;
 
-public class Player_Move : MonoBehaviourPun
+public class Player_Move : MonoBehaviour
 {
     [Header("Movimentação")]
     public float walkSpeed = 5f;
@@ -24,32 +24,35 @@ public class Player_Move : MonoBehaviourPun
     private float currentSpeed;
     private Animator animator;
     private PhotonView _view;
-
-    private Dialogo npcDialogoAtual; // <- Referência ao NPC atual
+    private Dialogo npcDialogoAtual;
 
     private void Start()
     {
-        // _view = GetComponent<PhotonView>();
-
-        // if (!_view.IsMine)
-        // {
-        //     Destroy(cameraTransform.gameObject);
-        //     Destroy(_ui);
-        //     return;
-        // }
-
+        _view = GetComponent<PhotonView>();
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
+
+        if (!_view.IsMine)
+        {
+            if (cameraTransform != null) Destroy(cameraTransform.gameObject);
+            if (_ui != null) Destroy(_ui);
+            return;
+        }
 
         if (cameraTransform == null && Camera.main != null)
         {
             cameraTransform = Camera.main.transform;
         }
+
+        if (joystickMovement == null)
+        {
+            Debug.LogWarning("Joystick não atribuído no Player_Move.");
+        }
     }
 
     private void Update()
     {
-        // if (!_view.IsMine) return;
+        if (!_view.IsMine) return;
 
         isGrounded = controller.isGrounded;
         if (isGrounded && velocity.y < 0)
@@ -57,8 +60,8 @@ public class Player_Move : MonoBehaviourPun
             velocity.y = -2f;
         }
 
-        float horizontal = joystickMovement.Horizontal;
-        float vertical = joystickMovement.Vertical;
+        float horizontal = joystickMovement != null ? joystickMovement.Horizontal : 0f;
+        float vertical = joystickMovement != null ? joystickMovement.Vertical : 0f;
 
         Vector3 direction = new Vector3(horizontal, 0f, vertical);
         direction = Vector3.ClampMagnitude(direction, 1f);
@@ -66,42 +69,51 @@ public class Player_Move : MonoBehaviourPun
         Vector3 move = cameraTransform.right * direction.x + cameraTransform.forward * direction.z;
         move.y = 0f;
 
-        currentSpeed = canRun && Input.GetKey(runningKey) ? runSpeed : walkSpeed;
+        currentSpeed = (canRun && Input.GetKey(runningKey)) ? runSpeed : walkSpeed;
         controller.Move(move * currentSpeed * Time.deltaTime);
 
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-        animator.SetBool("IsWalking", direction.magnitude > 0f);
+        if (animator != null)
+        {
+            bool isWalking = direction.magnitude > 0.1f;
+            animator.SetBool("IsWalking", isWalking);
+        }
     }
 
     public void OnJump()
     {
-        // if (!_view.IsMine || !isGrounded) return;
+        if (!_view.IsMine || !isGrounded) return;
         velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        // if (!_view.IsMine) return;
+        if (!_view.IsMine) return;
 
-        // Detecta se colidiu com um NPC que tenha o script Dialogo
-        Dialogo dialogo = other.GetComponent<Dialogo>();
+        Debug.Log($"Colidiu com: {other.name}");
+
+        Dialogo dialogo = other.GetComponentInParent<Dialogo>() ?? other.GetComponentInChildren<Dialogo>();
         if (dialogo != null)
         {
             npcDialogoAtual = dialogo;
-            npcDialogoAtual.MostrarBotao(); // <- Mostra botão no Canvas
+            npcDialogoAtual.MostrarBotao();
+        }
+        else
+        {
+            //Debug.LogWarning($"Objeto {other.name} não possui componente Dialogo.");
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        // if (!_view.IsMine) return;
+        if (!_view.IsMine) return;
 
-        Dialogo dialogo = other.GetComponent<Dialogo>();
+        Dialogo dialogo = other.GetComponentInParent<Dialogo>() ?? other.GetComponentInChildren<Dialogo>();
         if (dialogo != null && dialogo == npcDialogoAtual)
         {
-            npcDialogoAtual.EsconderTudo(); // <- Esconde botão/painel se sair
+            npcDialogoAtual.EsconderTudo();
             npcDialogoAtual = null;
         }
     }
