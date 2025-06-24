@@ -9,6 +9,7 @@ TagManager:
   - BotaoInterativo
   - IgnoreCollision
   - Stop Car
+  - Empurravel
   layers:
   - Default
   - TransparentFX

@@ -87,28 +87,35 @@ public class Player_Move : MonoBehaviour
         if (!_view.IsMine || !isGrounded) return;
         velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
     }
-
     private void OnTriggerEnter(Collider other)
     {
         if (!_view.IsMine) return;
 
-        Debug.Log($"Colidiu com: {other.name}");
+        // Ativa animação de empurrar somente se for objeto empurrável
+        if (other.CompareTag("Empurravel"))
+        {
+            animator.SetBool("IsPushing", true);
+            return;
+        }
 
+        // Diálogo com NPCs
         Dialogo dialogo = other.GetComponentInParent<Dialogo>() ?? other.GetComponentInChildren<Dialogo>();
         if (dialogo != null)
         {
             npcDialogoAtual = dialogo;
             npcDialogoAtual.MostrarBotao();
         }
-        else
-        {
-            //Debug.LogWarning($"Objeto {other.name} não possui componente Dialogo.");
-        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (!_view.IsMine) return;
+
+        if (other.CompareTag("Empurravel"))
+        {
+            animator.SetBool("IsPushing", false);
+            return;
+        }
 
         Dialogo dialogo = other.GetComponentInParent<Dialogo>() ?? other.GetComponentInChildren<Dialogo>();
         if (dialogo != null && dialogo == npcDialogoAtual)
@@ -117,4 +124,5 @@ public class Player_Move : MonoBehaviour
             npcDialogoAtual = null;
         }
     }
+
 }
