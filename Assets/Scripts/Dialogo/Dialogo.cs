@@ -6,8 +6,8 @@ using Photon.Pun;
 public class Dialogo : MonoBehaviourPun
 {
     [Header("Referências")]
-    public Button botaoDialogo1;
-    public Button botaoDialogo2;
+    public Button botaoInteragir1;
+    public Button botaoInteragir2;
     public GameObject painelDialogo1;
     public GameObject painelDialogo2;
     public TMP_Text textoDialogo1;
@@ -15,7 +15,7 @@ public class Dialogo : MonoBehaviourPun
     public IndicadorNpc indicadorNPC;
 
     [Header("Configuração")]
-    public bool dialogoGlobal = false; // Define se é local ou global
+    public bool dialogoGlobal = false;
 
     [Header("Linhas do Diálogo")]
     [TextArea(2, 4)]
@@ -31,82 +31,75 @@ public class Dialogo : MonoBehaviourPun
     private bool falando = false;
     private bool jogadorPerto = false;
 
-    private PhotonView photonViewDoIniciador; // Quem iniciou o diálogo
+    private GameObject jogadorAtual;
+    private PhotonView photonViewDoIniciador;
 
     void Start()
     {
-        // Procurar todos os jogadores na cena
-        GameObject[] jogadores = GameObject.FindGameObjectsWithTag("Player");
+        botaoInteragir1.gameObject.SetActive(false);
+        botaoInteragir2.gameObject.SetActive(false);
+        painelDialogo1.SetActive(false);
+        painelDialogo2.SetActive(false);
 
-        foreach (GameObject jogador in jogadores)
-        {
-            PhotonView pv = jogador.GetComponent<PhotonView>();
-
-            if (pv != null && pv.IsMine)
-            {
-                // Encontrou o jogador local, agora pegamos o canvas dele
-                Transform canvas = jogador.transform.Find("Canvas");
-
-                if (canvas != null)
-                {
-                    // Atribui dinamicamente os elementos do canvas do jogador local
-                    painelDialogo1 = canvas.Find("PainelDialogo1")?.gameObject;
-                    painelDialogo2 = canvas.Find("PainelDialogo2")?.gameObject;
-                    textoDialogo1 = canvas.Find("PainelDialogo1/TextoDialogo1")?.GetComponent<TMP_Text>();
-                    textoDialogo2 = canvas.Find("PainelDialogo2/TextoDialogo2")?.GetComponent<TMP_Text>();
-                    botaoDialogo1 = canvas.Find("BotaoInteragir1")?.GetComponent<Button>();
-                    botaoDialogo2 = canvas.Find("BotaoInteragir2")?.GetComponent<Button>();
-
-                    if (botaoDialogo1 != null)
-                        botaoDialogo1.onClick.AddListener(AoClicarNoBotao);
-
-                    break; // já encontrou o jogador local, não precisa continuar
-                }
-            }
-        }
-
-        // Se necessário, desativar o botão até o jogador estar perto
-        if (botaoDialogo1 != null) botaoDialogo1.gameObject.SetActive(false);
-        if (painelDialogo1 != null) painelDialogo1.SetActive(false);
+        botaoInteragir1.onClick.AddListener(() => AoClicarNoBotao("PI_MC_1"));
+        botaoInteragir2.onClick.AddListener(() => AoClicarNoBotao("PI_MC_2"));
     }
 
     void OnDestroy()
     {
-        if (botaoDialogo1 != null)
-            botaoDialogo1.onClick.RemoveListener(AoClicarNoBotao);
+        botaoInteragir1.onClick.RemoveAllListeners();
+        botaoInteragir2.onClick.RemoveAllListeners();
     }
 
-    private void AoClicarNoBotao()
+    private void AoClicarNoBotao(string nomeJogador)
     {
         if (!dialogoGlobal)
         {
-            if (!falando) IniciarDialogoLocal();
-            else AvancarDialogoLocal();
+            if (!falando) IniciarDialogoLocal(nomeJogador);
+            else AvancarDialogoLocal(nomeJogador);
         }
         else
         {
             if (!falando)
+            {
                 photonView.RPC("IniciarDialogoGlobal", RpcTarget.AllBuffered, PhotonNetwork.LocalPlayer.ActorNumber);
+            }
             else if (photonViewDoIniciador != null && photonViewDoIniciador.IsMine)
+            {
                 photonView.RPC("AvancarDialogoGlobal", RpcTarget.AllBuffered);
+            }
         }
     }
 
-    private void IniciarDialogoLocal()
+    private void IniciarDialogoLocal(string nomeJogador)
     {
         linhaAtual = 0;
-        if (painelDialogo1 != null) painelDialogo1.SetActive(true);
-        if (textoDialogo1 != null) textoDialogo1.text = linhasDialogo[linhaAtual];
         falando = true;
+
+        if (nomeJogador.Contains("PI_MC_1"))
+        {
+            painelDialogo1.SetActive(true);
+            textoDialogo1.text = linhasDialogo[linhaAtual];
+        }
+        else if (nomeJogador.Contains("PI_MC_2"))
+        {
+            painelDialogo2.SetActive(true);
+            textoDialogo2.text = linhasDialogo[linhaAtual];
+        }
+
         indicadorNPC?.MarcarComoConversado();
     }
 
-    private void AvancarDialogoLocal()
+    private void AvancarDialogoLocal(string nomeJogador)
     {
         linhaAtual++;
+
         if (linhaAtual < linhasDialogo.Length)
         {
-            if (textoDialogo1 != null) textoDialogo1.text = linhasDialogo[linhaAtual];
+            if (nomeJogador.Contains("PI_MC_1"))
+                textoDialogo1.text = linhasDialogo[linhaAtual];
+            else if (nomeJogador.Contains("PI_MC_2"))
+                textoDialogo2.text = linhasDialogo[linhaAtual];
         }
         else
         {
@@ -116,7 +109,8 @@ public class Dialogo : MonoBehaviourPun
 
     private void FinalizarDialogoLocal()
     {
-        if (painelDialogo1 != null) painelDialogo1.SetActive(false);
+        painelDialogo1.SetActive(false);
+        painelDialogo2.SetActive(false);
         falando = false;
         linhaAtual = 0;
     }
@@ -125,13 +119,13 @@ public class Dialogo : MonoBehaviourPun
     private void IniciarDialogoGlobal(int actorID)
     {
         linhaAtual = 0;
-        if (painelDialogo1 != null) painelDialogo1.SetActive(true);
-        if (painelDialogo2 != null) painelDialogo2.SetActive(true);
-        if (textoDialogo1 != null) textoDialogo1.text = linhasDialogo[linhaAtual];
-        if (textoDialogo2 != null) textoDialogo2.text = linhasDialogo[linhaAtual];
         falando = true;
+        painelDialogo1.SetActive(true);
+        painelDialogo2.SetActive(true);
+        textoDialogo1.text = linhasDialogo[linhaAtual];
+        textoDialogo2.text = linhasDialogo[linhaAtual];
 
-        photonViewDoIniciador = photonView; // Atribuir o photonView local como iniciador
+        photonViewDoIniciador = PhotonView.Find(actorID);
     }
 
     [PunRPC]
@@ -140,34 +134,42 @@ public class Dialogo : MonoBehaviourPun
         linhaAtual++;
         if (linhaAtual < linhasDialogo.Length)
         {
-            if (textoDialogo1 != null) textoDialogo1.text = linhasDialogo[linhaAtual];
-            if (textoDialogo2 != null) textoDialogo2.text = linhasDialogo[linhaAtual];
+            textoDialogo1.text = linhasDialogo[linhaAtual];
+            textoDialogo2.text = linhasDialogo[linhaAtual];
         }
         else
         {
-            if (painelDialogo1 != null) painelDialogo1.SetActive(false);
-            if (painelDialogo2 != null) painelDialogo2.SetActive(false);
+            painelDialogo1.SetActive(false);
+            painelDialogo2.SetActive(false);
             falando = false;
             linhaAtual = 0;
         }
     }
 
-    public void MostrarBotao()
+    public void MostrarBotao(GameObject jogador)
     {
         jogadorPerto = true;
-        if (botaoDialogo1 != null)
-            botaoDialogo1.gameObject.SetActive(true);
+        jogadorAtual = jogador;
+
+        string nomeJogador = jogador.name;
+
+        if (nomeJogador.Contains("PI_MC_1"))
+        {
+            botaoInteragir1.gameObject.SetActive(true);
+        }
+        else if (nomeJogador.Contains("PI_MC_2"))
+        {
+            botaoInteragir2.gameObject.SetActive(true);
+        }
     }
 
     public void EsconderTudo()
     {
         jogadorPerto = false;
-        if (botaoDialogo1 != null)
-            botaoDialogo1.gameObject.SetActive(false);
-        if (painelDialogo1 != null)
-            painelDialogo1.SetActive(false);
-        if (painelDialogo2 != null)
-            painelDialogo2.SetActive(false);
+        botaoInteragir1.gameObject.SetActive(false);
+        botaoInteragir2.gameObject.SetActive(false);
+        painelDialogo1.SetActive(false);
+        painelDialogo2.SetActive(false);
         falando = false;
         linhaAtual = 0;
     }

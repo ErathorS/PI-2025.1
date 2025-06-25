@@ -963,7 +963,7 @@ GameObject:
   - component: {fileID: 6327403789778126731}
   - component: {fileID: -4906580429009719042}
   m_Layer: 0
-  m_Name: PI MC 2
+  m_Name: PI_MC_2
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

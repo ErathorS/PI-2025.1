@@ -179,7 +179,7 @@ MonoBehaviour:
   textoDialogo1: {fileID: 0}
   textoDialogo2: {fileID: 0}
   indicadorNPC: {fileID: 827303398257407692}
-  dialogoGlobal: 0
+  dialogoGlobal: 1
   linhasDialogo:
   - "Ol\xE1, viajante!"
   - "Voc\xEA est\xE1 pronto para uma nova aventura?"

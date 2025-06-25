@@ -338,7 +338,7 @@ GameObject:
   - component: {fileID: 1217783328149047940}
   - component: {fileID: -2638233438867844539}
   m_Layer: 0
-  m_Name: PI MC 1
+  m_Name: PI_MC_1
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

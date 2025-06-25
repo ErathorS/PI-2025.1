@@ -13,12 +13,12 @@ namespace FuroDeNoticia
                 return;
             }
 
-            string prefabName = "PI MC 1"; // padrão para o primeiro jogador
+            string prefabName = "PI_MC_1"; // padrão para o primeiro jogador
 
             // Define um prefab diferente para o segundo jogador em diante
             if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
             {
-                prefabName = "PI MC 2";
+                prefabName = "PI_MC_2";
             }
 
             Vector3 spawnPos = new Vector3(Random.Range(-2, 2), 0f, Random.Range(-2, 2));

@@ -10864,14 +10864,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7833320198319097642, guid: 37390f6ba9dd0544c8ed67fb86557de7, type: 3}
-      propertyPath: botaoDialogo1
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7833320198319097642, guid: 37390f6ba9dd0544c8ed67fb86557de7, type: 3}
-      propertyPath: botaoDialogo2
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7833320198319097642, guid: 37390f6ba9dd0544c8ed67fb86557de7, type: 3}
       propertyPath: textoDialogo1
       value: 
       objectReference: {fileID: 0}
@@ -10885,6 +10877,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7833320198319097642, guid: 37390f6ba9dd0544c8ed67fb86557de7, type: 3}
       propertyPath: painelDialogo2
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7833320198319097642, guid: 37390f6ba9dd0544c8ed67fb86557de7, type: 3}
+      propertyPath: botaoInteragir1
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7833320198319097642, guid: 37390f6ba9dd0544c8ed67fb86557de7, type: 3}
+      propertyPath: botaoInteragir2
       value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
