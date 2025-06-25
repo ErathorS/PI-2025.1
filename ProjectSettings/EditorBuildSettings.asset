@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Cenas/Lobby.unity
     guid: b235ec0dbe24278489fe8066656ffe53
   - enabled: 1
+    path: Assets/Cenas/MenuJogo.unity
+    guid: 413d5bdbaa8a6794e9b8d1336644075d
+  - enabled: 1
     path: Assets/Cenas/Loading.unity
     guid: 3a2425668d45c8e4b87070d8af0c3782
   - enabled: 1

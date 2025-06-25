@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuScript : MonoBehaviour
 {
@@ -12,7 +14,12 @@ public class MenuScript : MonoBehaviour
         
     }
 
-    public void SairJogo() 
+
+    public void Jogar()
+    {
+        SceneManager.LoadScene("Loading");
+    }
+    public void SairJogo()
     {
         Application.Quit();
     }
