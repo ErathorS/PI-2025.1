@@ -10,6 +10,9 @@ TagManager:
   - IgnoreCollision
   - Stop Car
   - Empurravel
+  - Bullet
+  - CanvasP1
+  - CanvasP2
   layers:
   - Default
   - TransparentFX

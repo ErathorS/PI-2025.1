@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5774240565177329432}
   m_Layer: 5
   m_Name: canva do dialogo 1
-  m_TagString: Untagged
+  m_TagString: CanvasP1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +28,7 @@ RectTransform:
   m_GameObject: {fileID: 1986514061674809623}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.87272745, y: 0.87272733, z: 0.87272745}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2420049831534048985}
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 3029295978876697001}
   - component: {fileID: 7496616368025357723}
   m_Layer: 5
-  m_Name: Panel do texto 1
+  m_Name: PainelDialogo1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -237,7 +237,7 @@ GameObject:
   - component: {fileID: 4406935863637128230}
   - component: {fileID: 5845761274342034594}
   m_Layer: 5
-  m_Name: Texto do Dialogo 1
+  m_Name: TMP_Text1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -492,7 +492,7 @@ GameObject:
   - component: {fileID: 5956016364186387759}
   - component: {fileID: 6302378559310905227}
   m_Layer: 5
-  m_Name: Icone do botao de dialogo 1
+  m_Name: BotaoDialogo1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

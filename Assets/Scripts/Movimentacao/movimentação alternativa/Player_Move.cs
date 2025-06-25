@@ -89,21 +89,11 @@ public class Player_Move : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (!_view.IsMine) return;
-
-        // Ativa animação de empurrar somente se for objeto empurrável
-        if (other.CompareTag("Empurravel"))
-        {
-            animator.SetBool("IsPushing", true);
-            return;
-        }
-
-        // Diálogo com NPCs
-        Dialogo dialogo = other.GetComponentInParent<Dialogo>() ?? other.GetComponentInChildren<Dialogo>();
+        Dialogo dialogo = other.GetComponent<Dialogo>();
         if (dialogo != null)
         {
             npcDialogoAtual = dialogo;
-            npcDialogoAtual.MostrarBotao();
+            npcDialogoAtual.MostrarBotao(gameObject); // envia o jogador que entrou
         }
     }
 
