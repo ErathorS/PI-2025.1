@@ -1,5 +1,5 @@
-using Photon.Pun;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player_Move : MonoBehaviour
 {
@@ -13,115 +13,172 @@ public class Player_Move : MonoBehaviour
     public float jumpHeight = 1.5f;
     public float gravity = -9.81f;
 
-    [Header("Outros")]
+    [Header("Referência da Câmera")]
     public Transform cameraTransform;
-    [SerializeField] private GameObject _ui;
-    public FixedJoystick joystickMovement;
 
     private CharacterController controller;
     private Vector3 velocity;
     private bool isGrounded;
-    private float currentSpeed;
-    private Animator animator;
-    private PhotonView _view;
-    private Dialogo npcDialogoAtual;
 
-    private void Start()
+    private Animator animator;
+    public bool IsWalking { get; private set; }
+    public FixedJoystick joystickMovement;
+
+    void Start()
     {
-        _view = GetComponent<PhotonView>();
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
-
-        if (!_view.IsMine)
-        {
-            if (cameraTransform != null) Destroy(cameraTransform.gameObject);
-            if (_ui != null) Destroy(_ui);
-            return;
-        }
 
         if (cameraTransform == null && Camera.main != null)
         {
             cameraTransform = Camera.main.transform;
         }
-
-        if (joystickMovement == null)
-        {
-            Debug.LogWarning("Joystick não atribuído no Player_Move.");
-        }
     }
 
-    private void Update()
+    void Update()
     {
-        if (!_view.IsMine) return;
-
+        // Verifica se o jogador está no chão
         isGrounded = controller.isGrounded;
         if (isGrounded && velocity.y < 0)
         {
-            velocity.y = -2f;
+            velocity.y = -2f; // Garante que o jogador permaneça no chão
         }
+        
+        // Entrada de movimento
+        float horizontal = joystickMovement.Horizontal; 
+        float vertical = joystickMovement.Vertical; 
 
-        float horizontal = joystickMovement != null ? joystickMovement.Horizontal : 0f;
-        float vertical = joystickMovement != null ? joystickMovement.Vertical : 0f;
-
+        // Direção relativa à câmera
         Vector3 direction = new Vector3(horizontal, 0f, vertical);
         direction = Vector3.ClampMagnitude(direction, 1f);
 
         Vector3 move = cameraTransform.right * direction.x + cameraTransform.forward * direction.z;
-        move.y = 0f;
+        move.y = 0f; // Impede movimento vertical indesejado
 
-        currentSpeed = (canRun && Input.GetKey(runningKey)) ? runSpeed : walkSpeed;
+        // Determina a velocidade atual
+        float currentSpeed = canRun && Input.GetKey(runningKey) ? runSpeed : walkSpeed;
+
+        // Move o jogador
         controller.Move(move * currentSpeed * Time.deltaTime);
 
+        // Pulo
+        if (Input.GetButtonDown("Jump") && isGrounded)
+        {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
+
+        // Aplica gravidade
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-        if (animator != null)
-        {
-            bool isWalking = direction.magnitude > 0.1f;
-            animator.SetBool("IsWalking", isWalking);
-        }
+        // Atualiza o estado de animação
+        IsWalking = direction.magnitude > 0f;
+        animator.SetBool("IsWalking", IsWalking);
     }
-
-    public void OnJump()
-    {
-        if (!_view.IsMine || !isGrounded) return;
-        velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!_view.IsMine) return;
-
-        if (other.CompareTag("Empurravel"))
-        {
-            animator.SetBool("IsPushing", true);
-            return;
-        }
-
-        Dialogo dialogo = other.GetComponentInParent<Dialogo>() ?? other.GetComponentInChildren<Dialogo>();
-        if (dialogo != null)
-        {
-            npcDialogoAtual = dialogo;
-            npcDialogoAtual.MostrarBotao(gameObject);
-        }
-    }
-
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (!_view.IsMine) return;
-        
-        if (other.CompareTag("Empurravel"))
-        {
-            animator.SetBool("IsPushing", false);
-            return;
-        }
-
-        Dialogo dialogo = other.GetComponentInParent<Dialogo>() ?? other.GetComponentInChildren<Dialogo>();
-        if (dialogo != null && dialogo == npcDialogoAtual)
-        {
-            npcDialogoAtual.EsconderTudo();
-            npcDialogoAtual = null;
-        }
-    }
-
 }
+
+// public class Player_Move : MonoBehaviour
+// {
+//     [Header("Movimentação")]
+//     public float walkSpeed = 5f;
+//     public float runSpeed = 9f;
+//     public bool canRun = true;
+//     public KeyCode runningKey = KeyCode.LeftShift;
+
+//     [Header("Pulo e Gravidade")]
+//     public float jumpHeight = 1.5f;
+//     public float gravity = -9.81f;
+
+//     [Header("Referência da Câmera")]
+//     public Transform cameraTransform;
+
+//     private CharacterController controller;
+//     private Vector3 velocity;
+//     private bool isGrounded;
+
+//     private Animator animator;
+//     public bool IsWalking { get; private set; }
+
+//     void Start()
+//     {
+//         controller = GetComponent<CharacterController>();
+//         animator = GetComponent<Animator>();
+
+//         if (cameraTransform == null && Camera.main != null)
+//         {
+//             cameraTransform = Camera.main.transform;
+//         }
+//     }
+
+//     void Update()
+//     {
+//         // Verifica se o jogador está no chão
+//         isGrounded = controller.isGrounded;
+//         if (isGrounded && velocity.y < 0)
+//         {
+//             velocity.y = -2f; // Garante que o jogador permaneça no chão
+//         }
+
+//         // Entrada de movimento
+//         float horizontal = Input.GetAxis("Horizontal");
+//         float vertical = Input.GetAxis("Vertical");
+
+//         // Direção relativa à câmera
+//         Vector3 direction = new Vector3(horizontal, 0f, vertical);
+//         direction = Vector3.ClampMagnitude(direction, 1f);
+
+//         Vector3 move = cameraTransform.right * direction.x + cameraTransform.forward * direction.z;
+//         move.y = 0f; // Impede movimento vertical indesejado
+
+//         // Determina a velocidade atual
+//         float currentSpeed = canRun && Input.GetKey(runningKey) ? runSpeed : walkSpeed;
+
+//         // Move o jogador
+//         controller.Move(move * currentSpeed * Time.deltaTime);
+
+//         // Pulo
+//         if (Input.GetButtonDown("Jump") && isGrounded)
+//         {
+//             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+//         }
+
+//         // Aplica gravidade
+//         velocity.y += gravity * Time.deltaTime;
+//         controller.Move(velocity * Time.deltaTime);
+
+//         // Atualiza o estado de animação
+//         IsWalking = direction.magnitude > 0f;
+//         animator.SetBool("IsWalking", IsWalking);
+//     }
+// }
+// public class Player_Move : MonoBehaviour
+// {
+//     private CharacterController controller;
+//     private Vector2 moveInput;
+//     private bool isRunning;
+
+//     public float walkSpeed = 5f;
+//     public float runSpeed = 9f;
+
+//     void Awake()
+//     {
+//         controller = GetComponent<CharacterController>();
+//     }
+
+//     public void OnMove(InputAction.CallbackContext context)
+//     {
+//         moveInput = context.ReadValue<Vector2>();
+//     }
+
+//     public void OnRun(InputAction.CallbackContext context)
+//     {
+//         isRunning = context.ReadValueAsButton();
+//     }
+
+//     void Update()
+//     {
+//         Vector3 move = new Vector3(moveInput.x, 0, moveInput.y);
+//         float speed = isRunning ? runSpeed : walkSpeed;
+//         controller.Move(move * speed * Time.deltaTime);
+//     }
+// }
