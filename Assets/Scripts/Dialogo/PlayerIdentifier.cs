@@ -8,6 +8,6 @@ public class PlayerIdentifier : MonoBehaviourPun
     void Start()
     {
         actorID = photonView.Owner.ActorNumber;
-        gameObject.name = $"PI_MC_{actorID}";
+        gameObject.name = $"Jogador_{actorID}";
     }
 }

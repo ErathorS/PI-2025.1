@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
-using System.Collections; 
 
 public class Dialogo : MonoBehaviourPun
 {
@@ -36,38 +35,47 @@ public class Dialogo : MonoBehaviourPun
     private PhotonView photonViewDoIniciador;
 
     void Start()
+{
+    // Procurar Canvas do Jogador 1
+    GameObject canvas1 = GameObject.FindGameObjectWithTag("CanvasP1");
+    if (canvas1 == null)
     {
-        StartCoroutine(EsperarJogadoresEConfigurarCanvas());
+        Debug.LogError("❌ CanvasP1 não encontrado!");
     }
-    private IEnumerator EsperarJogadoresEConfigurarCanvas()
+    else
     {
-        // Espera os jogadores entrarem
-        while (GameObject.FindGameObjectsWithTag("Player").Length < 2)
-            yield return null;
-
-        // Espera os Canvas estarem disponíveis
-        GameObject canvas1 = null;
-        GameObject canvas2 = null;
-
-        while (canvas1 == null || canvas2 == null)
-        {
-            canvas1 = GameObject.FindGameObjectWithTag("CanvasP1");
-            canvas2 = GameObject.FindGameObjectWithTag("CanvasP2");
-            yield return null;
-        }
-
         painelDialogo1 = canvas1.transform.Find("PainelDialogo1")?.gameObject;
         textoDialogo1 = painelDialogo1?.transform.Find("TMP_Text")?.GetComponent<TMP_Text>();
         botaoDialogo1 = canvas1.transform.Find("BotaoDialogo1")?.GetComponent<Button>();
 
+        if (painelDialogo1 == null) Debug.LogError("❌ PainelDialogo1 não encontrado dentro de CanvasP1");
+        if (textoDialogo1 == null) Debug.LogError("❌ TMP_Text não encontrado dentro de PainelDialogo1");
+        if (botaoDialogo1 == null) Debug.LogError("❌ BotaoDialogo1 não encontrado dentro de CanvasP1");
+
+        botaoDialogo1?.onClick.AddListener(() => AoClicarNoBotao("PI_MC_1"));
+        painelDialogo1.SetActive(false);
+    }
+
+    // Procurar Canvas do Jogador 2
+    GameObject canvas2 = GameObject.FindGameObjectWithTag("CanvasP2");
+    if (canvas2 == null)
+    {
+        Debug.LogError("❌ CanvasP2 não encontrado!");
+    }
+    else
+    {
         painelDialogo2 = canvas2.transform.Find("PainelDialogo2")?.gameObject;
         textoDialogo2 = painelDialogo2?.transform.Find("TMP_Text")?.GetComponent<TMP_Text>();
         botaoDialogo2 = canvas2.transform.Find("BotaoDialogo2")?.GetComponent<Button>();
 
-        painelDialogo1?.SetActive(false);
-        painelDialogo2?.SetActive(false);
-    }
+        if (painelDialogo2 == null) Debug.LogError("❌ PainelDialogo2 não encontrado dentro de CanvasP2");
+        if (textoDialogo2 == null) Debug.LogError("❌ TMP_Text não encontrado dentro de PainelDialogo2");
+        if (botaoDialogo2 == null) Debug.LogError("❌ BotaoDialogo2 não encontrado dentro de CanvasP2");
 
+        botaoDialogo2?.onClick.AddListener(() => AoClicarNoBotao("PI_MC_2"));
+        painelDialogo2.SetActive(false);
+    }
+}
 
 
 
@@ -181,15 +189,13 @@ public class Dialogo : MonoBehaviourPun
 
         if (actorID == 1)
         {
-            botaoDialogo1?.onClick.RemoveAllListeners();
-            botaoDialogo1?.onClick.AddListener(() => AoClicarNoBotao("PI_MC_1"));
-            botaoDialogo1?.gameObject.SetActive(true);
+            painelDialogo1.SetActive(true);
+            textoDialogo1.text = linhasDialogo[linhaAtual];
         }
         else if (actorID == 2)
         {
-            botaoDialogo2?.onClick.RemoveAllListeners();
-            botaoDialogo2?.onClick.AddListener(() => AoClicarNoBotao("PI_MC_2"));
-            botaoDialogo2?.gameObject.SetActive(true);
+            painelDialogo2.SetActive(true);
+            textoDialogo2.text = linhasDialogo[linhaAtual];
         }
     }
 
@@ -203,7 +209,4 @@ public class Dialogo : MonoBehaviourPun
         falando = false;
         linhaAtual = 0;
     }
-    
-    
-
 }
