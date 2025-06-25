@@ -89,18 +89,27 @@ public class Player_Move : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        Dialogo dialogo = other.GetComponent<Dialogo>();
+        if (!_view.IsMine) return;
+
+        if (other.CompareTag("Empurravel"))
+        {
+            animator.SetBool("IsPushing", true);
+            return;
+        }
+
+        Dialogo dialogo = other.GetComponentInParent<Dialogo>() ?? other.GetComponentInChildren<Dialogo>();
         if (dialogo != null)
         {
             npcDialogoAtual = dialogo;
-            npcDialogoAtual.MostrarBotao(gameObject); // envia o jogador que entrou
+            npcDialogoAtual.MostrarBotao(gameObject);
         }
     }
+
 
     private void OnTriggerExit(Collider other)
     {
         if (!_view.IsMine) return;
-
+        
         if (other.CompareTag("Empurravel"))
         {
             animator.SetBool("IsPushing", false);
