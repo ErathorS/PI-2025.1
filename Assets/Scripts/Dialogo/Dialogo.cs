@@ -84,19 +84,20 @@ public class Dialogo : MonoBehaviourPun
         botaoDialogo1.onClick.RemoveAllListeners();
         botaoDialogo2.onClick.RemoveAllListeners();
     }
-
     private void AoClicarNoBotao(string nomeJogador)
     {
+        int actorID = PhotonNetwork.LocalPlayer.ActorNumber;
+
         if (!dialogoGlobal)
         {
-            if (!falando) IniciarDialogoLocal(nomeJogador);
-            else AvancarDialogoLocal(nomeJogador);
+            if (!falando) IniciarDialogoLocal(actorID);
+            else AvancarDialogoLocal(actorID);
         }
         else
         {
             if (!falando)
             {
-                photonView.RPC("IniciarDialogoGlobal", RpcTarget.AllBuffered, PhotonNetwork.LocalPlayer.ActorNumber);
+                photonView.RPC("IniciarDialogoGlobal", RpcTarget.AllBuffered, actorID);
             }
             else if (photonViewDoIniciador != null && photonViewDoIniciador.IsMine)
             {
@@ -104,18 +105,17 @@ public class Dialogo : MonoBehaviourPun
             }
         }
     }
-
-    private void IniciarDialogoLocal(string nomeJogador)
+    private void IniciarDialogoLocal(int actorID)
     {
         linhaAtual = 0;
         falando = true;
 
-        if (nomeJogador.Contains("PI_MC_1"))
+        if (actorID == 1)
         {
             painelDialogo1.SetActive(true);
             textoDialogo1.text = linhasDialogo[linhaAtual];
         }
-        else if (nomeJogador.Contains("PI_MC_2"))
+        else if (actorID == 2)
         {
             painelDialogo2.SetActive(true);
             textoDialogo2.text = linhasDialogo[linhaAtual];
@@ -124,15 +124,15 @@ public class Dialogo : MonoBehaviourPun
         indicadorNPC?.MarcarComoConversado();
     }
 
-    private void AvancarDialogoLocal(string nomeJogador)
+    private void AvancarDialogoLocal(int actorID)
     {
         linhaAtual++;
 
         if (linhaAtual < linhasDialogo.Length)
         {
-            if (nomeJogador.Contains("PI_MC_1"))
+            if (actorID == 1)
                 textoDialogo1.text = linhasDialogo[linhaAtual];
-            else if (nomeJogador.Contains("PI_MC_2"))
+            else if (actorID == 2)
                 textoDialogo2.text = linhasDialogo[linhaAtual];
         }
         else
@@ -179,21 +179,23 @@ public class Dialogo : MonoBehaviourPun
             linhaAtual = 0;
         }
     }
-
     public void MostrarBotao(GameObject jogador)
     {
         jogadorPerto = true;
         jogadorAtual = jogador;
 
-        string nomeJogador = jogador.name;
+        PhotonView view = jogador.GetComponent<PhotonView>();
+        int actorID = view.Owner.ActorNumber;
 
-        if (nomeJogador.Contains("PI_MC_1"))
+        if (actorID == 1)
         {
-            botaoDialogo1.gameObject.SetActive(true);
+            painelDialogo1.SetActive(true);
+            textoDialogo1.text = linhasDialogo[linhaAtual];
         }
-        else if (nomeJogador.Contains("PI_MC_2"))
+        else if (actorID == 2)
         {
-            botaoDialogo2.gameObject.SetActive(true);
+            painelDialogo2.SetActive(true);
+            textoDialogo2.text = linhasDialogo[linhaAtual];
         }
     }
 
