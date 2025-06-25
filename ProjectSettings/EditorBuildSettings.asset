@@ -12,13 +12,13 @@ EditorBuildSettings:
     path: Assets/Cenas/Lobby.unity
     guid: b235ec0dbe24278489fe8066656ffe53
   - enabled: 1
-    path: Assets/Cenas/Sinfo_Loading.unity
+    path: Assets/Cenas/Loading.unity
     guid: 3a2425668d45c8e4b87070d8af0c3782
   - enabled: 1
-    path: Assets/Cenas/Sinfo_Lobby.unity
+    path: Assets/Cenas/Lobby.unity
     guid: d8a27bfd0d293e04aa9f8b04df665e84
   - enabled: 1
-    path: Assets/Cenas/Sinfo_PI.unity
+    path: Assets/Cenas/PI.unity
     guid: fa2f693395467f349aa2c2735d997281
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9e7be553448fa2546aea5752021cbcf7, type: 2}
