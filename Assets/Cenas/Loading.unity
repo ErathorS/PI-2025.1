@@ -284,7 +284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b36da265b1f935b41a9fa608cd0e7aa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sceneToLoad: Sinfo_Lobby
+  _sceneToLoad: Lobby
 --- !u!1 &1835707389
 GameObject:
   m_ObjectHideFlags: 0
