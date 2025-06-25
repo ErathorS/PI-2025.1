@@ -330,13 +330,13 @@ GameObject:
   m_Component:
   - component: {fileID: 6036034515555843038}
   - component: {fileID: 3563828027278559568}
+  - component: {fileID: -2638233438867844539}
   - component: {fileID: 530208613624892370}
   - component: {fileID: 6669084975844557883}
   - component: {fileID: 1155013124087372032}
   - component: {fileID: 2295594847836595525}
   - component: {fileID: 2683227287715514969}
   - component: {fileID: 1217783328149047940}
-  - component: {fileID: -2638233438867844539}
   m_Layer: 0
   m_Name: PI_MC_1
   m_TagString: Player
@@ -385,6 +385,30 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-2638233438867844539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3114417296834192033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 2
+    Name: IsWalking
+  - Type: 4
+    SynchronizeType: 2
+    Name: IsPushing
+  m_SynchronizeLayers:
+  - SynchronizeType: 2
+    LayerIndex: 0
 --- !u!54 &530208613624892370
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -458,6 +482,7 @@ MonoBehaviour:
   observableSearch: 0
   ObservedComponents:
   - {fileID: 1217783328149047940}
+  - {fileID: -2638233438867844539}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -480,7 +505,6 @@ MonoBehaviour:
   jumpHeight: 1.5
   gravity: -9.81
   cameraTransform: {fileID: 2374865763544695484}
-  _ui: {fileID: 3994416561067986937}
   joystickMovement: {fileID: 8991446172862053951}
 --- !u!114 &2683227287715514969
 MonoBehaviour:
@@ -514,30 +538,6 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &-2638233438867844539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3114417296834192033}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
-  m_SynchronizeParameters:
-  - Type: 4
-    SynchronizeType: 2
-    Name: IsWalking
-  - Type: 4
-    SynchronizeType: 0
-    Name: IsPushing
-  m_SynchronizeLayers:
-  - SynchronizeType: 2
-    LayerIndex: 0
 --- !u!1 &3221734707748407686
 GameObject:
   m_ObjectHideFlags: 0
@@ -1664,11 +1664,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45977bbae16431c46a013576a1aea384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &3994416561067986937 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 288016241784433314, guid: 9a0609dde20184049adfb4bee7088a08, type: 3}
-  m_PrefabInstance: {fileID: 3787590560521364827}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &6233360255348806493 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7066536683753518598, guid: 9a0609dde20184049adfb4bee7088a08, type: 3}
