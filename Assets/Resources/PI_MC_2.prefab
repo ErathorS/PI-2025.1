@@ -1337,6 +1337,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: canva do dialogo 2
       objectReference: {fileID: 0}
+    - target: {fileID: 347506628617061417, guid: 06b794b7743592b4483f70dbbe1206b7, type: 3}
+      propertyPath: m_TagString
+      value: CanvasP2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4403945620983367251, guid: 06b794b7743592b4483f70dbbe1206b7, type: 3}
+      propertyPath: m_Name
+      value: BotaoInteragir2
+      objectReference: {fileID: 0}
     - target: {fileID: 4810475027574334307, guid: 06b794b7743592b4483f70dbbe1206b7, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1433,6 +1441,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1906737301938591647}
+    - target: {fileID: 8576804706184361720, guid: 06b794b7743592b4483f70dbbe1206b7, type: 3}
+      propertyPath: m_Name
+      value: TMP_Text
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -1702,6 +1702,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5775340094068274138, guid: ff7723324cb87a74d88b9efbfe55e072, type: 3}
+      propertyPath: m_Name
+      value: TMP_Text
+      objectReference: {fileID: 0}
     - target: {fileID: 5924337276685355707, guid: ff7723324cb87a74d88b9efbfe55e072, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1798,7 +1802,12 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1720268489280055689}
-    m_RemovedComponents: []
+    - target: {fileID: 8341578478540356218, guid: ff7723324cb87a74d88b9efbfe55e072, type: 3}
+      propertyPath: m_Name
+      value: BotaoInteragir1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7496616368025357723, guid: ff7723324cb87a74d88b9efbfe55e072, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

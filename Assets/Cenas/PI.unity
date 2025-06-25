@@ -4384,10 +4384,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -7245769850181266523, guid: efd6cdd190e76ac4d8958df332f300eb, type: 3}
-      propertyPath: sceneViewId
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 6111484376222312914, guid: efd6cdd190e76ac4d8958df332f300eb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.123
@@ -10385,10 +10381,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1155013124087372032, guid: 20c2ae482a3529741ae1fa87faf8e8cd, type: 3}
-      propertyPath: sceneViewId
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3114417296834192033, guid: 20c2ae482a3529741ae1fa87faf8e8cd, type: 3}
       propertyPath: m_Name
       value: PI_MC_1
@@ -10984,42 +10976,6 @@ PrefabInstance:
     - target: {fileID: 7348615610067551080, guid: 37390f6ba9dd0544c8ed67fb86557de7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7833320198319097642, guid: 37390f6ba9dd0544c8ed67fb86557de7, type: 3}
-      propertyPath: botaoDialogo1
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7833320198319097642, guid: 37390f6ba9dd0544c8ed67fb86557de7, type: 3}
-      propertyPath: botaoDialogo2
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7833320198319097642, guid: 37390f6ba9dd0544c8ed67fb86557de7, type: 3}
-      propertyPath: dialogoGlobal
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7833320198319097642, guid: 37390f6ba9dd0544c8ed67fb86557de7, type: 3}
-      propertyPath: textoDialogo1
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7833320198319097642, guid: 37390f6ba9dd0544c8ed67fb86557de7, type: 3}
-      propertyPath: textoDialogo2
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7833320198319097642, guid: 37390f6ba9dd0544c8ed67fb86557de7, type: 3}
-      propertyPath: painelDialogo1
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7833320198319097642, guid: 37390f6ba9dd0544c8ed67fb86557de7, type: 3}
-      propertyPath: painelDialogo2
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7833320198319097642, guid: 37390f6ba9dd0544c8ed67fb86557de7, type: 3}
-      propertyPath: botaoInteragir1
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7833320198319097642, guid: 37390f6ba9dd0544c8ed67fb86557de7, type: 3}
-      propertyPath: botaoInteragir2
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
