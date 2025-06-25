@@ -5,15 +5,6 @@ using Photon.Pun;
 
 public class Dialogo : MonoBehaviourPun
 {
-    [Header("Referências")]
-    public Button botaoInteragir1;
-    public Button botaoInteragir2;
-    public GameObject painelDialogo1;
-    public GameObject painelDialogo2;
-    public TMP_Text textoDialogo1;
-    public TMP_Text textoDialogo2;
-    public IndicadorNpc indicadorNPC;
-
     [Header("Configuração")]
     public bool dialogoGlobal = false;
 
@@ -30,25 +21,59 @@ public class Dialogo : MonoBehaviourPun
     private int linhaAtual = 0;
     private bool falando = false;
     private bool jogadorPerto = false;
-
     private GameObject jogadorAtual;
     private PhotonView photonViewDoIniciador;
 
+    // UI automática
+    private Button botaoInteragir1;
+    private Button botaoInteragir2;
+    private GameObject painelDialogo1;
+    private GameObject painelDialogo2;
+    private TMP_Text textoDialogo1;
+    private TMP_Text textoDialogo2;
+
+    public IndicadorNpc indicadorNPC;
+
+    void Awake()
+    {
+        EncontrarElementosUI();
+    }
+
     void Start()
     {
-        botaoInteragir1.gameObject.SetActive(false);
-        botaoInteragir2.gameObject.SetActive(false);
-        painelDialogo1.SetActive(false);
-        painelDialogo2.SetActive(false);
+        if (botaoInteragir1) botaoInteragir1.onClick.AddListener(() => AoClicarNoBotao("PI_MC_1"));
+        if (botaoInteragir2) botaoInteragir2.onClick.AddListener(() => AoClicarNoBotao("PI_MC_2"));
 
-        botaoInteragir1.onClick.AddListener(() => AoClicarNoBotao("PI_MC_1"));
-        botaoInteragir2.onClick.AddListener(() => AoClicarNoBotao("PI_MC_2"));
+        if (botaoInteragir1) botaoInteragir1.gameObject.SetActive(false);
+        if (botaoInteragir2) botaoInteragir2.gameObject.SetActive(false);
+        if (painelDialogo1) painelDialogo1.SetActive(false);
+        if (painelDialogo2) painelDialogo2.SetActive(false);
     }
 
     void OnDestroy()
     {
-        botaoInteragir1.onClick.RemoveAllListeners();
-        botaoInteragir2.onClick.RemoveAllListeners();
+        if (botaoInteragir1) botaoInteragir1.onClick.RemoveAllListeners();
+        if (botaoInteragir2) botaoInteragir2.onClick.RemoveAllListeners();
+    }
+
+    private void EncontrarElementosUI()
+    {
+        GameObject canvas1 = GameObject.FindWithTag("CanvasP1");
+        GameObject canvas2 = GameObject.FindWithTag("CanvasP2");
+
+        if (canvas1)
+        {
+            botaoInteragir1 = canvas1.transform.Find("BotaoDialogo")?.GetComponent<Button>();
+            painelDialogo1 = canvas1.transform.Find("PainelDialogo")?.gameObject;
+            textoDialogo1 = painelDialogo1?.transform.Find("TMP_Text")?.GetComponent<TMP_Text>();
+        }
+
+        if (canvas2)
+        {
+            botaoInteragir2 = canvas2.transform.Find("BotaoDialogo")?.GetComponent<Button>();
+            painelDialogo2 = canvas2.transform.Find("PainelDialogo")?.gameObject;
+            textoDialogo2 = painelDialogo2?.transform.Find("TMP_Text")?.GetComponent<TMP_Text>();
+        }
     }
 
     private void AoClicarNoBotao(string nomeJogador)
@@ -61,13 +86,9 @@ public class Dialogo : MonoBehaviourPun
         else
         {
             if (!falando)
-            {
                 photonView.RPC("IniciarDialogoGlobal", RpcTarget.AllBuffered, PhotonNetwork.LocalPlayer.ActorNumber);
-            }
             else if (photonViewDoIniciador != null && photonViewDoIniciador.IsMine)
-            {
                 photonView.RPC("AvancarDialogoGlobal", RpcTarget.AllBuffered);
-            }
         }
     }
 
@@ -78,13 +99,13 @@ public class Dialogo : MonoBehaviourPun
 
         if (nomeJogador.Contains("PI_MC_1"))
         {
-            painelDialogo1.SetActive(true);
-            textoDialogo1.text = linhasDialogo[linhaAtual];
+            painelDialogo1?.SetActive(true);
+            if (textoDialogo1) textoDialogo1.text = linhasDialogo[linhaAtual];
         }
         else if (nomeJogador.Contains("PI_MC_2"))
         {
-            painelDialogo2.SetActive(true);
-            textoDialogo2.text = linhasDialogo[linhaAtual];
+            painelDialogo2?.SetActive(true);
+            if (textoDialogo2) textoDialogo2.text = linhasDialogo[linhaAtual];
         }
 
         indicadorNPC?.MarcarComoConversado();
@@ -96,9 +117,9 @@ public class Dialogo : MonoBehaviourPun
 
         if (linhaAtual < linhasDialogo.Length)
         {
-            if (nomeJogador.Contains("PI_MC_1"))
+            if (nomeJogador.Contains("PI_MC_1") && textoDialogo1)
                 textoDialogo1.text = linhasDialogo[linhaAtual];
-            else if (nomeJogador.Contains("PI_MC_2"))
+            else if (nomeJogador.Contains("PI_MC_2") && textoDialogo2)
                 textoDialogo2.text = linhasDialogo[linhaAtual];
         }
         else
@@ -109,8 +130,8 @@ public class Dialogo : MonoBehaviourPun
 
     private void FinalizarDialogoLocal()
     {
-        painelDialogo1.SetActive(false);
-        painelDialogo2.SetActive(false);
+        painelDialogo1?.SetActive(false);
+        painelDialogo2?.SetActive(false);
         falando = false;
         linhaAtual = 0;
     }
@@ -120,10 +141,12 @@ public class Dialogo : MonoBehaviourPun
     {
         linhaAtual = 0;
         falando = true;
-        painelDialogo1.SetActive(true);
-        painelDialogo2.SetActive(true);
-        textoDialogo1.text = linhasDialogo[linhaAtual];
-        textoDialogo2.text = linhasDialogo[linhaAtual];
+
+        painelDialogo1?.SetActive(true);
+        painelDialogo2?.SetActive(true);
+
+        if (textoDialogo1) textoDialogo1.text = linhasDialogo[linhaAtual];
+        if (textoDialogo2) textoDialogo2.text = linhasDialogo[linhaAtual];
 
         photonViewDoIniciador = PhotonView.Find(actorID);
     }
@@ -134,13 +157,13 @@ public class Dialogo : MonoBehaviourPun
         linhaAtual++;
         if (linhaAtual < linhasDialogo.Length)
         {
-            textoDialogo1.text = linhasDialogo[linhaAtual];
-            textoDialogo2.text = linhasDialogo[linhaAtual];
+            if (textoDialogo1) textoDialogo1.text = linhasDialogo[linhaAtual];
+            if (textoDialogo2) textoDialogo2.text = linhasDialogo[linhaAtual];
         }
         else
         {
-            painelDialogo1.SetActive(false);
-            painelDialogo2.SetActive(false);
+            painelDialogo1?.SetActive(false);
+            painelDialogo2?.SetActive(false);
             falando = false;
             linhaAtual = 0;
         }
@@ -155,21 +178,23 @@ public class Dialogo : MonoBehaviourPun
 
         if (nomeJogador.Contains("PI_MC_1"))
         {
-            botaoInteragir1.gameObject.SetActive(true);
+            if (botaoInteragir1) botaoInteragir1.gameObject.SetActive(true);
         }
         else if (nomeJogador.Contains("PI_MC_2"))
         {
-            botaoInteragir2.gameObject.SetActive(true);
+            if (botaoInteragir2) botaoInteragir2.gameObject.SetActive(true);
         }
     }
 
     public void EsconderTudo()
     {
         jogadorPerto = false;
-        botaoInteragir1.gameObject.SetActive(false);
-        botaoInteragir2.gameObject.SetActive(false);
-        painelDialogo1.SetActive(false);
-        painelDialogo2.SetActive(false);
+
+        if (botaoInteragir1) botaoInteragir1.gameObject.SetActive(false);
+        if (botaoInteragir2) botaoInteragir2.gameObject.SetActive(false);
+        if (painelDialogo1) painelDialogo1.SetActive(false);
+        if (painelDialogo2) painelDialogo2.SetActive(false);
+
         falando = false;
         linhaAtual = 0;
     }

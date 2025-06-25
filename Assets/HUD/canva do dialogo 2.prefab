@@ -28,7 +28,7 @@ RectTransform:
   m_GameObject: {fileID: 347506628617061417}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.87272745, y: 0.87272733, z: 0.87272745}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8254647973553835403}
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 5268830103383531910}
   - component: {fileID: 8418089182673822839}
   m_Layer: 5
-  m_Name: Icone do botao de dialogo 2
+  m_Name: BotaoDialogo2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -356,7 +356,7 @@ GameObject:
   - component: {fileID: 3866982196581656501}
   - component: {fileID: 7528458261200549157}
   m_Layer: 5
-  m_Name: Panel do texto 2
+  m_Name: PainelDialogo2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -432,7 +432,7 @@ GameObject:
   - component: {fileID: 5992749458813414616}
   - component: {fileID: 5243012712582643549}
   m_Layer: 5
-  m_Name: Texto do Dialogo 2
+  m_Name: TMP_Text2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
