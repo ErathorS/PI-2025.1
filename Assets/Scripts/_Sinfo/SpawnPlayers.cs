@@ -5,6 +5,14 @@ namespace FuroDeNoticia
 {
     public class SpawnPlayers : MonoBehaviour
     {
+        [Header("Posições de Spawn")]
+        public Transform positionPrefabPlayer1;
+        public Transform positionPrefabPlayer2;
+
+        [Header("Prefabs dos Jogadores")]
+        public GameObject player1Prefab;
+        public GameObject player2Prefab;
+
         private void Start()
         {
             if (!PhotonNetwork.IsConnected)
@@ -13,16 +21,21 @@ namespace FuroDeNoticia
                 return;
             }
 
-            string prefabName = "PI_MC_1"; // padrão para o primeiro jogador
+            int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
 
-            // Define um prefab diferente para o segundo jogador em diante
-            if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
+            // Verifica qual jogador está conectando
+            if (actorNumber == 1 && positionPrefabPlayer1 != null)
             {
-                prefabName = "PI_MC_2";
+                PhotonNetwork.Instantiate(player1Prefab.name, positionPrefabPlayer1.position, player1Prefab.transform.rotation);
             }
-
-            Vector3 spawnPos = new Vector3(Random.Range(-2, 2), 0f, Random.Range(-2, 2));
-            PhotonNetwork.Instantiate(prefabName, spawnPos, Quaternion.identity);
+            else if (actorNumber == 2 && positionPrefabPlayer2 != null)
+            {
+                PhotonNetwork.Instantiate(player2Prefab.name, positionPrefabPlayer2.position, player2Prefab.transform.rotation);
+            }
+            else
+            {
+                Debug.LogWarning("ActorNumber não mapeado ou posição de spawn não definida.");
+            }
         }
     }
 }
