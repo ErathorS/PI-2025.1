@@ -43,7 +43,6 @@ MonoBehaviour:
   - AvancarDialogoGlobal
   - IniciarDialogoGlobal
   - UpdatePushDirection
-  - <Update>g__SetAnimatorBool|18_0
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
