@@ -1566,6 +1566,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BotaoDialogo
       objectReference: {fileID: 0}
+    - target: {fileID: 2826870438854933088, guid: 917138c10f00bdc49b501d21359b7e23, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3067774427453324522, guid: 917138c10f00bdc49b501d21359b7e23, type: 3}
       propertyPath: m_Name
       value: UI_Canvas 2
@@ -1573,6 +1577,10 @@ PrefabInstance:
     - target: {fileID: 3067774427453324522, guid: 917138c10f00bdc49b501d21359b7e23, type: 3}
       propertyPath: m_TagString
       value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 6335611136407012234, guid: 917138c10f00bdc49b501d21359b7e23, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6354575531580736612, guid: 917138c10f00bdc49b501d21359b7e23, type: 3}
       propertyPath: m_Name
