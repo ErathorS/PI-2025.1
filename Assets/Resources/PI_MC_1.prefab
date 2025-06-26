@@ -385,7 +385,7 @@ MonoBehaviour:
     Name: IsWalking
   - Type: 4
     SynchronizeType: 2
-    Name: IsPushing
+    Name: IsRunning
   m_SynchronizeLayers:
   - SynchronizeType: 2
     LayerIndex: 0
