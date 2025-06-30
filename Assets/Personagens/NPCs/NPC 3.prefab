@@ -281,7 +281,7 @@ GameObject:
   - component: {fileID: 7660439255949543271}
   m_Layer: 0
   m_Name: NPC 3
-  m_TagString: Untagged
+  m_TagString: Npc
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -296,7 +296,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -6.38, y: -0.009999998, z: 0}
-  m_LocalScale: {x: 0.7699999, y: 0.7699999, z: 0.7699999}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3724372649586358172}
@@ -416,7 +416,18 @@ MonoBehaviour:
   indicadorNPC: {fileID: 0}
   dialogoGlobal: 0
   linhasDialogo:
-  - 
+  - "Jogador:\nBom dia, Seu Zeca. Podemos conversar um pouco sobre sua hist\xF3ria?"
+  - "Seu Zeca:\nClaro, minha filha. Mas s\xF3 se puderem segurar essa enxada por
+    cinco minutos antes."
+  - "Jogador: (rindo):\nEu sou jornalista, n\xE3o pedreiro..."
+  - "Seu Zeca:\nE eu sou trabalhador, n\xE3o folclore. Mas muita gente s\xF3 me v\xEA
+    como o 'nordestino engra\xE7ado' que veio tentar a sorte."
+  - 'Jogador: (anotando):
+
+    Qual seria a manchete que o senhor gostaria de ver
+    um dia?'
+  - "Seu Zeca:\nNordeste sustenta o pa\xEDs com suor e cultura'. Essa a\xED ningu\xE9m
+    publica."
 --- !u!1 &2999119262473549390
 GameObject:
   m_ObjectHideFlags: 0

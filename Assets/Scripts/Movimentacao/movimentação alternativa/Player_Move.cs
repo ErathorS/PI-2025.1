@@ -121,4 +121,33 @@ public class Player_Move : MonoBehaviourPun
 
         velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
     }
+    void OnTriggerEnter(Collider other)
+    {
+        if (!photonView.IsMine) return;
+
+        if (other.CompareTag("Npc"))
+        {
+            Dialogo dialogo = other.GetComponent<Dialogo>();
+            if (dialogo != null)
+            {
+                Debug.Log("Entrou em trigger com NPC. Chamando MostrarBotao.");
+                dialogo.MostrarBotao(gameObject);
+            }
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (!photonView.IsMine) return;
+
+        if (other.CompareTag("Npc"))
+        {
+            Dialogo dialogo = other.GetComponent<Dialogo>();
+            if (dialogo != null)
+            {
+                Debug.Log("Saiu da área do NPC. Chamando EsconderTudo.");
+                dialogo.EsconderTudo();
+            }
+        }
+    }
 }

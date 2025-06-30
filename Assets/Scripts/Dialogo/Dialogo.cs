@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
-using System.Collections; 
+using System.Collections;
 
 public class Dialogo : MonoBehaviourPun
 {
@@ -37,15 +37,15 @@ public class Dialogo : MonoBehaviourPun
 
     void Start()
     {
+        Debug.Log("Iniciando coroutine para configurar canvas...");
         StartCoroutine(EsperarJogadoresEConfigurarCanvas());
     }
+
     private IEnumerator EsperarJogadoresEConfigurarCanvas()
     {
-        // Espera os jogadores entrarem
         while (GameObject.FindGameObjectsWithTag("Player").Length < 2)
             yield return null;
 
-        // Espera os Canvas estarem disponíveis
         GameObject canvas1 = null;
         GameObject canvas2 = null;
 
@@ -56,51 +56,66 @@ public class Dialogo : MonoBehaviourPun
             yield return null;
         }
 
-        painelDialogo1 = canvas1.transform.Find("PainelDialogo1")?.gameObject;
-        textoDialogo1 = painelDialogo1?.transform.Find("TMP_Text")?.GetComponent<TMP_Text>();
-        botaoDialogo1 = canvas1.transform.Find("BotaoDialogo1")?.GetComponent<Button>();
+        painelDialogo1 = canvas1.transform.Find("PainelDialogo1").gameObject;
+        textoDialogo1 = painelDialogo1.transform.Find("TMP_Text").GetComponent<TMP_Text>();
+        botaoDialogo1 = canvas1.transform.Find("BotaoDialogo1").GetComponent<Button>();
 
-        painelDialogo2 = canvas2.transform.Find("PainelDialogo2")?.gameObject;
-        textoDialogo2 = painelDialogo2?.transform.Find("TMP_Text")?.GetComponent<TMP_Text>();
-        botaoDialogo2 = canvas2.transform.Find("BotaoDialogo2")?.GetComponent<Button>();
+        painelDialogo2 = canvas2.transform.Find("PainelDialogo2").gameObject;
+        textoDialogo2 = painelDialogo2.transform.Find("TMP_Text").GetComponent<TMP_Text>();
+        botaoDialogo2 = canvas2.transform.Find("BotaoDialogo2").GetComponent<Button>();
+
+        Debug.Log("Canvas e elementos encontrados e configurados");
 
         painelDialogo1?.SetActive(false);
         painelDialogo2?.SetActive(false);
     }
-
-
-
 
     void OnDestroy()
     {
         botaoDialogo1.onClick.RemoveAllListeners();
         botaoDialogo2.onClick.RemoveAllListeners();
     }
+
     private void AoClicarNoBotao(string nomeJogador)
     {
+        Debug.Log($"Botão clicado por {nomeJogador}");
+
         int actorID = PhotonNetwork.LocalPlayer.ActorNumber;
 
         if (!dialogoGlobal)
         {
-            if (!falando) IniciarDialogoLocal(actorID);
-            else AvancarDialogoLocal(actorID);
+            if (!falando)
+            {
+                Debug.Log("Iniciando diálogo local");
+                IniciarDialogoLocal(actorID);
+            }
+            else
+            {
+                Debug.Log("Avançando diálogo local");
+                AvancarDialogoLocal(actorID);
+            }
         }
         else
         {
             if (!falando)
             {
+                Debug.Log("Iniciando diálogo global");
                 photonView.RPC("IniciarDialogoGlobal", RpcTarget.AllBuffered, actorID);
             }
             else if (photonViewDoIniciador != null && photonViewDoIniciador.IsMine)
             {
+                Debug.Log("Avançando diálogo global");
                 photonView.RPC("AvancarDialogoGlobal", RpcTarget.AllBuffered);
             }
         }
     }
+
     private void IniciarDialogoLocal(int actorID)
     {
         linhaAtual = 0;
         falando = true;
+
+        Debug.Log($"Diálogo local iniciado pelo jogador {actorID}");
 
         if (actorID == 1)
         {
@@ -122,6 +137,8 @@ public class Dialogo : MonoBehaviourPun
 
         if (linhaAtual < linhasDialogo.Length)
         {
+            Debug.Log($"Avançando para linha {linhaAtual}");
+
             if (actorID == 1)
                 textoDialogo1.text = linhasDialogo[linhaAtual];
             else if (actorID == 2)
@@ -129,6 +146,7 @@ public class Dialogo : MonoBehaviourPun
         }
         else
         {
+            Debug.Log("Finalizando diálogo local");
             FinalizarDialogoLocal();
         }
     }
@@ -139,6 +157,8 @@ public class Dialogo : MonoBehaviourPun
         painelDialogo2.SetActive(false);
         falando = false;
         linhaAtual = 0;
+
+        Debug.Log("Diálogo local finalizado");
     }
 
     [PunRPC]
@@ -152,6 +172,8 @@ public class Dialogo : MonoBehaviourPun
         textoDialogo2.text = linhasDialogo[linhaAtual];
 
         photonViewDoIniciador = PhotonView.Find(actorID);
+
+        Debug.Log($"Diálogo global iniciado por jogador {actorID}");
     }
 
     [PunRPC]
@@ -162,6 +184,7 @@ public class Dialogo : MonoBehaviourPun
         {
             textoDialogo1.text = linhasDialogo[linhaAtual];
             textoDialogo2.text = linhasDialogo[linhaAtual];
+            Debug.Log($"Avançando diálogo global para linha {linhaAtual}");
         }
         else
         {
@@ -169,8 +192,10 @@ public class Dialogo : MonoBehaviourPun
             painelDialogo2.SetActive(false);
             falando = false;
             linhaAtual = 0;
+            Debug.Log("Diálogo global finalizado");
         }
     }
+
     public void MostrarBotao(GameObject jogador)
     {
         jogadorPerto = true;
@@ -179,17 +204,19 @@ public class Dialogo : MonoBehaviourPun
         PhotonView view = jogador.GetComponent<PhotonView>();
         int actorID = view.Owner.ActorNumber;
 
+        Debug.Log($"Jogador {actorID} se aproximou do NPC");
+
         if (actorID == 1)
         {
-            botaoDialogo1?.onClick.RemoveAllListeners();
-            botaoDialogo1?.onClick.AddListener(() => AoClicarNoBotao("PI_MC_1"));
-            botaoDialogo1?.gameObject.SetActive(true);
+            botaoDialogo1.onClick.RemoveAllListeners();
+            botaoDialogo1.onClick.AddListener(() => AoClicarNoBotao("PI_MC_1"));
+            botaoDialogo1.gameObject.SetActive(true);
         }
         else if (actorID == 2)
         {
-            botaoDialogo2?.onClick.RemoveAllListeners();
-            botaoDialogo2?.onClick.AddListener(() => AoClicarNoBotao("PI_MC_2"));
-            botaoDialogo2?.gameObject.SetActive(true);
+            botaoDialogo2.onClick.RemoveAllListeners();
+            botaoDialogo2.onClick.AddListener(() => AoClicarNoBotao("PI_MC_2"));
+            botaoDialogo2.gameObject.SetActive(true);
         }
     }
 
@@ -202,8 +229,7 @@ public class Dialogo : MonoBehaviourPun
         painelDialogo2.SetActive(false);
         falando = false;
         linhaAtual = 0;
-    }
-    
-    
 
+        Debug.Log("Ocultando todos os elementos de diálogo");
+    }
 }
