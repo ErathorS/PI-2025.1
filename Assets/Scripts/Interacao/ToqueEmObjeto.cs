@@ -1,48 +1,66 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
-public class ToqueEmObjeto : MonoBehaviour
+using Photon.Pun;
+
+public class ToqueEmObjeto : MonoBehaviourPun
 {
- public GameObject botaoInteragir; // Botão que aparece quando estiver perto
     private GameObject objetoTocavelAtual;
 
-    void Start()
+    private Button botaoInteragir;
+    private GameObject painelInteracao;
+
+    private void Start()
     {
-        botaoInteragir.SetActive(false);
-        botaoInteragir.GetComponent<Button>().onClick.AddListener(AoClicarBotao);
+        if (!photonView.IsMine) return;
+
+        string tagCanvas = (photonView.Owner.ActorNumber == 1) ? "CanvasP1" : "CanvasP2";
+        GameObject canvas = GameObject.FindGameObjectWithTag(tagCanvas);
+
+        if (canvas != null)
+        {
+            painelInteracao = canvas.transform.Find("BotaoInteragir")?.gameObject;
+            if (painelInteracao != null)
+            {
+                botaoInteragir = painelInteracao.GetComponent<Button>();
+                painelInteracao.SetActive(false);
+                botaoInteragir.onClick.AddListener(InteragirComObjeto);
+            }
+            else
+            {
+                Debug.LogError("Botão de interação não encontrado no Canvas!");
+            }
+        }
     }
 
-    void AoClicarBotao()
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!photonView.IsMine) return;
+
+        if (other.CompareTag("BotaoInterativo"))
+        {
+            objetoTocavelAtual = other.gameObject;
+            painelInteracao?.SetActive(true);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!photonView.IsMine) return;
+
+        if (other.CompareTag("BotaoInterativo") && other.gameObject == objetoTocavelAtual)
+        {
+            objetoTocavelAtual = null;
+            painelInteracao?.SetActive(false);
+        }
+    }
+
+    private void InteragirComObjeto()
     {
         if (objetoTocavelAtual != null)
         {
             objetoTocavelAtual.GetComponent<BotaoInterativo>()?.ExecutarAcao();
-        }
-
-        botaoInteragir.SetActive(false);
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("BotaoInterativo"))
-        {
-            objetoTocavelAtual = other.gameObject;
-            botaoInteragir.SetActive(true);
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("BotaoInterativo"))
-        {
-            if (other.gameObject == objetoTocavelAtual)
-            {
-                botaoInteragir.SetActive(false);
-                objetoTocavelAtual = null;
-            }
+            painelInteracao?.SetActive(false); // opcional: oculta botão após interação
         }
     }
 }
-

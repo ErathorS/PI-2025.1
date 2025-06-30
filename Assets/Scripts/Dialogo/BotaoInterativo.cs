@@ -1,34 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class BotaoInterativo : MonoBehaviour
+public class BotaoInterativo : MonoBehaviourPun
 {
     public GameObject Parada;
     public static bool StateSemaforo = false;
+
     private void Start()
     {
         StateSemaforo = false;
     }
+
     public void ExecutarAcao()
     {
-        //Debug.Log("Ação do objeto interativo executada: " + name);
-        if (gameObject.name == "Semaforo Botao")
-        {
-            switch (StateSemaforo)
-            {
-                case true:
-                    //print("Desligando");
-                    Parada.SetActive(false);
-                    StateSemaforo = false;
-                    break;
-                case false:
-                    //print("ligando");
-                    Parada.SetActive(true);
-                    StateSemaforo = true;
-                    break;
+        photonView.RPC("AlternarSemaforo", RpcTarget.AllBuffered);
+    }
 
-            }
-        }
+    [PunRPC]
+    public void AlternarSemaforo()
+    {
+        StateSemaforo = !StateSemaforo;
+        Parada.SetActive(StateSemaforo);
     }
 }

@@ -33,7 +33,7 @@ public class Controle_da_Camera : MonoBehaviour
             frameVelocity = Vector2.Lerp(frameVelocity, rawFrameVelocity, 1f / smoothing);
             velocity += frameVelocity;
 
-            velocity.y = Mathf.Clamp(velocity.y, -25f, 2f);
+            velocity.y = Mathf.Clamp(velocity.y, -16f, 2f);
             transform.localRotation = Quaternion.AngleAxis(-velocity.y, Vector3.right);
             character.localRotation = Quaternion.Euler(0, initialYRotation + velocity.x, 0);
         }

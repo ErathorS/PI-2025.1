@@ -44,6 +44,7 @@ MonoBehaviour:
   - IniciarDialogoGlobal
   - UpdatePushDirection
   - <Update>g__SetAnimatorBool|18_0
+  - AlternarSemaforo
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
