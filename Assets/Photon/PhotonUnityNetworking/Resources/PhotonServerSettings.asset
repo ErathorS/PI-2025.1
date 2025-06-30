@@ -47,6 +47,7 @@ MonoBehaviour:
   - RequestActivation
   - SetActivationState
   - SyncActivationState
+  - RPC_AtivarObjeto
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
