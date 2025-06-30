@@ -13,6 +13,7 @@ TagManager:
   - Bullet
   - CanvasP1
   - CanvasP2
+  - Box
   layers:
   - Default
   - TransparentFX
@@ -49,4 +50,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 3884284243
     locked: 0
