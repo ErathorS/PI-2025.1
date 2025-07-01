@@ -21,6 +21,7 @@ public class PressurePlate : MonoBehaviourPun
 
     private HashSet<int> playersSobre = new HashSet<int>();
     private bool caixaPresente = false;
+    private bool placaJaAtivada = false; // Para garantir que só conte uma vez
 
     private Renderer rend;
 
@@ -45,6 +46,10 @@ public class PressurePlate : MonoBehaviourPun
         {
             Debug.LogError("Renderer da placa de pressão não encontrado!");
         }
+    }
+    public static class PlacaStatusGlobal
+    {
+        public static int placasAtivas = 0;
     }
 
     void Update()
@@ -104,14 +109,29 @@ public class PressurePlate : MonoBehaviourPun
     {
         Debug.Log("RPC_AtivarObjeto recebido - ativar: " + ativar);
 
-        if (objetoParaAtivar != null)
-            objetoParaAtivar.SetActive(ativar);
-
-        alvoAtual = ativar ? posicaoPressionada : posicaoOriginal;
-
-        if (rend != null)
+        if (ativar && !placaJaAtivada)
         {
-            rend.material.color = ativar ? corAtivada : corDesativada;
+            placaJaAtivada = true;
+            if (rend != null)
+                rend.material.color = corAtivada;
+
+            PlacaStatusGlobal.placasAtivas++;
+
+            if (PlacaStatusGlobal.placasAtivas == 4)
+            {
+                Debug.Log("Todas as 4 placas estão verdes!");
+            }
+        }
+        else if (!placaJaAtivada) // Se não for ativada ainda, atualiza a cor normalmente
+        {
+            if (objetoParaAtivar != null)
+                objetoParaAtivar.SetActive(ativar);
+
+            alvoAtual = ativar ? posicaoPressionada : posicaoOriginal;
+
+            if (rend != null)
+                rend.material.color = ativar ? corAtivada : corDesativada;
         }
     }
+
 }

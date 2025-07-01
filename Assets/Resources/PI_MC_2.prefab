@@ -415,7 +415,6 @@ GameObject:
   - component: {fileID: 1906737301938591647}
   - component: {fileID: 9089333451917019497}
   - component: {fileID: 3443599043846579987}
-  - component: {fileID: 7144811775408349155}
   m_Layer: 0
   m_Name: Camera Player 2
   m_TagString: Untagged
@@ -549,14 +548,6 @@ MonoBehaviour:
   sensitivity: 2
   smoothing: 1.5
   joystickRotation: {fileID: 7313433814515699515}
---- !u!81 &7144811775408349155
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5531169587011865796}
-  m_Enabled: 1
 --- !u!1 &5638130633655606401
 GameObject:
   m_ObjectHideFlags: 0

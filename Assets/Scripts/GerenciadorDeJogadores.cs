@@ -1,47 +1,47 @@
 using UnityEngine;
-using Photon.Pun;
-using Photon.Realtime;
-using UnityEngine.SceneManagement;
+using System.Collections;
 
-public class GerenciadorDeJogadores : MonoBehaviourPunCallbacks
+public class GerenciadorDeJogadores : MonoBehaviour
 {
+    [Header("Referência ao Painel de Espera")]
+    public GameObject painelDeEspera;
+
+    private GameObject player1;
+    private GameObject player2;
+
     void Start()
     {
-        VerificarNumeroJogadores();
+        StartCoroutine(VerificarJogadoresNaCena());
     }
 
-    public override void OnPlayerEnteredRoom(Player newPlayer)
+    private IEnumerator VerificarJogadoresNaCena()
     {
-        Debug.Log($"Jogador entrou na sala: {newPlayer.NickName}");
-        VerificarNumeroJogadores();
-    }
-
-    void VerificarNumeroJogadores()
-    {
-        int quantidade = PhotonNetwork.CurrentRoom.PlayerCount;
-        Debug.Log("Quantidade de jogadores na sala: " + quantidade);
-
-        if (quantidade < 2)
+        while (true)
         {
-            BloquearJogo();
-        }
-        else
-        {
-            DesbloquearJogo();
-        }
-    }
+            player1 = GameObject.Find("PI_MC_1");
+            player2 = GameObject.Find("PI_MC_2");
 
-    void BloquearJogo()
-    {
-        Debug.Log("Aguardando outro jogador para iniciar o jogo...");
-        Time.timeScale = 0f; // Pausa o jogo
-        // Alternativamente, exiba uma tela de espera aqui
-    }
+            if (player1 != null && player2 == null)
+            {
+                // Apenas o Jogador 1 entrou
+                if (painelDeEspera != null)
+                    painelDeEspera.SetActive(true);
 
-    void DesbloquearJogo()
-    {
-        Debug.Log("Dois jogadores conectados. Jogo liberado!");
-        Time.timeScale = 1f;
-        // Feche a tela de espera se estiver usando uma
+                Time.timeScale = 0f;
+            }
+            else if (player1 != null && player2 != null)
+            {
+                // Ambos jogadores estão presentes
+                if (painelDeEspera != null)
+                    painelDeEspera.SetActive(false);
+
+                Time.timeScale = 1f;
+
+                // Finaliza o loop, pois os dois já estão na sala
+                yield break;
+            }
+
+            yield return new WaitForSeconds(0.2f);
+        }
     }
 }

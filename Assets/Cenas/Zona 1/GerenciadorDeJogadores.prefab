@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3035162246400475057}
   - component: {fileID: 3146976765209090088}
+  - component: {fileID: 4182179255226922986}
   m_Layer: 0
   m_Name: GerenciadorDeJogadores
   m_TagString: Untagged
@@ -44,3 +45,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260339ee8ba484942abf486f75156a96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  painelDeEspera: {fileID: 0}
+--- !u!114 &4182179255226922986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8103928168248613076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
