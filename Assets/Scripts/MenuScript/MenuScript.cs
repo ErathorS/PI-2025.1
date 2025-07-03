@@ -14,14 +14,23 @@ public class MenuScript : MonoBehaviour
         
     }
 
-
-    public void Jogar()
+    public void sceneChange(string Where) 
     {
-        SceneManager.LoadScene("Loading");
-    }
-    public void SairJogo()
-    {
-        Application.Quit();
+        switch (Where) 
+        {
+            case "Jogo":
+                SceneManager.LoadScene("Loading");
+                break;
+            case "Credits":
+                SceneManager.LoadScene("Credits");
+                break;
+            case "Sair":
+                Application.Quit();
+                break;
+            case "Tut":
+                SceneManager.LoadScene("Tutorial");
+                break;
+        }
     }
 
     IEnumerator TimeSec(string Cena)
