@@ -28666,6 +28666,18 @@ PrefabInstance:
       propertyPath: dialogoGlobal
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 518007960451841433, guid: 2d7b93edaa776914794682e1b44a0cde, type: 3}
+      propertyPath: painelMontagemP1
+      value: 
+      objectReference: {fileID: 3114417296834192033, guid: 20c2ae482a3529741ae1fa87faf8e8cd, type: 3}
+    - target: {fileID: 518007960451841433, guid: 2d7b93edaa776914794682e1b44a0cde, type: 3}
+      propertyPath: painelMontagemP2
+      value: 
+      objectReference: {fileID: 7409401800855649686, guid: efd6cdd190e76ac4d8958df332f300eb, type: 3}
+    - target: {fileID: 518007960451841433, guid: 2d7b93edaa776914794682e1b44a0cde, type: 3}
+      propertyPath: ativaMontagemAcaraje
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2221028148638086121, guid: 2d7b93edaa776914794682e1b44a0cde, type: 3}
       propertyPath: m_Name
       value: NPC 1
