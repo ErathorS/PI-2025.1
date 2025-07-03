@@ -1,44 +1,82 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+
+[System.Serializable]
+public class QuadroHQ
+{
+    [TextArea(2, 4)]
+    public List<string> falas;
+}
 
 public class Controler_HQ : MonoBehaviour
 {
+    [Header("Componentes Visuais")]
     public GameObject canvas;
-    public int Panel = 1;
-    public GameObject HQ2, HQ3, HQ4, HQ5, HQ6;
+    public TMP_Text falaHQ;
+
+    [Header("Quadros da HQ (ordem importa!)")]
+    public GameObject[] quadrosHQ;
+
+    [Header("Falas por Quadro")]
+    public List<QuadroHQ> falasPorQuadro = new List<QuadroHQ>();
+
+    private int quadroAtual = 0;
+    private int linhaAtual = 0;
 
     void Start()
     {
         canvas.SetActive(true);
+        AtualizarQuadro();
+        AtualizarFala();
     }
-    // Update is called once per frame
+
     void Update()
     {
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
-            Panel++;
+            AvancarDialogo();
         }
+    }
 
-        switch (Panel) 
+    void AvancarDialogo()
+    {
+        var falasDoQuadro = falasPorQuadro[quadroAtual].falas;
+
+        if (linhaAtual + 1 < falasDoQuadro.Count)
         {
-            case 2:
-                HQ2.SetActive(true);
-                break;
-            case 3:
-                HQ3.SetActive(true);
-                break;
-            case 4:
-                HQ4.SetActive(true);
-                break;
-            case 5:
-                HQ5.SetActive(true);
-                break;
-            case 6:
-                HQ6.SetActive(true);
-                canvas.SetActive(false);
-                break;
+            linhaAtual++;
+            AtualizarFala();
         }
+        else
+        {
+            quadroAtual++;
+            linhaAtual = 0;
 
+            if (quadroAtual < quadrosHQ.Length && quadroAtual < falasPorQuadro.Count)
+            {
+                AtualizarQuadro();
+                AtualizarFala();
+            }
+            else
+            {
+                // Fim da HQ
+                falaHQ.text = "";
+                canvas.SetActive(false);
+            }
+        }
+    }
+
+    void AtualizarQuadro()
+    {
+        for (int i = 0; i < quadrosHQ.Length; i++)
+        {
+            quadrosHQ[i].SetActive(i == quadroAtual);
+        }
+    }
+
+    void AtualizarFala()
+    {
+        falaHQ.text = falasPorQuadro[quadroAtual].falas[linhaAtual];
     }
 }
