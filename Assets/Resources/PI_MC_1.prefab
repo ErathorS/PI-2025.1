@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 481480233720539521}
   - component: {fileID: 267188166067252836}
   - component: {fileID: 6629834419181656487}
+  - component: {fileID: 463212405855767023}
   m_Layer: 5
   m_Name: Vatapa
   m_TagString: Untagged
@@ -123,6 +124,18 @@ MonoBehaviour:
   areaAlvo: {fileID: 2016138237808952204}
   nomeIngrediente: Vatapa
   controladorMontagem: {fileID: 7129472234152116021}
+--- !u!225 &463212405855767023
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 283719034886137811}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &618584411346778886
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,6 +148,7 @@ GameObject:
   - component: {fileID: 3010155617119176096}
   - component: {fileID: 4412286223105992649}
   - component: {fileID: 6309468580835923818}
+  - component: {fileID: 970884727994023752}
   m_Layer: 5
   m_Name: Salada
   m_TagString: Untagged
@@ -214,6 +228,18 @@ MonoBehaviour:
   areaAlvo: {fileID: 2016138237808952204}
   nomeIngrediente: Salada
   controladorMontagem: {fileID: 7129472234152116021}
+--- !u!225 &970884727994023752
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 618584411346778886}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1152110425817128468
 GameObject:
   m_ObjectHideFlags: 0
@@ -1079,11 +1105,11 @@ GameObject:
   - component: {fileID: 7129472234152116021}
   m_Layer: 0
   m_Name: PainelMontagem
-  m_TagString: Untagged
+  m_TagString: Acaraje
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7362581382800501077
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1944,7 +1970,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6330056954431322218
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2040,6 +2066,7 @@ GameObject:
   - component: {fileID: 3227125763569888619}
   - component: {fileID: 7509718154880292477}
   - component: {fileID: 1034450370386129829}
+  - component: {fileID: 4868499578970659217}
   m_Layer: 5
   m_Name: Camarao
   m_TagString: Untagged
@@ -2119,6 +2146,18 @@ MonoBehaviour:
   areaAlvo: {fileID: 2016138237808952204}
   nomeIngrediente: Camarao
   controladorMontagem: {fileID: 7129472234152116021}
+--- !u!225 &4868499578970659217
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8597165944209149917}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8787440542649589075
 GameObject:
   m_ObjectHideFlags: 0
