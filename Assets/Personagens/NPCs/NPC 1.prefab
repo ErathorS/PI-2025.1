@@ -537,7 +537,7 @@ GameObject:
   - component: {fileID: 518007960451841433}
   m_Layer: 0
   m_Name: NPC 1
-  m_TagString: Untagged
+  m_TagString: Npc
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -552,11 +552,12 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.24, y: -0.01, z: 0}
-  m_LocalScale: {x: 0.7699999, y: 0.7699999, z: 0.7699999}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2595737129242671750}
   - {fileID: 2538861237241598816}
+  - {fileID: 9037904573176144642}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2434215816903792008
@@ -672,7 +673,13 @@ MonoBehaviour:
   indicadorNPC: {fileID: 0}
   dialogoGlobal: 0
   linhasDialogo:
-  - 
+  - "Jo\xE3o:\nQuando veem a gente aqui, acham que somos pregui\xE7osos. Mas quantos
+    pr\xE9dios de S\xE3o Paulo foram erguidos por nordestino, hein?"
+  - "Jogador:\nVoc\xEA sente que \xE9 retratado com justi\xE7a na m\xEDdia?"
+  - "Jo\xE3o:\nRaramente. Somos sempre os coitados ou os engra\xE7ados. Nunca os
+    protagonistas."
+  - "Jogador (pensativo):\nTalvez a m\xEDdia esteja mais preocupada em vender clich\xEAs
+    do que contar verdades..."
 --- !u!1 &3054011944058272112
 GameObject:
   m_ObjectHideFlags: 0
@@ -1058,3 +1065,81 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5952994745610452419}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &8856239806241801449
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7644388220271835772}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.59
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+      propertyPath: m_Name
+      value: Exclamacao 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+--- !u!4 &9037904573176144642 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+  m_PrefabInstance: {fileID: 8856239806241801449}
+  m_PrefabAsset: {fileID: 0}

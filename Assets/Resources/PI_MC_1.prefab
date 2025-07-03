@@ -338,6 +338,7 @@ GameObject:
   - component: {fileID: 2683227287715514969}
   - component: {fileID: 1217783328149047940}
   - component: {fileID: -1733529114572554094}
+  - component: {fileID: 5707192787156308579}
   m_Layer: 0
   m_Name: PI_MC_1
   m_TagString: Player
@@ -356,7 +357,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0.00000011920929, y: -0.069999576, z: -0.000000041127947}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2374865763544695484}
   - {fileID: 5800490368641188966}
@@ -426,8 +427,8 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2.45
-  m_Radius: 1
+  m_Height: 1.83
+  m_Radius: 0.6
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -456,9 +457,9 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 4
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!114 &1155013124087372032
 MonoBehaviour:
@@ -550,6 +551,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actorID: 1
+--- !u!114 &5707192787156308579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3114417296834192033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 993ba8b120ee4f94a8a0415b50ef333f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3221734707748407686
 GameObject:
   m_ObjectHideFlags: 0
@@ -769,8 +782,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000037748947, y: 0, z: -0, w: 1}
   m_LocalPosition: {x: 0.000000009918212, y: 1.0879167, z: 0.048876476}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3507933239670707898}
   - {fileID: 7875491531762471040}
@@ -1333,7 +1346,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2374865763544695484}
   - component: {fileID: 1720268489280055689}
-  - component: {fileID: 1447668071082623532}
   - component: {fileID: 2504629255034967929}
   - component: {fileID: 4458712763178843472}
   m_Layer: 0
@@ -1352,7 +1364,7 @@ Transform:
   m_GameObject: {fileID: 8229923535672331269}
   serializedVersion: 2
   m_LocalRotation: {x: 0.104512535, y: -0.017356843, z: 0.0018242776, w: 0.99437046}
-  m_LocalPosition: {x: 0.75, y: 2.4, z: -1.935}
+  m_LocalPosition: {x: 0.755, y: 1.787, z: -2.065}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1409,14 +1421,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &1447668071082623532
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8229923535672331269}
-  m_Enabled: 1
 --- !u!114 &2504629255034967929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1714,6 +1718,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6036034515555843038}
     m_Modifications:
+    - target: {fileID: 1856319799758447565, guid: ff7723324cb87a74d88b9efbfe55e072, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1856319799758447565, guid: ff7723324cb87a74d88b9efbfe55e072, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1856319799758447565, guid: ff7723324cb87a74d88b9efbfe55e072, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1856319799758447565, guid: ff7723324cb87a74d88b9efbfe55e072, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ExecutarAcao
+      objectReference: {fileID: 0}
+    - target: {fileID: 1856319799758447565, guid: ff7723324cb87a74d88b9efbfe55e072, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BotaoInterativo, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1856319799758447565, guid: ff7723324cb87a74d88b9efbfe55e072, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 1986514061674809623, guid: ff7723324cb87a74d88b9efbfe55e072, type: 3}
       propertyPath: m_Name
       value: canva do dialogo 1
@@ -1824,7 +1852,7 @@ PrefabInstance:
       objectReference: {fileID: 1720268489280055689}
     - target: {fileID: 8341578478540356218, guid: ff7723324cb87a74d88b9efbfe55e072, type: 3}
       propertyPath: m_Name
-      value: BotaoInteragir1
+      value: BotaoInteragir
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7496616368025357723, guid: ff7723324cb87a74d88b9efbfe55e072, type: 3}

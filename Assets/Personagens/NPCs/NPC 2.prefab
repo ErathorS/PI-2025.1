@@ -793,7 +793,7 @@ GameObject:
   - component: {fileID: 2755968028323320779}
   m_Layer: 0
   m_Name: NPC 2
-  m_TagString: Untagged
+  m_TagString: Npc
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -808,7 +808,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.831, y: -0.009999998, z: 0}
-  m_LocalScale: {x: 0.7699999, y: 0.7699999, z: 0.7699999}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3191836903211955529}
@@ -928,7 +928,13 @@ MonoBehaviour:
   indicadorNPC: {fileID: 0}
   dialogoGlobal: 0
   linhasDialogo:
-  - 
+  - "Dona Cida:\nVoc\xEAs s\xE3o jornalistas? Ent\xE3o escrevam direito: baiano n\xE3o
+    vive s\xF3 de festa. Trabalhamos muito pra manter nossa cultura viva."
+  - "Jogador:\nVoc\xEA poderia compartilhar alguma hist\xF3ria pessoal?"
+  - "Dona Cida:\nQuando meu filho foi estudar em S\xE3o Paulo, disseram que ele s\xF3
+    sabia sambar e que devia saber cozinhar como eu. Ele \xE9 engenheiro, sabia?"
+  - "Jogador (come\xE7a a anotar no caderno):\n\"Isso daria uma \xF3tima mat\xE9ria\u2026
+    nunca pensei nisso desse jeito.\""
 --- !u!1 &7319258849898930189
 GameObject:
   m_ObjectHideFlags: 0

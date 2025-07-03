@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Cenas/PI.unity
     guid: fa2f693395467f349aa2c2735d997281
   - enabled: 1
+    path: Assets/Cenas/PIDavid.unity
+    guid: 4d213e9b409920f4f9f35be8879195fe
+  - enabled: 1
     path: Assets/Cenas/Mapa2.unity
     guid: 51ad30f1ffa79774c9ba58d19865ec95
   m_configObjects:

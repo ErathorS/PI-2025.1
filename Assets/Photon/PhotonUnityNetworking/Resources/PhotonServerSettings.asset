@@ -44,6 +44,11 @@ MonoBehaviour:
   - IniciarDialogoGlobal
   - UpdatePushDirection
   - <Update>g__SetAnimatorBool|18_0
+  - AlternarSemaforo
+  - LiberarParaTodos
+  - RPC_AtivarObjeto
+  - AvisarHQTerminada
+  - VoltarTimeScale
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

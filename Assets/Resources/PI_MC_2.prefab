@@ -431,7 +431,7 @@ Transform:
   m_GameObject: {fileID: 5531169587011865796}
   serializedVersion: 2
   m_LocalRotation: {x: 0.104512535, y: -0.017356843, z: 0.0018242776, w: 0.99437046}
-  m_LocalPosition: {x: 0.75, y: 2.4, z: -1.935}
+  m_LocalPosition: {x: 0.755, y: 1.787, z: -2.065}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -768,8 +768,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6118612105263236987}
   m_Father: {fileID: 6111484376222312914}
@@ -963,6 +963,7 @@ GameObject:
   - component: {fileID: -6582990176213924557}
   - component: {fileID: 6327403789778126731}
   - component: {fileID: -3405735296132808236}
+  - component: {fileID: 7769438023053231035}
   m_Layer: 0
   m_Name: PI_MC_2
   m_TagString: Player
@@ -981,7 +982,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 2.123, y: -0.069999576, z: -0.000000041127947}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 170488856798709683}
   - {fileID: 767317664037552161}
@@ -1055,7 +1056,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 2.45
-  m_Radius: 1
+  m_Radius: 0.6
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -1084,9 +1085,9 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 4
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!114 &-7245769850181266523
 MonoBehaviour:
@@ -1178,6 +1179,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actorID: 2
+--- !u!114 &7769438023053231035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7409401800855649686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 993ba8b120ee4f94a8a0415b50ef333f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7959995300938867705
 GameObject:
   m_ObjectHideFlags: 0
@@ -1356,9 +1369,13 @@ PrefabInstance:
       propertyPath: m_TagString
       value: CanvasP2
       objectReference: {fileID: 0}
+    - target: {fileID: 3790327844192560482, guid: 06b794b7743592b4483f70dbbe1206b7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4403945620983367251, guid: 06b794b7743592b4483f70dbbe1206b7, type: 3}
       propertyPath: m_Name
-      value: BotaoInteragir2
+      value: BotaoInteragir
       objectReference: {fileID: 0}
     - target: {fileID: 4810475027574334307, guid: 06b794b7743592b4483f70dbbe1206b7, type: 3}
       propertyPath: m_Pivot.x
@@ -1456,6 +1473,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1906737301938591647}
+    - target: {fileID: 6796211540900093884, guid: 06b794b7743592b4483f70dbbe1206b7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8576804706184361720, guid: 06b794b7743592b4483f70dbbe1206b7, type: 3}
       propertyPath: m_Name
       value: TMP_Text
