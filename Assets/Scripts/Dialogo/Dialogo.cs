@@ -18,6 +18,11 @@ public class Dialogo : MonoBehaviourPun
     [Header("Configuração")]
     public bool dialogoGlobal = false;
 
+    [Header("Montagem de Acarajé (somente baiana)")]
+    public bool ativaMontagemAcaraje = false;
+    public GameObject painelMontagemP1;
+    public GameObject painelMontagemP2;
+
     [Header("Linhas do Diálogo")]
     [TextArea(2, 4)]
     [SerializeField]
@@ -37,7 +42,6 @@ public class Dialogo : MonoBehaviourPun
 
     void Start()
     {
-        Debug.Log("Iniciando coroutine para configurar canvas...");
         StartCoroutine(EsperarJogadoresEConfigurarCanvas());
     }
 
@@ -64,8 +68,6 @@ public class Dialogo : MonoBehaviourPun
         textoDialogo2 = painelDialogo2.transform.Find("TMP_Text").GetComponent<TMP_Text>();
         botaoDialogo2 = canvas2.transform.Find("BotaoDialogo2").GetComponent<Button>();
 
-        Debug.Log("Canvas e elementos encontrados e configurados");
-
         painelDialogo1?.SetActive(false);
         painelDialogo2?.SetActive(false);
     }
@@ -78,35 +80,21 @@ public class Dialogo : MonoBehaviourPun
 
     private void AoClicarNoBotao(string nomeJogador)
     {
-        Debug.Log($"Botão clicado por {nomeJogador}");
-
         int actorID = PhotonNetwork.LocalPlayer.ActorNumber;
 
         if (!dialogoGlobal)
         {
             if (!falando)
-            {
-                Debug.Log("Iniciando diálogo local");
                 IniciarDialogoLocal(actorID);
-            }
             else
-            {
-                Debug.Log("Avançando diálogo local");
                 AvancarDialogoLocal(actorID);
-            }
         }
         else
         {
             if (!falando)
-            {
-                Debug.Log("Iniciando diálogo global");
                 photonView.RPC("IniciarDialogoGlobal", RpcTarget.AllBuffered, actorID);
-            }
             else if (photonViewDoIniciador != null && photonViewDoIniciador.IsMine)
-            {
-                Debug.Log("Avançando diálogo global");
                 photonView.RPC("AvancarDialogoGlobal", RpcTarget.AllBuffered);
-            }
         }
     }
 
@@ -114,8 +102,6 @@ public class Dialogo : MonoBehaviourPun
     {
         linhaAtual = 0;
         falando = true;
-
-        Debug.Log($"Diálogo local iniciado pelo jogador {actorID}");
 
         if (actorID == 1)
         {
@@ -137,8 +123,6 @@ public class Dialogo : MonoBehaviourPun
 
         if (linhaAtual < linhasDialogo.Length)
         {
-            Debug.Log($"Avançando para linha {linhaAtual}");
-
             if (actorID == 1)
                 textoDialogo1.text = linhasDialogo[linhaAtual];
             else if (actorID == 2)
@@ -146,7 +130,6 @@ public class Dialogo : MonoBehaviourPun
         }
         else
         {
-            Debug.Log("Finalizando diálogo local");
             FinalizarDialogoLocal();
         }
     }
@@ -158,7 +141,19 @@ public class Dialogo : MonoBehaviourPun
         falando = false;
         linhaAtual = 0;
 
-        Debug.Log("Diálogo local finalizado");
+        if (ativaMontagemAcaraje)
+        {
+            int actorID = PhotonNetwork.LocalPlayer.ActorNumber;
+
+            if (actorID == 1 && painelMontagemP1 != null)
+            {
+                painelMontagemP1.SetActive(true);
+            }
+            else if (actorID == 2 && painelMontagemP2 != null)
+            {
+                painelMontagemP2.SetActive(true);
+            }
+        }
     }
 
     [PunRPC]
@@ -172,8 +167,6 @@ public class Dialogo : MonoBehaviourPun
         textoDialogo2.text = linhasDialogo[linhaAtual];
 
         photonViewDoIniciador = PhotonView.Find(actorID);
-
-        Debug.Log($"Diálogo global iniciado por jogador {actorID}");
     }
 
     [PunRPC]
@@ -184,7 +177,6 @@ public class Dialogo : MonoBehaviourPun
         {
             textoDialogo1.text = linhasDialogo[linhaAtual];
             textoDialogo2.text = linhasDialogo[linhaAtual];
-            Debug.Log($"Avançando diálogo global para linha {linhaAtual}");
         }
         else
         {
@@ -192,7 +184,6 @@ public class Dialogo : MonoBehaviourPun
             painelDialogo2.SetActive(false);
             falando = false;
             linhaAtual = 0;
-            Debug.Log("Diálogo global finalizado");
         }
     }
 
@@ -203,8 +194,6 @@ public class Dialogo : MonoBehaviourPun
 
         PhotonView view = jogador.GetComponent<PhotonView>();
         int actorID = view.Owner.ActorNumber;
-
-        Debug.Log($"Jogador {actorID} se aproximou do NPC");
 
         if (actorID == 1)
         {
@@ -229,7 +218,5 @@ public class Dialogo : MonoBehaviourPun
         painelDialogo2.SetActive(false);
         falando = false;
         linhaAtual = 0;
-
-        Debug.Log("Ocultando todos os elementos de diálogo");
     }
 }
