@@ -15,6 +15,7 @@ TagManager:
   - CanvasP2
   - Box
   - Acaraje
+  - Pushable
   layers:
   - Default
   - TransparentFX
