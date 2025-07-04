@@ -3,11 +3,20 @@ using UnityEngine;
 using Photon.Pun;
 
 [RequireComponent(typeof(PhotonView))]
+[RequireComponent(typeof(Rigidbody))]
 public class PushableObject : MonoBehaviourPun
 {
-    public float pushSpeed = 2f;
+    public float pushForce = 5f;
+    private Rigidbody rb;
 
     private Dictionary<int, Vector3> activePushers = new Dictionary<int, Vector3>();
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        rb.isKinematic = false;
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -48,24 +57,20 @@ public class PushableObject : MonoBehaviourPun
         }
     }
 
-    private void Update()
+    void FixedUpdate()
     {
         if (!photonView.IsMine) return;
 
         if (activePushers.Count >= 2)
         {
-            Vector3 combinedDirection = Vector3.zero;
+            List<Vector3> directions = new List<Vector3>(activePushers.Values);
 
-            foreach (var dir in activePushers.Values)
+            // Verifica se as direções são parecidas o suficiente
+            if (Vector3.Angle(directions[0], directions[1]) < 45f)
             {
-                combinedDirection += dir;
-            }
+                Vector3 forceDir = (directions[0] + directions[1]).normalized;
 
-            combinedDirection /= activePushers.Count;
-
-            if (combinedDirection.magnitude > 0.1f)
-            {
-                transform.Translate(combinedDirection.normalized * pushSpeed * Time.deltaTime, Space.World);
+                rb.AddForce(forceDir * pushForce, ForceMode.Force);
             }
         }
     }

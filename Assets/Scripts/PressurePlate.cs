@@ -109,29 +109,29 @@ public class PressurePlate : MonoBehaviourPun
     {
         Debug.Log("RPC_AtivarObjeto recebido - ativar: " + ativar);
 
+        alvoAtual = ativar ? posicaoPressionada : posicaoOriginal;
+
+        if (rend != null)
+            rend.material.color = ativar ? corAtivada : corDesativada;
+
+        if (objetoParaAtivar != null)
+            objetoParaAtivar.SetActive(ativar);
+
+        // Atualiza o status global apenas quando muda de estado
         if (ativar && !placaJaAtivada)
         {
             placaJaAtivada = true;
-            if (rend != null)
-                rend.material.color = corAtivada;
-
             PlacaStatusGlobal.placasAtivas++;
-
-            if (PlacaStatusGlobal.placasAtivas == 4)
-            {
-                Debug.Log("Todas as 4 placas estão verdes!");
-            }
         }
-        else if (!placaJaAtivada) // Se não for ativada ainda, atualiza a cor normalmente
+        else if (!ativar && placaJaAtivada)
         {
-            if (objetoParaAtivar != null)
-                objetoParaAtivar.SetActive(ativar);
+            placaJaAtivada = false;
+            PlacaStatusGlobal.placasAtivas--;
+        }
 
-            alvoAtual = ativar ? posicaoPressionada : posicaoOriginal;
-
-            if (rend != null)
-                rend.material.color = ativar ? corAtivada : corDesativada;
+        if (PlacaStatusGlobal.placasAtivas == 4)
+        {
+            Debug.Log("Todas as 4 placas estão verdes!");
         }
     }
-
 }

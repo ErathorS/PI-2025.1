@@ -31,7 +31,6 @@ public class Player_Move : MonoBehaviourPun
     {
         if (!photonView.IsMine)
         {
-            // Desativa componentes locais em jogadores remotos
             enabled = false;
             if (cameraTransform != null)
                 cameraTransform.gameObject.SetActive(false);
@@ -87,40 +86,68 @@ public class Player_Move : MonoBehaviourPun
     }
 
     private void HandleAnimations()
-    {
-        // Atualiza parâmetros locais - PhotonAnimatorView cuidará da sincronização
-        IsWalking = joystickMovement.Direction.magnitude > 0.1f;
-        animator.SetBool("IsWalking", IsWalking);
+{
+    IsWalking = joystickMovement.Direction.magnitude > 0.1f;
+    animator.SetBool("IsWalking", IsWalking);
 
-        // Detecção de empurrar
-        isPushing = false;
-        if (IsWalking)
+    bool wasPushing = isPushing;
+    isPushing = false;
+
+    if (IsWalking)
+    {
+        // Verifica se está colidindo com uma caixa na direção do movimento
+        Vector3 moveDirection = new Vector3(joystickMovement.Horizontal, 0, joystickMovement.Vertical).normalized;
+        Vector3 rayOrigin = transform.position + Vector3.up * 0.5f;
+        float rayDistance = 1.2f;
+
+        RaycastHit hit;
+        if (Physics.Raycast(rayOrigin, moveDirection, out hit, rayDistance))
         {
-            RaycastHit hit;
-            Vector3 rayOrigin = transform.position + Vector3.up * 0.5f;
-            Vector3 moveDirection = new Vector3(joystickMovement.Horizontal, 0, joystickMovement.Vertical).normalized;
-            
-            if (Physics.Raycast(rayOrigin, moveDirection, out hit, 1.5f))
+            PushableObject_Solo pushable = hit.collider.GetComponent<PushableObject_Solo>();
+            if (pushable != null)
             {
-                PushableObject pushable = hit.collider.GetComponent<PushableObject>();
-                if (pushable != null)
+                isPushing = true;
+                if (!wasPushing)
                 {
-                    isPushing = true;
-                    pushable.photonView.RPC("UpdatePushDirection", RpcTarget.MasterClient,
-                        PhotonNetwork.LocalPlayer.ActorNumber, moveDirection);
+                    pushable.photonView.RPC(
+                        "StartPushing",
+                        RpcTarget.MasterClient,
+                        moveDirection
+                    );
                 }
             }
         }
-
-        animator.SetBool("IsPushing", isPushing);
     }
+
+    // Se parou de empurrar
+    if (wasPushing && !isPushing)
+    {
+        RaycastHit hit;
+        Vector3 moveDirection = new Vector3(joystickMovement.Horizontal, 0, joystickMovement.Vertical).normalized;
+        Vector3 rayOrigin = transform.position + Vector3.up * 0.5f;
+        
+        if (Physics.Raycast(rayOrigin, moveDirection, out hit, 1.5f))
+        {
+            PushableObject_Solo pushable = hit.collider.GetComponent<PushableObject_Solo>();
+            if (pushable != null)
+            {
+                pushable.photonView.RPC(
+                    "StopPushing",
+                    RpcTarget.MasterClient
+                );
+            }
+        }
+    }
+
+    animator.SetBool("IsPushing", isPushing);
+}
 
     public void OnJump()
     {
         if (!photonView.IsMine || !isGrounded) return;
-
         velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
     }
+
     void OnTriggerEnter(Collider other)
     {
         if (!photonView.IsMine) return;

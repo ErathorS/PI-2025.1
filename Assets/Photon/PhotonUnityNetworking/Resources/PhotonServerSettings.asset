@@ -49,6 +49,8 @@ MonoBehaviour:
   - RPC_AtivarObjeto
   - AvisarHQTerminada
   - VoltarTimeScale
+  - StartPushing
+  - StopPushing
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
