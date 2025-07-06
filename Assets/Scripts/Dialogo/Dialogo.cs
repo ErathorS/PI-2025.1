@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class Dialogo : MonoBehaviourPun
 {
@@ -141,19 +142,11 @@ public class Dialogo : MonoBehaviourPun
         falando = false;
         linhaAtual = 0;
 
-        if (ativaMontagemAcaraje)
-        {
-            int actorID = PhotonNetwork.LocalPlayer.ActorNumber;
-
-            if (actorID == 1 && painelMontagemP1 != null)
-            {
-                painelMontagemP1.SetActive(true);
-            }
-            else if (actorID == 2 && painelMontagemP2 != null)
-            {
-                painelMontagemP2.SetActive(true);
-            }
-        }
+           if (CompareTag("Baiana"))
+         {
+               SceneManager.LoadScene("MecanicaAcaraje");
+         }
+        
         FindObjectOfType<EnergyBarController>()?.FalouComNpc();
     }
 

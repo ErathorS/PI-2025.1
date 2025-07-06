@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class EnergyBarController : MonoBehaviour
 {
@@ -32,8 +33,18 @@ public class EnergyBarController : MonoBehaviour
             energiaAtual += velocidadeExtra * Time.deltaTime;
             energiaAtual = Mathf.Clamp(energiaAtual, 0f, barraDeEnergia.maxValue);
             AtualizarBarra();
+
+            // Verifica se está cheia após recarregar
+            if (energiaAtual >= barraDeEnergia.maxValue)
+            {
+                IrParaCenaFinal();
+            }
         }
     }
+        private void IrParaCenaFinal()
+        {
+                    SceneManager.LoadScene("CenaFinal"); 
+        }
 
     public void FalouComNpc()
     {

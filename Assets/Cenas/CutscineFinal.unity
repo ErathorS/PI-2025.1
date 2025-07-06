@@ -811,7 +811,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &829037260
 RectTransform:
   m_ObjectHideFlags: 0
@@ -829,8 +829,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1215, y: -446.87}
-  m_SizeDelta: {x: 247, y: 86.25}
+  m_AnchoredPosition: {x: 1014.6809, y: -454.32745}
+  m_SizeDelta: {x: 250.6382, y: 101.5951}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &829037261
 MonoBehaviour:
@@ -963,41 +963,36 @@ MonoBehaviour:
   - {fileID: 1026466581}
   - {fileID: 227257798}
   - {fileID: 1340122668}
-  - {fileID: 0}
   falasPorQuadro:
   - falas:
-    - "Editora Chefe:\nRicardo, precisamos conversar, A sua \xFAltima mat\xE9ria
-      sobre a comunidade ind\xEDgena... foi um desastre."
-    - "Ricardo:\nEu s\xF3 fiz o meu trabalho. Mostrei os fatos, como sempre"
+    - "Editora\r\nRicardo e Laura\u2026 Voc\xEAs j\xE1 terminaram a mat\xE9ria? A
+      deadline \xE9 at\xE9 amanh\xE3, e espero que voc\xEAs n\xE3o me decepcionem\u2026\r\n"
+    - "Laura\r\n\u2014Calma que j\xE1 terminamos. Entrega Para ela, Ricardo!\r\n"
   - falas:
-    - "Editora Chefe:\nFatos? Voc\xEA distorceu uma cultura inteira com meia d\xFAzia
-      de estereotipos. isso n\xE3o \xE9 jornalismo, \xE9 preconceito "
+    - "Ricardo\r\nT\xE1 T\xE1, n\xE3o precisa ficar toda animada\u2026 Eu at\xE9
+      acho que poderia ser melhor\u2026\r\n"
   - falas:
-    - "Laura:\nA gente j\xE1 falou sobre isso, Ricardo. N\xE3o d\xE1 pra reduzir
-      a complexidade das pessoas a clich\xEAs."
-    - "Ricardo:\nAh, pront... L\xE1 vem a li\xE7\xE3o de moral."
+    - "Editora\r\nRicardo, se essa reportagem for ruim, voc\xEA j\xE1 sabe n\xE9?\r\n"
+    - "Ricardo\r\nEu sei, eu sei, t\xF4 na olho da rua\u2026 Mas eu tenho certeza
+      que voc\xEA vai querer me promover hahaha!\r\n"
   - falas:
-    - "Editora Chefe: Chega! Ou voc\xEA muda, ou est\xE1 fora desse jornal. Temos
-      uma nova miss\xE3o para voc\xEAs dois."
-    - "Ricardo:\nNova miss\xE3o?"
-    - "Editora Chefe:\nEstere\xF3tipos racias e culturais. Uma Investiga\xE7\xE3o!.\nVoc\xEAs
-      v\xE3o a campo, explorar a Mega cidade. Quero reportagens que quebrem os preconceitos,
-      que relevem a verdade por tr\xE1s das  imgens simplistas que o mundo consome."
-    - "Laura:\nS\xE3o Paulo, Rio, Salvador... Uau, parece que vem muita coisa pela
-      frente, hein? Isso vai ser uma aventura e tanto!"
-  - falas:
-    - "Ricardo:\nEnt\xE3o... a Ideia \xE9 que eu vire um ativista agora?"
-    - "Edutira Chefe:\nA ideia \xE9 que voc\xEA se torne um rep\xF3rter melhor. Um
-      ser humano melhor."
-    - 'Editora Chefe:
+    - 'Laura
 
-      ...'
-    - "Editora Chefe:\nSe quer continuar aqui, precisa Entender que o mundo n\xE3o
-      cabe nos seus cliech\xEAs."
+      Quem escreveu a maioria foi ele!
+
+'
+    - "Editora\r\n...Caramba, que \xF3timo trabalho que voc\xEAs fizeram! Vai ser
+      a reportagem principal amanh\xE3! Ricardo, Voc\xEA evoluiu bastante, gostei
+      de ver!\r\n"
   - falas:
-    - "Ricardo:\nT\xE1... vamos nessa."
-    - "Editora Chefe:\nE lembre-se... empatia \xE9 a lente mais poderosa que um jornalista
-      pode ter."
+    - "Laura\r\nAinda bem que n\xE3o vou precisar mais dar uns tapas para voc\xEA
+      aprender!\r\n"
+    - "Ricardo(Olhando para Editora)\r\n...Ser\xE1 que rola uma promo\xE7\xE3-\r\n"
+    - 'Editora
+
+      Ha HA. Boa tentativa.
+
+'
 --- !u!4 &859448648
 Transform:
   m_ObjectHideFlags: 0
@@ -1419,6 +1414,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1480457979}
   m_CullTransparentMesh: 1
+--- !u!1 &1569888179
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1569888181}
+  - component: {fileID: 1569888180}
+  m_Layer: 0
+  m_Name: HQSceneManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1569888180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1569888179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2943e7c995e9b4b4c872029510059937, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controladorHQ: {fileID: 859448647}
+  nomeProximaCena: MenuJogo
+  delayTransicao: 0.06
+--- !u!4 &1569888181
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1569888179}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1014.0529, y: 584.5574, z: -110.79872}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1681183661
 GameObject:
   m_ObjectHideFlags: 0
@@ -1594,3 +1636,4 @@ SceneRoots:
   - {fileID: 1417089459}
   - {fileID: 276639392}
   - {fileID: 859448648}
+  - {fileID: 1569888181}
