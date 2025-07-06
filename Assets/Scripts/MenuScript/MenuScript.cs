@@ -18,7 +18,15 @@ public class MenuScript : MonoBehaviour
     public void Jogar()
     {
         SceneManager.LoadScene("Loading");
+    }public void Tutorial()
+    {
+        SceneManager.LoadScene("Tutorial");
     }
+    public void Credits()
+    {
+         SceneManager.LoadScene("Credits");
+    }
+
     public void SairJogo()
     {
         Application.Quit();

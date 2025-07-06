@@ -51,6 +51,7 @@ MonoBehaviour:
   - VoltarTimeScale
   - StartPushing
   - StopPushing
+  - SyncPlateState
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

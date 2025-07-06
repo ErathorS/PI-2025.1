@@ -21,7 +21,6 @@ public class PressurePlate : MonoBehaviourPun
 
     private HashSet<int> playersSobre = new HashSet<int>();
     private bool caixaPresente = false;
-    private bool placaJaAtivada = false; // Para garantir que só conte uma vez
 
     private Renderer rend;
 
@@ -47,10 +46,6 @@ public class PressurePlate : MonoBehaviourPun
             Debug.LogError("Renderer da placa de pressão não encontrado!");
         }
     }
-    public static class PlacaStatusGlobal
-    {
-        public static int placasAtivas = 0;
-    }
 
     void Update()
     {
@@ -59,6 +54,8 @@ public class PressurePlate : MonoBehaviourPun
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!photonView.IsMine) return;
+
         if (other.CompareTag("Player"))
         {
             PhotonView pv = other.GetComponent<PhotonView>();
@@ -78,6 +75,8 @@ public class PressurePlate : MonoBehaviourPun
 
     private void OnTriggerExit(Collider other)
     {
+        if (!photonView.IsMine) return;
+
         if (other.CompareTag("Player"))
         {
             PhotonView pv = other.GetComponent<PhotonView>();
@@ -109,29 +108,14 @@ public class PressurePlate : MonoBehaviourPun
     {
         Debug.Log("RPC_AtivarObjeto recebido - ativar: " + ativar);
 
-        alvoAtual = ativar ? posicaoPressionada : posicaoOriginal;
-
-        if (rend != null)
-            rend.material.color = ativar ? corAtivada : corDesativada;
-
         if (objetoParaAtivar != null)
             objetoParaAtivar.SetActive(ativar);
 
-        // Atualiza o status global apenas quando muda de estado
-        if (ativar && !placaJaAtivada)
-        {
-            placaJaAtivada = true;
-            PlacaStatusGlobal.placasAtivas++;
-        }
-        else if (!ativar && placaJaAtivada)
-        {
-            placaJaAtivada = false;
-            PlacaStatusGlobal.placasAtivas--;
-        }
+        alvoAtual = ativar ? posicaoPressionada : posicaoOriginal;
 
-        if (PlacaStatusGlobal.placasAtivas == 4)
+        if (rend != null)
         {
-            Debug.Log("Todas as 4 placas estão verdes!");
+            rend.material.color = ativar ? corAtivada : corDesativada;
         }
     }
 }
