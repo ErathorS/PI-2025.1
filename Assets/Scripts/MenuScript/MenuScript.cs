@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,20 +10,21 @@ public class MenuScript : MonoBehaviour
     {
         FadeControler.Fall = true;
         StartCoroutine(TimeSec(Cena));
-        
     }
-
 
     public void Jogar()
     {
         SceneManager.LoadScene("Loading");
-    }public void Tutorial()
+    }
+
+    public void Tutorial()
     {
         SceneManager.LoadScene("Tutorial");
     }
+
     public void Credits()
     {
-         SceneManager.LoadScene("Credits");
+        SceneManager.LoadScene("Credits");
     }
 
     public void SairJogo()

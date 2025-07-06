@@ -43,7 +43,7 @@ public class EnergyBarController : MonoBehaviour
     }
         private void IrParaCenaFinal()
         {
-                    SceneManager.LoadScene("CenaFinal"); 
+                    SceneManager.LoadScene("CutscineFinal"); 
         }
 
     public void FalouComNpc()
