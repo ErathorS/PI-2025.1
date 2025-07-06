@@ -154,6 +154,7 @@ public class Dialogo : MonoBehaviourPun
                 painelMontagemP2.SetActive(true);
             }
         }
+        FindObjectOfType<EnergyBarController>()?.FalouComNpc();
     }
 
     [PunRPC]

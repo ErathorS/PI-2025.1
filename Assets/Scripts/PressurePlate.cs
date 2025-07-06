@@ -8,114 +8,63 @@ public class PressurePlate : MonoBehaviourPun
     public GameObject objetoParaAtivar;
 
     [Header("Cores da placa")]
-    public Color corDesativada = Color.red;
+    public Color corNormal = Color.gray;
     public Color corAtivada = Color.green;
 
-    [Header("Movimento da placa")]
-    public float movimentoAltura = 0.1f;
-    public float velocidadeMovimento = 5f;
-
-    private Vector3 posicaoOriginal;
-    private Vector3 posicaoPressionada;
-    private Vector3 alvoAtual;
-
-    private HashSet<int> playersSobre = new HashSet<int>();
-    private bool caixaPresente = false;
-
     private Renderer rend;
+    private HashSet<int> objetosNaPlaca = new HashSet<int>();
 
     void Start()
     {
-        posicaoOriginal = transform.position;
-        posicaoPressionada = posicaoOriginal - new Vector3(0, movimentoAltura, 0);
-        alvoAtual = posicaoOriginal;
-
         rend = GetComponent<Renderer>();
-        if (rend == null)
-        {
-            rend = GetComponentInChildren<Renderer>();
-            Debug.LogWarning("Renderer não estava no objeto principal, buscando em filhos.");
-        }
-
-        if (rend != null)
-        {
-            rend.material.color = corDesativada;
-        }
-        else
-        {
-            Debug.LogError("Renderer da placa de pressão não encontrado!");
-        }
+        rend.material.color = corNormal;
     }
 
-    void Update()
+    void OnCollisionEnter(Collision collision)
     {
-        transform.position = Vector3.Lerp(transform.position, alvoAtual, Time.deltaTime * velocidadeMovimento);
+        Debug.Log("Está colidino");
+        if (!photonView.IsMine) return;
+
+        GameObject other = collision.gameObject;
+
+        // Verifica se é o personagem (tag "Player")
+        if (other.CompareTag("Player"))
+        {
+            int id = other.GetInstanceID();
+
+            if (!objetosNaPlaca.Contains(id))
+            {
+                objetosNaPlaca.Add(id);
+                VerificarEstadoPlaca();
+            }
+        }
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnCollisionExit(Collision collision)
     {
         if (!photonView.IsMine) return;
 
-        if (other.CompareTag("Player"))
-        {
-            PhotonView pv = other.GetComponent<PhotonView>();
-            if (pv != null && pv.Owner != null)
-            {
-                playersSobre.Add(pv.OwnerActorNr);
-                VerificarAtivacao();
-            }
-        }
-
-        if (other.CompareTag("Box"))
-        {
-            caixaPresente = true;
-            VerificarAtivacao();
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (!photonView.IsMine) return;
+        GameObject other = collision.gameObject;
 
         if (other.CompareTag("Player"))
         {
-            PhotonView pv = other.GetComponent<PhotonView>();
-            if (pv != null && pv.Owner != null)
+            int id = other.GetInstanceID();
+
+            if (objetosNaPlaca.Contains(id))
             {
-                playersSobre.Remove(pv.OwnerActorNr);
-                VerificarAtivacao();
+                objetosNaPlaca.Remove(id);
+                VerificarEstadoPlaca();
             }
         }
-
-        if (other.CompareTag("Box"))
-        {
-            caixaPresente = false;
-            VerificarAtivacao();
-        }
     }
 
-    void VerificarAtivacao()
+    void VerificarEstadoPlaca()
     {
-        bool ativar = playersSobre.Count >= 2 || caixaPresente;
+        bool ativada = objetosNaPlaca.Count > 0;
 
-        Debug.Log("Verificando ativação: " + ativar);
-
-        photonView.RPC("RPC_AtivarObjeto", RpcTarget.AllBuffered, ativar);
-    }
-
-    [PunRPC]
-    void RPC_AtivarObjeto(bool ativar)
-    {
-        Debug.Log("RPC_AtivarObjeto recebido - ativar: " + ativar);
+        rend.material.color = ativada ? corAtivada : corNormal;
 
         if (objetoParaAtivar != null)
-            objetoParaAtivar.SetActive(ativar);
-
-        alvoAtual = ativar ? posicaoPressionada : posicaoOriginal;
-
-        if (rend != null)
-        {
-            rend.material.color = ativar ? corAtivada : corDesativada;
-        }
+            objetoParaAtivar.SetActive(ativada);
     }
 }
