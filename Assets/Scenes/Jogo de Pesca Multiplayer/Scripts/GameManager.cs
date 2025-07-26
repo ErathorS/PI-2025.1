@@ -3,22 +3,21 @@ using UnityEngine;
 
 public class GameManager : NetworkBehaviour
 {
-    public static GameManager Instance; // Singleton do GameManager
+    public static GameManager Instance; 
 
-    // Variável de rede para armazenar a pontuação da equipe
+    // armazena a pontuação da equipe
     public NetworkVariable<int> pontuacaoEquipe = new NetworkVariable<int>(
         0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
     private void Awake()
     {
-        // Configura o singleton
         if (Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
     }
 
-    // Método para adicionar pontuação (só funciona no servidor)
+    // adicionar pontuação que so funciona no Host/server
     public void AdicionarPontuacao(int valor)
     {
         if (IsServer)

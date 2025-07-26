@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class BotaoPescarUI : MonoBehaviour
 {
-    private JogadorPescador meuJogador; // Referência ao jogador local
+    private JogadorPescador meuJogador; 
 
     private void Start()
     {
-        // Encontra o jogador local entre todos os jogadores na cena
+        // identifica o jogador local 
         foreach (var jp in FindObjectsByType<JogadorPescador>(FindObjectsSortMode.None))
         {
             if (jp.IsOwner)
@@ -17,7 +17,7 @@ public class BotaoPescarUI : MonoBehaviour
         }
     }
 
-    // Método chamado pelo botão UI para iniciar a pesca
+    // botão UI para iniciar a pesca
     public void ChamarPescar()
     {
         if (meuJogador != null)

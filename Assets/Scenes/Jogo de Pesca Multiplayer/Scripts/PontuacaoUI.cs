@@ -4,11 +4,11 @@ using Unity.Netcode;
 
 public class PontuacaoUI : MonoBehaviour
 {
-    public TextMeshProUGUI textoPontuacao; // Referência ao texto UI que mostra a pontuação
+    public TextMeshProUGUI textoPontuacao; 
 
     void Start()
     {
-        // Inscreve no evento de mudança de pontuação e atualiza o texto inicial
+        // mudança de pontuação e atualiza o texto inicial
         if (GameManager.Instance != null)
         {
             GameManager.Instance.pontuacaoEquipe.OnValueChanged += AtualizarPontuacao;
@@ -16,7 +16,7 @@ public class PontuacaoUI : MonoBehaviour
         }
     }
 
-    // Método chamado quando a pontuação muda
+    // chamado quando a pontuação muda
     void AtualizarPontuacao(int antes, int depois)
     {
         textoPontuacao.text = "Pontuação: " + depois;
