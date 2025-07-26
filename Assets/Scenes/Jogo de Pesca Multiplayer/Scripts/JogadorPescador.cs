@@ -34,10 +34,10 @@ public class JogadorPescador : NetworkBehaviour
 
         if (sucesso)
         {
-            // Posição à frente do jogador para spawnar o peixe
+            // posição do peixe na rede
             Vector3 pos = client.PlayerObject.transform.position + Vector3.forward;
 
-            // Instancia e spawna o peixe na rede
+            // spawna o peixe na rede
             GameObject peixe = Instantiate(peixePrefab, pos, Quaternion.identity);
             var networkObject = peixe.GetComponent<NetworkObject>();
             networkObject.Spawn();
@@ -49,27 +49,26 @@ public class JogadorPescador : NetworkBehaviour
                 fishScript.AvisarTodos();
             }
 
-            // Notifica todos os clientes sobre o sucesso
+            // notifica todos os clientes sobre o sucesso
             AtualizarClientesClientRpc(true, nomeJogador);
             
             // Adiciona pontuação
-            GameManager.Instance?.AdicionarPontuacao(10);
+            GameManager.Instance.AdicionarPontuacao(10);
         }
         else
         {
-            // Notifica todos os clientes sobre a falha
+            // notifica todos os clientes sobre a falha
             AtualizarClientesClientRpc(false, nomeJogador);
             
-            // Registra a falha no FishSpawnManager (nova linha adicionada)
+            // Registra a falha 
             FishSpawnManager.Instancia.RegistrarFalha();
         }
     }
 
-    // RPC enviado do servidor para todos os clientes com o resultado da pesca
+    // resultado da pesca para clientes
     [ClientRpc]
     private void AtualizarClientesClientRpc(bool sucesso, string nomeJogador)
     {
-        // Mostra a mensagem para todos os clientes
         string mensagem = sucesso ? 
             $"{nomeJogador} pescou um peixe com sucesso! +10 pontos" : 
             $"{nomeJogador} tentou pescar mas não conseguiu...";
