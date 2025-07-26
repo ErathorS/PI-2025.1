@@ -1,7 +1,6 @@
-using UnityEngine;
-using UnityEngine.UI;
-using Unity.Netcode;
 using TMPro;
+using UnityEngine;
+using Unity.Netcode;
 
 public class PontuacaoUI : MonoBehaviour
 {
@@ -9,12 +8,15 @@ public class PontuacaoUI : MonoBehaviour
 
     void Start()
     {
-        GameManager.Instance.pontuacaoEquipe.OnValueChanged += AtualizarUI;
-        AtualizarUI(0, GameManager.Instance.pontuacaoEquipe.Value);
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.pontuacaoEquipe.OnValueChanged += AtualizarPontuacao;
+            AtualizarPontuacao(0, GameManager.Instance.pontuacaoEquipe.Value);
+        }
     }
 
-    void AtualizarUI(int anterior, int atual)
+    void AtualizarPontuacao(int antes, int depois)
     {
-        textoPontuacao.text = "Pontuação: " + atual;
+        textoPontuacao.text = "Pontuação: " + depois;
     }
 }

@@ -10,14 +10,15 @@ public class GameManager : NetworkBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
     }
 
     public void AdicionarPontuacao(int valor)
     {
         if (IsServer)
-        {
             pontuacaoEquipe.Value += valor;
-        }
     }
 }

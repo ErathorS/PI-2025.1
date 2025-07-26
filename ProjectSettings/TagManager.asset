@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - CinemachineTarget
+  - ZonaDePesca
+  - Fish
   layers:
   - Default
   - TransparentFX

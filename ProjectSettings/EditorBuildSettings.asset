@@ -8,6 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Jogo de Pesca Multiplayer/Jogo de Pesca.unity
     guid: bf90df94d9a2eb84fb64f85bb96e789a
+  - enabled: 1
+    path: Assets/Scenes/Jogo de Pesca Multiplayer/Jogo de Pesca Console.unity
+    guid: d657549574c019049b5091d65150b804
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
   m_UseUCBPForAssetBundles: 0
