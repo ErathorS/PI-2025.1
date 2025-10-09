@@ -137,17 +137,38 @@ public class Dialogo : MonoBehaviourPun
 
     private void FinalizarDialogoLocal()
     {
-        painelDialogo1.SetActive(false);
-        painelDialogo2.SetActive(false);
-        falando = false;
-        linhaAtual = 0;
+      painelDialogo1.SetActive(false);
+    painelDialogo2.SetActive(false);
+    falando = false;
+    linhaAtual = 0;
 
-           if (CompareTag("Baiana"))
-         {
-               SceneManager.LoadScene("MecanicaAcaraje");
-         }
-        
+    // Identifica missão pelo nome do NPC
+    string nomeMissao = "";
+
+    if (CompareTag("Baiana"))
+    {
+        nomeMissao = "Fale com a baiana do acarajé";
+        SceneManager.LoadScene("MecanicaAcaraje");
+    }
+    else if (CompareTag("CaixaEmpurravel"))
+    {
+        nomeMissao = "Empurre a caixa até o marcador";
+    }
+    else if (CompareTag("Fruteira"))
+    {
+        nomeMissao = "Colete 3 frutas da praça";
+    }
+
+    // Se a HUD existir na cena, marca a missão como concluída
+    MissaoHUD hud = FindObjectOfType<MissaoHUD>();
+    if (hud != null && nomeMissao != "")
+    {
+        hud.ConcluirMissaoPorDescricao(nomeMissao);
+    }
+
+        // Se você usa a barrinha de energia
         FindObjectOfType<EnergyBarController>()?.FalouComNpc();
+    
     }
 
     [PunRPC]
