@@ -27,7 +27,7 @@ EditorBuildSettings:
     path: Assets/ProjetoOd/Cenas/CutscineFinal.unity
     guid: d61b6bd1b5eb4574790d80e0a954beb3
   - enabled: 1
-    path: Assets/Tacio/Corredor tutorial.unity
+    path: Assets/Tacio/Corredor Tutorial.unity
     guid: 33b181e17e7453a4da82efd8b026354d
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9e7be553448fa2546aea5752021cbcf7, type: 2}
