@@ -82,4 +82,13 @@ public class MovimentacaoIsometrica : MonoBehaviourPun
             anim?.SetBool("IsWalking", false);
         }
     }
+    private void OnTriggerEnter2D(Collider2D other)
+{
+    NPCImportante npc = other.GetComponent<NPCImportante>();
+    if (npc != null)
+    {
+        npc.IniciarDialogo();
+    }
+}
+
 }

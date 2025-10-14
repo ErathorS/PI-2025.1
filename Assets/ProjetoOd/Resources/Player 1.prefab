@@ -1081,7 +1081,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  joystick: {fileID: 8936077559201178607, guid: 40cf9a2e29043ca49b251f7a88151986, type: 3}
+  joystick: {fileID: 0}
   cameraTransform: {fileID: 0}
 --- !u!114 &7892951825213805671
 MonoBehaviour:
