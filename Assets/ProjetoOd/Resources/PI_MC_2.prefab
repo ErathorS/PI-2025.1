@@ -1660,7 +1660,6 @@ GameObject:
   - component: {fileID: 2992115608231237521}
   - component: {fileID: 3185596808339634498}
   - component: {fileID: -7245769850181266523}
-  - component: {fileID: 3982412088806188177}
   - component: {fileID: -6582990176213924557}
   - component: {fileID: 6327403789778126731}
   - component: {fileID: -3405735296132808236}
@@ -1816,26 +1815,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &3982412088806188177
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7409401800855649686}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9841f2cef19f56d4fa56aa785d105b04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walkSpeed: 5
-  runSpeed: 9
-  canRun: 1
-  runningKey: 304
-  jumpHeight: 1.5
-  gravity: -9.81
-  cameraTransform: {fileID: 170488856798709683}
-  joystickMovement: {fileID: 3051029173014479981}
 --- !u!114 &-6582990176213924557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2702,17 +2681,6 @@ PrefabInstance:
       addedObject: {fileID: 1497471329267554654}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 917138c10f00bdc49b501d21359b7e23, type: 3}
---- !u!114 &3051029173014479981 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4816990357032689616, guid: 917138c10f00bdc49b501d21359b7e23, type: 3}
-  m_PrefabInstance: {fileID: 7533974531309542333}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45977bbae16431c46a013576a1aea384, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7313433814515699515 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1004448562165208198, guid: 917138c10f00bdc49b501d21359b7e23, type: 3}

@@ -3,214 +3,130 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
 using System.Collections;
-using UnityEngine.SceneManagement;
 
-public class Dialogo : MonoBehaviourPun
+[RequireComponent(typeof(PhotonView))]
+public class DialogoNPC : MonoBehaviourPun
 {
     [Header("Referências")]
-    public Button botaoDialogo1;
-    public Button botaoDialogo2;
-    public GameObject painelDialogo1;
-    public GameObject painelDialogo2;
-    public TMP_Text textoDialogo1;
-    public TMP_Text textoDialogo2;
     public IndicadorNpc indicadorNPC;
-
-    [Header("Configuração")]
-    public bool dialogoGlobal = false;
-
-    [Header("Montagem de Acarajé (somente baiana)")]
-    public bool ativaMontagemAcaraje = false;
-    public GameObject painelMontagemP1;
-    public GameObject painelMontagemP2;
-
-    [Header("Linhas do Diálogo")]
-    [TextArea(2, 4)]
-    [SerializeField]
-    private string[] linhasDialogo = {
-        "",
-        "Olá, viajante!",
-        "Você está pronto para uma nova aventura?",
-        "Boa sorte no seu caminho!"
-    };
+    [TextArea(2, 4)] public string[] linhasDialogo;
 
     private int linhaAtual = 0;
-    private bool falando = false;
     private bool jogadorPerto = false;
+    private bool dialogoAtivo = false;
 
     private GameObject jogadorAtual;
-    private PhotonView photonViewDoIniciador;
+    private TMP_Text textoDialogo;
+    private GameObject painelDialogo;
+    private Button botaoDialogo;
+    private PhotonView photonViewDoJogador;
 
-    void Start()
+    private void OnTriggerEnter(Collider other)
     {
-        StartCoroutine(EsperarJogadoresEConfigurarCanvas());
-    }
+        if (!other.CompareTag("Player")) return;
 
-    private IEnumerator EsperarJogadoresEConfigurarCanvas()
-    {
-        while (GameObject.FindGameObjectsWithTag("Player").Length < 2)
-            yield return null;
-
-        GameObject canvas1 = null;
-        GameObject canvas2 = null;
-
-        while (canvas1 == null || canvas2 == null)
+        PhotonView pv = other.GetComponent<PhotonView>();
+        if (pv != null && pv.IsMine)
         {
-            canvas1 = GameObject.FindGameObjectWithTag("CanvasP1");
-            canvas2 = GameObject.FindGameObjectWithTag("CanvasP2");
-            yield return null;
+            jogadorPerto = true;
+            jogadorAtual = other.gameObject;
+            photonViewDoJogador = pv;
+            MostrarBotaoDialogo(jogadorAtual, true);
         }
-
-        painelDialogo1 = canvas1.transform.Find("PainelDialogo1").gameObject;
-        textoDialogo1 = painelDialogo1.transform.Find("TMP_Text").GetComponent<TMP_Text>();
-        botaoDialogo1 = canvas1.transform.Find("BotaoDialogo1").GetComponent<Button>();
-
-        painelDialogo2 = canvas2.transform.Find("PainelDialogo2").gameObject;
-        textoDialogo2 = painelDialogo2.transform.Find("TMP_Text").GetComponent<TMP_Text>();
-        botaoDialogo2 = canvas2.transform.Find("BotaoDialogo2").GetComponent<Button>();
-
-        painelDialogo1?.SetActive(false);
-        painelDialogo2?.SetActive(false);
     }
 
-    void OnDestroy()
+    private void OnTriggerExit(Collider other)
     {
-        botaoDialogo1.onClick.RemoveAllListeners();
-        botaoDialogo2.onClick.RemoveAllListeners();
-    }
+        if (!other.CompareTag("Player")) return;
 
-    private void AoClicarNoBotao(string nomeJogador)
-    {
-        int actorID = PhotonNetwork.LocalPlayer.ActorNumber;
-
-        if (!dialogoGlobal)
+        PhotonView pv = other.GetComponent<PhotonView>();
+        if (pv != null && pv.IsMine)
         {
-            if (!falando)
-                IniciarDialogoLocal(actorID);
-            else
-                AvancarDialogoLocal(actorID);
+            jogadorPerto = false;
+            jogadorAtual = null;
+            MostrarBotaoDialogo(other.gameObject, false);
+        }
+    }
+
+    private void MostrarBotaoDialogo(GameObject jogador, bool mostrar)
+    {
+        var ui = jogador.GetComponentInChildren<PlayerUIReferences>();
+        if (ui == null) return;
+
+        ui.botaoDialogo.gameObject.SetActive(mostrar);
+
+        if (mostrar)
+        {
+            ui.botaoDialogo.onClick.RemoveAllListeners();
+            ui.botaoDialogo.onClick.AddListener(() => IniciarDialogo(jogador));
         }
         else
         {
-            if (!falando)
-                photonView.RPC("IniciarDialogoGlobal", RpcTarget.AllBuffered, actorID);
-            else if (photonViewDoIniciador != null && photonViewDoIniciador.IsMine)
-                photonView.RPC("AvancarDialogoGlobal", RpcTarget.AllBuffered);
+            ui.botaoDialogo.onClick.RemoveAllListeners();
         }
     }
 
-    private void IniciarDialogoLocal(int actorID)
+    private void IniciarDialogo(GameObject jogador)
     {
+        if (dialogoAtivo || linhasDialogo.Length == 0) return;
+
+        dialogoAtivo = true;
         linhaAtual = 0;
-        falando = true;
 
-        if (actorID == 1)
-        {
-            painelDialogo1.SetActive(true);
-            textoDialogo1.text = linhasDialogo[linhaAtual];
-        }
-        else if (actorID == 2)
-        {
-            painelDialogo2.SetActive(true);
-            textoDialogo2.text = linhasDialogo[linhaAtual];
-        }
+        var ui = jogador.GetComponentInChildren<PlayerUIReferences>();
+        if (ui == null) return;
 
+        painelDialogo = ui.painelDialogo;
+        textoDialogo = ui.textoDialogo;
+        botaoDialogo = ui.botaoDialogo;
+
+        painelDialogo.SetActive(true);
+        textoDialogo.text = linhasDialogo[linhaAtual];
         indicadorNPC?.MarcarComoConversado();
+
+        StartCoroutine(EsperarToqueParaAvancar());
     }
 
-    private void AvancarDialogoLocal(int actorID)
+    private IEnumerator EsperarToqueParaAvancar()
+    {
+        while (dialogoAtivo)
+        {
+            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+            {
+                AvancarDialogo();
+                yield return new WaitForSeconds(0.2f);
+            }
+            yield return null;
+        }
+    }
+
+    private void AvancarDialogo()
     {
         linhaAtual++;
 
         if (linhaAtual < linhasDialogo.Length)
         {
-            if (actorID == 1)
-                textoDialogo1.text = linhasDialogo[linhaAtual];
-            else if (actorID == 2)
-                textoDialogo2.text = linhasDialogo[linhaAtual];
+            textoDialogo.text = linhasDialogo[linhaAtual];
         }
         else
         {
-            FinalizarDialogoLocal();
+            FinalizarDialogo();
         }
     }
 
-    private void FinalizarDialogoLocal()
+    private void FinalizarDialogo()
     {
-        painelDialogo1.SetActive(false);
-        painelDialogo2.SetActive(false);
-        falando = false;
-        linhaAtual = 0;
+        painelDialogo.SetActive(false);
+        dialogoAtivo = false;
 
-           if (CompareTag("Baiana"))
-         {
-               SceneManager.LoadScene("MecanicaAcaraje");
-         }
-        
-        FindObjectOfType<EnergyBarController>()?.FalouComNpc();
+        // some o indicador para ambos os jogadores
+        photonView.RPC("DesativarIndicadorGlobal", RpcTarget.AllBuffered);
     }
 
     [PunRPC]
-    private void IniciarDialogoGlobal(int actorID)
+    private void DesativarIndicadorGlobal()
     {
-        linhaAtual = 0;
-        falando = true;
-        painelDialogo1.SetActive(true);
-        painelDialogo2.SetActive(true);
-        textoDialogo1.text = linhasDialogo[linhaAtual];
-        textoDialogo2.text = linhasDialogo[linhaAtual];
-
-        photonViewDoIniciador = PhotonView.Find(actorID);
-    }
-
-    [PunRPC]
-    private void AvancarDialogoGlobal()
-    {
-        linhaAtual++;
-        if (linhaAtual < linhasDialogo.Length)
-        {
-            textoDialogo1.text = linhasDialogo[linhaAtual];
-            textoDialogo2.text = linhasDialogo[linhaAtual];
-        }
-        else
-        {
-            painelDialogo1.SetActive(false);
-            painelDialogo2.SetActive(false);
-            falando = false;
-            linhaAtual = 0;
-        }
-    }
-
-    public void MostrarBotao(GameObject jogador)
-    {
-        jogadorPerto = true;
-        jogadorAtual = jogador;
-
-        PhotonView view = jogador.GetComponent<PhotonView>();
-        int actorID = view.Owner.ActorNumber;
-
-        if (actorID == 1)
-        {
-            botaoDialogo1.onClick.RemoveAllListeners();
-            botaoDialogo1.onClick.AddListener(() => AoClicarNoBotao("PI_MC_1"));
-            botaoDialogo1.gameObject.SetActive(true);
-        }
-        else if (actorID == 2)
-        {
-            botaoDialogo2.onClick.RemoveAllListeners();
-            botaoDialogo2.onClick.AddListener(() => AoClicarNoBotao("PI_MC_2"));
-            botaoDialogo2.gameObject.SetActive(true);
-        }
-    }
-
-    public void EsconderTudo()
-    {
-        jogadorPerto = false;
-        botaoDialogo1.gameObject.SetActive(false);
-        botaoDialogo2.gameObject.SetActive(false);
-        painelDialogo1.SetActive(false);
-        painelDialogo2.SetActive(false);
-        falando = false;
-        linhaAtual = 0;
+        if (indicadorNPC != null && indicadorNPC.iconeExclamacao != null)
+            indicadorNPC.iconeExclamacao.SetActive(false);
     }
 }
