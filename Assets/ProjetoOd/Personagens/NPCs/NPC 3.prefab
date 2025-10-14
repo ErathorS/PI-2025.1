@@ -303,7 +303,7 @@ Transform:
   m_Children:
   - {fileID: 3724372649586358172}
   - {fileID: 6586457412050056669}
-  - {fileID: 2853031706852800409}
+  - {fileID: 6603234592140564862}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1123244677213817079
@@ -412,18 +412,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   indicadorNPC: {fileID: 6649693220281678621}
   linhasDialogo:
-  - "Jogador:\nBom dia, Seu Zeca. Podemos conversar um pouco sobre sua hist\xF3ria?"
-  - "Seu Zeca:\nClaro, minha filha. Mas s\xF3 se puderem segurar essa enxada por
-    cinco minutos antes."
-  - "Jogador: (rindo):\nEu sou jornalista, n\xE3o pedreiro..."
-  - "Seu Zeca:\nE eu sou trabalhador, n\xE3o folclore. Mas muita gente s\xF3 me v\xEA
-    como o 'nordestino engra\xE7ado' que veio tentar a sorte."
-  - 'Jogador: (anotando):
-
-    Qual seria a manchete que o senhor gostaria de ver
-    um dia?'
-  - "Seu Zeca:\nNordeste sustenta o pa\xEDs com suor e cultura'. Essa a\xED ningu\xE9m
-    publica."
+  - "Jogador:\nMalik, o que mais te incomoda na forma como a \xC1frica \xE9 retratada
+    na m\xEDdia?"
+  - "Malik:\nQuando dizem 'a \xC1frica', como se fosse um pa\xEDs. Somos 54 pa\xEDses.
+    E n\xE3o somos s\xF3 pobreza e guerra."
+  - "Jogador (rindo):\nEu sou jornalista, n\xE3o pedreiro..."
+  - "Malik (sereno):\nTamb\xE9m temos arranha-c\xE9us, universidades, arte contempor\xE2nea.
+    Mas isso quase ningu\xE9m mostra."
 --- !u!114 &1288147982821764180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -458,7 +453,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f3ca0713e3d5b14eac6a53be1675c87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iconeExclamacao: {fileID: 3230155792167693603}
+  iconeExclamacao: {fileID: 919132149155446097, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+  tipoExclamacao: 1
 --- !u!1 &2999119262473549390
 GameObject:
   m_ObjectHideFlags: 0
@@ -1100,7 +1096,7 @@ Transform:
   - {fileID: 7424267906926903892}
   m_Father: {fileID: 1870704195116456691}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &2311112168866467954
+--- !u!1001 &6641084991870697109
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1166,20 +1162,69 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b545be737c946c54a915734179a6b7cb, type: 3}
       propertyPath: m_Name
-      value: Exclamacao
+      value: Exclamacao 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2258125217435752391}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4717197740693517163}
   m_SourcePrefab: {fileID: 100100000, guid: b545be737c946c54a915734179a6b7cb, type: 3}
---- !u!4 &2853031706852800409 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b545be737c946c54a915734179a6b7cb, type: 3}
-  m_PrefabInstance: {fileID: 2311112168866467954}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &3230155792167693603 stripped
+--- !u!1 &5830110158716158916 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b545be737c946c54a915734179a6b7cb, type: 3}
-  m_PrefabInstance: {fileID: 2311112168866467954}
+  m_PrefabInstance: {fileID: 6641084991870697109}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2258125217435752391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5830110158716158916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 4717197740693517163}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &4717197740693517163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5830110158716158916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
+--- !u!4 &6603234592140564862 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b545be737c946c54a915734179a6b7cb, type: 3}
+  m_PrefabInstance: {fileID: 6641084991870697109}
   m_PrefabAsset: {fileID: 0}

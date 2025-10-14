@@ -48,7 +48,7 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
                 GameObject hqInstance = PhotonNetwork.Instantiate("HQCanvas", Vector3.zero, Quaternion.identity);
                 hqInstance.tag = "HQCanvas";
                 DontDestroyOnLoad(hqInstance);
-                Debug.Log("HQ instanciada em rede pelo Player 1 (MasterClient).");
+                //Debug.Log("HQ instanciada em rede pelo Player 1 (MasterClient).");
             }
         }
 

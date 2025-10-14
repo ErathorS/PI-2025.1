@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7892450336405543624}
   - component: {fileID: 2079290498810943351}
   - component: {fileID: 1010040786832923415}
-  - component: {fileID: 736261109637779910}
   m_Layer: 0
   m_Name: SoundCrontroler
   m_TagString: Untagged
@@ -241,11 +240,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!81 &736261109637779910
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6668708341265248023}
-  m_Enabled: 1

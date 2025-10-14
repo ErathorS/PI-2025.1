@@ -82,7 +82,6 @@ public class DialogoNPC : MonoBehaviourPun
 
         painelDialogo.SetActive(true);
         textoDialogo.text = linhasDialogo[linhaAtual];
-        indicadorNPC?.MarcarComoConversado();
 
         StartCoroutine(EsperarToqueParaAvancar());
     }
@@ -91,11 +90,20 @@ public class DialogoNPC : MonoBehaviourPun
     {
         while (dialogoAtivo)
         {
+            // Toque na tela (mobile)
             if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
             {
                 AvancarDialogo();
                 yield return new WaitForSeconds(0.2f);
             }
+
+            // Clique do mouse (para testes no PC)
+            if (Input.GetMouseButtonDown(0))
+            {
+                AvancarDialogo();
+                yield return new WaitForSeconds(0.2f);
+            }
+
             yield return null;
         }
     }
@@ -119,8 +127,14 @@ public class DialogoNPC : MonoBehaviourPun
         painelDialogo.SetActive(false);
         dialogoAtivo = false;
 
-        // some o indicador para ambos os jogadores
-        photonView.RPC("DesativarIndicadorGlobal", RpcTarget.AllBuffered);
+        // 🔹 Marca como conversado e atualiza progresso se for NPC importante
+        if (indicadorNPC != null)
+        {
+            indicadorNPC.MarcarComoConversado();
+
+            // 🔹 Sincroniza o desaparecimento do indicador para todos os jogadores
+            photonView.RPC("DesativarIndicadorGlobal", RpcTarget.AllBuffered);
+        }
     }
 
     [PunRPC]

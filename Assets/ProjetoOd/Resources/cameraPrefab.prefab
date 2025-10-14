@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3252288660402300627}
   - component: {fileID: 5027835604996651597}
   - component: {fileID: 8246466837139926527}
+  - component: {fileID: 2092971347000918874}
   m_Layer: 0
   m_Name: cameraPrefab
   m_TagString: MainCamera
@@ -146,3 +147,11 @@ MonoBehaviour:
   height: 1.5
   rotationSpeed: 15
   followSpeed: 5
+--- !u!81 &2092971347000918874
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4319147030054182623}
+  m_Enabled: 1
