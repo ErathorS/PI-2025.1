@@ -2443,7 +2443,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _input_create: {fileID: 742652713}
   _input_join: {fileID: 1748808933}
-  _sceneToLoad: Corredor tutorial
+  _sceneToLoad: PI Fase 1
 --- !u!4 &2073136739
 Transform:
   m_ObjectHideFlags: 0

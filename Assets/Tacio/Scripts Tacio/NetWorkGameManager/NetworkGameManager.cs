@@ -39,6 +39,19 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
         // Instancia o jogador
         GameObject player = PhotonNetwork.Instantiate(chosenPrefab.name, spawnPos, spawnRot);
 
+        // Instancia HQ apenas uma vez em rede (todos recebem)
+        if (PhotonNetwork.IsMasterClient)
+        {
+            GameObject hqCanvas = GameObject.FindWithTag("HQCanvas");
+            if (hqCanvas == null)
+            {
+                GameObject hqInstance = PhotonNetwork.Instantiate("HQCanvas", Vector3.zero, Quaternion.identity);
+                hqInstance.tag = "HQCanvas";
+                DontDestroyOnLoad(hqInstance);
+                Debug.Log("HQ instanciada em rede pelo Player 1 (MasterClient).");
+            }
+        }
+
         // Configura o identificador
         PlayerIdentifier identifier = player.GetComponent<PlayerIdentifier>();
         if (identifier != null)

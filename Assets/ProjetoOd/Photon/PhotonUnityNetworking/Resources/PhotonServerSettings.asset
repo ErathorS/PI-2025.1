@@ -53,6 +53,7 @@ MonoBehaviour:
   - StopPushing
   - SyncPlateState
   - ExecutarAlgoZ
+  - AvancarDialogoRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

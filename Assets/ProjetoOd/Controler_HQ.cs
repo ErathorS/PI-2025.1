@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Photon.Pun;
 
 [System.Serializable]
 public class QuadroHQ
@@ -9,7 +10,7 @@ public class QuadroHQ
     public List<string> falas;
 }
 
-public class Controler_HQ : MonoBehaviour
+public class Controler_HQ : MonoBehaviourPun
 {
     [Header("Componentes Visuais")]
     public GameObject canvas;
@@ -23,24 +24,39 @@ public class Controler_HQ : MonoBehaviour
 
     private int quadroAtual = 0;
     private int linhaAtual = 0;
+    private bool terminou = false;
 
     void Start()
     {
-        canvas.SetActive(true);
+        if (canvas != null)
+            canvas.SetActive(true);
+
         AtualizarQuadro();
         AtualizarFala();
     }
 
     void Update()
     {
+        if (!photonView.IsMine && !PhotonNetwork.IsMasterClient) return; // Apenas Player 1 controla
+        if (terminou) return;
+
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
-            AvancarDialogo();
+            photonView.RPC("AvancarDialogoRPC", RpcTarget.AllBuffered);
         }
     }
 
-    void AvancarDialogo()
+    [PunRPC]
+    void AvancarDialogoRPC()
     {
+        if (terminou) return;
+
+        if (quadroAtual >= falasPorQuadro.Count || quadroAtual >= quadrosHQ.Length)
+        {
+            EncerrarHQ();
+            return;
+        }
+
         var falasDoQuadro = falasPorQuadro[quadroAtual].falas;
 
         if (linhaAtual + 1 < falasDoQuadro.Count)
@@ -60,11 +76,19 @@ public class Controler_HQ : MonoBehaviour
             }
             else
             {
-                // Fim da HQ
-                falaHQ.text = "";
-                canvas.SetActive(false);
+                EncerrarHQ();
             }
         }
+    }
+
+    void EncerrarHQ()
+    {
+        terminou = true;
+        falaHQ.text = "";
+        if (canvas != null)
+            canvas.SetActive(false);
+
+        Debug.Log("HQ finalizada e canvas desativado.");
     }
 
     void AtualizarQuadro()
@@ -77,6 +101,9 @@ public class Controler_HQ : MonoBehaviour
 
     void AtualizarFala()
     {
-        falaHQ.text = falasPorQuadro[quadroAtual].falas[linhaAtual];
+        if (quadroAtual < falasPorQuadro.Count && linhaAtual < falasPorQuadro[quadroAtual].falas.Count)
+            falaHQ.text = falasPorQuadro[quadroAtual].falas[linhaAtual];
+        else
+            falaHQ.text = "";
     }
 }
