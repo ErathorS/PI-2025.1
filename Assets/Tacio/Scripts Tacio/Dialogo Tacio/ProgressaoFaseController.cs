@@ -60,6 +60,6 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
     void AtualizarTextoObjetivo()
     {
         if (textoObjetivo != null)
-            textoObjetivo.text = $"NPCs Encontrados {npcsConcluidos}/{npcsImportantesTotais}";
+            textoObjetivo.text = $"Pessoas Entrevistadas {npcsConcluidos}/{npcsImportantesTotais}";
     }
 }
