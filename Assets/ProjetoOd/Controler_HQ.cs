@@ -88,7 +88,7 @@ public class Controler_HQ : MonoBehaviourPun
         if (canvas != null)
             canvas.SetActive(false);
 
-        Debug.Log("HQ finalizada e canvas desativado.");
+        //Debug.Log("HQ finalizada e canvas desativado.");
     }
 
     void AtualizarQuadro()

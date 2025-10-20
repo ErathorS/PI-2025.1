@@ -62,6 +62,8 @@ MonoBehaviour:
   - RPC_MarcarDialogoConcluido
   - AtualizarEstadoPlataforma
   - IniciarTransicaoCena
+  - RequestMasterLoadScene
+  - RPC_ReportPlatePressed
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

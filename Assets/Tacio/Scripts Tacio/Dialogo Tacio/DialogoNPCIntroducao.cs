@@ -8,6 +8,9 @@ namespace FuroDeNoticia
         public bool player1Terminou = false;
         public bool player2Terminou = false;
 
+        [Header("Manager de placas")]
+        public PlatePressureManager plateManager; // arraste na cena
+
         // Chamado pelo sistema de diálogo quando o jogador termina a conversa
         public void MarcarDialogoConcluido(int playerID)
         {
@@ -20,11 +23,27 @@ namespace FuroDeNoticia
             if (playerID == 1) player1Terminou = true;
             else if (playerID == 2) player2Terminou = true;
 
-            // Checa se os dois terminaram
-            if (player1Terminou && player2Terminou)
+            Debug.Log($"[DialogoNPCIntroducao] player1Terminou={player1Terminou} player2Terminou={player2Terminou}");
+
+            if (player1Terminou && player2Terminhou()) // evita typo: use helper
             {
-                FindObjectOfType<ControladorIntroducaoFase1>().LiberarAcesso();
+                // ativa o sistema de placas para aguardar os pressionamentos sincronizados
+                if (plateManager != null)
+                {
+                    plateManager.EnableListening();
+                    Debug.Log("[DialogoNPCIntroducao] Ambos terminaram diálogo - placas ativadas.");
+                }
+                else
+                {
+                    Debug.LogWarning("[DialogoNPCIntroducao] plateManager não atribuído!");
+                }
             }
+        }
+
+        private bool player2Terminhou()
+        {
+            // método auxiliar para evitar conflito com nomes
+            return player2Terminou;
         }
     }
 }

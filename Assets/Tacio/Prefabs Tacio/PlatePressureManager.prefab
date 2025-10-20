@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5628647789220568681
+--- !u!1 &2377690126370057793
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6117003177691234729}
-  - component: {fileID: 3586929879803048255}
+  - component: {fileID: 4765891657717514526}
+  - component: {fileID: 1900838266182818047}
   m_Layer: 0
-  m_Name: NetworkGameManager
+  m_Name: PlatePressureManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6117003177691234729
+--- !u!4 &4765891657717514526
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5628647789220568681}
+  m_GameObject: {fileID: 2377690126370057793}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,22 +32,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3586929879803048255
+--- !u!114 &1900838266182818047
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5628647789220568681}
+  m_GameObject: {fileID: 2377690126370057793}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b523cbfa2ac22b147986c8950965971d, type: 3}
+  m_Script: {fileID: 11500000, guid: 0ef05c7b3e0488b49b22956cf50f0ddc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1Prefab: {fileID: 8234853122058486234, guid: a976d30c6bb14e346804ac23744adae6, type: 3}
-  player2Prefab: {fileID: 2173173706024079051, guid: b612b8b90a64bc14b9f74082157bc917, type: 3}
-  cameraPrefab: {fileID: 4319147030054182623, guid: 898bfa915236c1c498fa28106c9aa1e7, type: 3}
-  playerUiPrefab: {fileID: 1986514061674809623, guid: 56f26fa35f0df874aa51891f01e38f31, type: 3}
-  spawnPoints:
-  - {fileID: 6833577351451949778, guid: e2c00d8bbc7d3844c9d8a7eabfe546bd, type: 3}
-  - {fileID: 1778481836974532131, guid: 6f48f8958a883c74ea1088a488a2bd71, type: 3}
+  proximaCena: PI Fase 1
+  tempoMaxSegundos: 3
+  plateTag: Plataforma
+  expectedPlateCount: 2

@@ -1,53 +1,84 @@
 using UnityEngine;
 using Photon.Pun;
+using System.Collections;
 
-public class PlataformaCoop : MonoBehaviourPun
+public class PlataformaCooperativa : MonoBehaviourPun
 {
-    public bool player1NaPlataforma;
-    public bool player2NaPlataforma;
+    public string proximaCena = "Fase1";
+    private static bool player1NaPlataforma = false;
+    private static bool player2NaPlataforma = false;
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private static Coroutine contagemCoroutine;
+    private static bool carregandoCena = false;
+
+    private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player")) return;
 
         PhotonView pv = other.GetComponent<PhotonView>();
-        if (pv != null)
-        {
-            if (pv.Owner.ActorNumber == 1)
-                player1NaPlataforma = true;
-            else if (pv.Owner.ActorNumber == 2)
-                player2NaPlataforma = true;
+        if (pv == null) return;
 
-            photonView.RPC(nameof(AtualizarEstadoPlataforma), RpcTarget.All, player1NaPlataforma, player2NaPlataforma);
-        }
+        if (pv.Owner.ActorNumber == 1)
+            player1NaPlataforma = true;
+        else if (pv.Owner.ActorNumber == 2)
+            player2NaPlataforma = true;
+
+        TentarIniciarContagem();
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Player")) return;
 
         PhotonView pv = other.GetComponent<PhotonView>();
-        if (pv != null)
-        {
-            if (pv.Owner.ActorNumber == 1)
-                player1NaPlataforma = false;
-            else if (pv.Owner.ActorNumber == 2)
-                player2NaPlataforma = false;
+        if (pv == null) return;
 
-            photonView.RPC(nameof(AtualizarEstadoPlataforma), RpcTarget.All, player1NaPlataforma, player2NaPlataforma);
-        }
+        if (pv.Owner.ActorNumber == 1)
+            player1NaPlataforma = false;
+        else if (pv.Owner.ActorNumber == 2)
+            player2NaPlataforma = false;
     }
 
-    [PunRPC]
-    void AtualizarEstadoPlataforma(bool p1, bool p2)
+    private void TentarIniciarContagem()
     {
-        player1NaPlataforma = p1;
-        player2NaPlataforma = p2;
+        if (carregandoCena) return;
 
         if (player1NaPlataforma && player2NaPlataforma)
         {
-            Debug.Log("✅ Ambos os jogadores estão na plataforma!");
-            // Aqui você pode chamar o PhotonNetwork.LoadLevel("CenaFase1");
+            if (contagemCoroutine == null)
+            {
+                contagemCoroutine = StartCoroutine(IniciarContagem());
+            }
         }
+    }
+
+    private IEnumerator IniciarContagem()
+    {
+        float tempo = 3f;
+        float timer = 0f;
+
+        Debug.Log("[PlataformaCooperativa] Ambos jogadores na plataforma. Iniciando contagem...");
+
+        while (timer < tempo)
+        {
+            if (!(player1NaPlataforma && player2NaPlataforma))
+            {
+                Debug.Log("[PlataformaCooperativa] Um jogador saiu antes do tempo.");
+                contagemCoroutine = null;
+                yield break;
+            }
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        if (PhotonNetwork.IsMasterClient && !carregandoCena)
+        {
+            carregandoCena = true;
+            Debug.Log("[PlataformaCooperativa] 3 segundos completos! Carregando próxima cena...");
+            PhotonNetwork.LoadLevel(proximaCena);
+        }
+
+        contagemCoroutine = null;
     }
 }

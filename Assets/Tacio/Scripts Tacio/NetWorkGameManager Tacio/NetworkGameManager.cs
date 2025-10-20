@@ -1,6 +1,7 @@
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
 
 public class NetworkGameManager : MonoBehaviourPunCallbacks
 {
@@ -13,7 +14,7 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
     [Header("Outros Prefabs")]
     public GameObject cameraPrefab;    // Prefab da câmera (CameraIsometricaComRotacao)
     public GameObject playerUiPrefab;  // Prefab da UI (Canvas + Joystick + Painéis)
-    public Transform[] spawnPoints;    // Pontos de spawn (2 posições)
+    public Transform[] spawnPoints;    // Pontos de spawn (2 posições) - preencha na cena
 
     void Awake()
     {
@@ -43,12 +44,29 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
 
     void SpawnPlayer()
     {
+        // Recarrega os spawn points da nova cena, caso não estejam atribuídos
+        if (spawnPoints == null || spawnPoints.Length == 0)
+        {
+            GameObject[] gos = GameObject.FindGameObjectsWithTag("Spawn");
+            if (gos != null && gos.Length > 0)
+            {
+                spawnPoints = new Transform[gos.Length];
+                for (int i = 0; i < gos.Length; i++)
+                    spawnPoints[i] = gos[i].transform;
+            }
+            else
+            {
+                Debug.LogError("[NetworkGameManager] Nenhum spawn point com tag 'Spawn' encontrado na cena!");
+                return;
+            }
+        }
+
         int actorID = PhotonNetwork.LocalPlayer.ActorNumber;
 
         // Escolhe o prefab de acordo com o jogador
         GameObject chosenPrefab = actorID == 1 ? player1Prefab : player2Prefab;
 
-        // Define spawn point
+        // Define spawn point (usa modulo para evitar overflow)
         int index = (actorID - 1) % spawnPoints.Length;
         Vector3 spawnPos = spawnPoints[index].position;
         Quaternion spawnRot = spawnPoints[index].rotation;
@@ -108,23 +126,42 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
             PlayerUIReferences uiRefs = uiInstance.GetComponent<PlayerUIReferences>();
             if (uiRefs != null)
             {
-                // Aqui você pode inicializar ou conectar os botões, texto e painel
                 uiRefs.painelDialogo.SetActive(false); // Começa fechado
             }
         }
     }
 
+    new void OnEnable()
+    {
+        base.OnEnable();
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    new void OnDisable()
+    {
+        base.OnDisable();
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        hasSpawned = false;
+        // Start() pode ser chamado diretamente ou apenas chamar SpawnPlayer() se já conectado
+        if (PhotonNetwork.IsConnected && !hasSpawned)
+        {
+            // dá pequeno delay para que objetos da cena carreguem (opcional)
+            Invoke(nameof(SpawnPlayer), 0.1f);
+            hasSpawned = true;
+        }
+    }
+
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        Debug.Log($"Player entrou. Count: {PhotonNetwork.CurrentRoom.PlayerCount}");
-        if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
-        {
-            Debug.Log("Dois jogadores conectados - partida pode começar.");
-        }
+        // opcional: tratar
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        Debug.Log($"Player saiu. Count: {PhotonNetwork.CurrentRoom.PlayerCount}");
+        // opcional: tratar
     }
 }

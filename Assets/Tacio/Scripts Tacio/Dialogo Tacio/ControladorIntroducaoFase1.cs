@@ -1,37 +1,24 @@
 using UnityEngine;
-using Photon.Pun;
 
-namespace FuroDeNoticia
+public class ControladorIntroducaoFase1 : MonoBehaviour
 {
-    public class ControladorIntroducaoFase1 : MonoBehaviourPun
+    [Header("Bloqueio antes das plataformas")]
+    public GameObject bloqueioAcesso;
+
+    [Header("Plataformas cooperativas")]
+    public GameObject[] plataformas;
+
+    public void HabilitarPlataformas()
     {
-        [Header("Referências")]
-        public GameObject bloqueio;
-        public PlataformaCoop plataforma1;
-        public PlataformaCoop plataforma2;
-        public string nomeCenaProxima = "Fase1";
+        if (bloqueioAcesso != null)
+            bloqueioAcesso.SetActive(false);
 
-        private bool acessoLiberado = false;
-        private bool faseIniciada = false;
-
-        public void LiberarAcesso()
+        foreach (var plat in plataformas)
         {
-            photonView.RPC("RPC_LiberarAcesso", RpcTarget.All);
+            if (plat != null)
+                plat.SetActive(true);
         }
 
-        [PunRPC]
-        private void RPC_LiberarAcesso()
-        {
-            acessoLiberado = true;
-            if (bloqueio != null)
-                bloqueio.SetActive(false);
-        }
-
-
-        [PunRPC]
-        private void RPC_CarregarProximaCena()
-        {
-            PhotonNetwork.LoadLevel(nomeCenaProxima);
-        }
+        Debug.Log("[ControladorIntroducaoFase1] Plataformas habilitadas!");
     }
 }
