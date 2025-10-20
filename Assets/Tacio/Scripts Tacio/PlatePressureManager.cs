@@ -5,17 +5,16 @@ using System.Collections.Generic;
 public class PlatePressureManager : MonoBehaviourPun
 {
     [Header("Configurações")]
-    public string proximaCena = "Fase1";
     public string plateTag = "Plate"; // Tag das placas
     public int expectedPlateCount = 2; // Quantas placas devem ser pressionadas
-    public GameObject bloqueio; // Arraste o objeto de bloqueio da cena aqui
+    public GameObject bloqueio; // Objeto de bloqueio da cena
 
     private bool listening = false;
     private Dictionary<int, PlateState> plateStates = new Dictionary<int, PlateState>();
 
     void Start()
     {
-        // Procura todas as placas na cena e as registra
+        // Registra as placas existentes
         PlatePressure[] plates = FindObjectsOfType<PlatePressure>();
         foreach (var p in plates)
         {
@@ -34,6 +33,7 @@ public class PlatePressureManager : MonoBehaviourPun
         if (bloqueio != null)
             bloqueio.SetActive(false); // libera a passagem quando começa a escutar
 
+        // reseta o estado das placas
         foreach (var id in new List<int>(plateStates.Keys))
             plateStates[id] = new PlateState();
     }
@@ -55,26 +55,18 @@ public class PlatePressureManager : MonoBehaviourPun
             Debug.Log("[PlatePressureManager] Condição satisfeita — carregando próxima cena!");
             listening = false;
 
+            // 🔹 Transição sincronizada para a Fase 1
             if (PhotonNetwork.IsMasterClient)
-                PhotonNetwork.LoadLevel(proximaCena);
-            else
-                photonView.RPC(nameof(RequestMasterLoadScene), RpcTarget.MasterClient);
+                PhotonNetwork.LoadLevel("PI Fase 1");
         }
-    }
-
-    [PunRPC]
-    void RequestMasterLoadScene()
-    {
-        if (PhotonNetwork.IsMasterClient)
-            PhotonNetwork.LoadLevel(proximaCena);
     }
 
     bool AllPlatesPressed()
     {
         int count = 0;
         foreach (var kv in plateStates)
-            if (kv.Value.pressed) count++;
-
+            if (kv.Value.pressed)
+                count++;
         return count >= expectedPlateCount;
     }
 
@@ -82,8 +74,8 @@ public class PlatePressureManager : MonoBehaviourPun
     {
         HashSet<int> players = new HashSet<int>();
         foreach (var kv in plateStates)
-            if (kv.Value.pressed) players.Add(kv.Value.pressedByActorID);
-
+            if (kv.Value.pressed)
+                players.Add(kv.Value.pressedByActorID);
         return players.Count >= expectedPlateCount;
     }
 

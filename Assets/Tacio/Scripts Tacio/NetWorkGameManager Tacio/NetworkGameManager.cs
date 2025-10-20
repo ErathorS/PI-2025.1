@@ -12,9 +12,9 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
     public GameObject player2Prefab;
 
     [Header("Outros Prefabs")]
-    public GameObject cameraPrefab;    // Prefab da câmera (CameraIsometricaComRotacao)
-    public GameObject playerUiPrefab;  // Prefab da UI (Canvas + Joystick + Painéis)
-    public Transform[] spawnPoints;    // Pontos de spawn (2 posições) - preencha na cena
+    public GameObject cameraPrefab;    
+    public GameObject playerUiPrefab;  
+    public Transform[] spawnPoints;    
 
     void Awake()
     {
@@ -24,7 +24,11 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
             Destroy(gameObject);
             return;
         }
+
         DontDestroyOnLoad(gameObject);
+
+        // 🔹 Garante sincronização automática de cenas
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     void Start()
@@ -35,100 +39,15 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
             return;
         }
 
-        if (!hasSpawned)
-        {
-            SpawnPlayer();
-            hasSpawned = true;
-        }
+        // 🔹 Deixa o Spawn ser controlado apenas pelo OnSceneLoaded
+        string cenaAtual = SceneManager.GetActiveScene().name;
+        Debug.Log($"[NetworkGameManager] Iniciando cena: {cenaAtual}. Aguardando evento OnSceneLoaded para spawn...");
     }
 
-    void SpawnPlayer()
+    private bool CenaEhJogavel(string nomeCena)
     {
-        // Recarrega os spawn points da nova cena, caso não estejam atribuídos
-        if (spawnPoints == null || spawnPoints.Length == 0)
-        {
-            GameObject[] gos = GameObject.FindGameObjectsWithTag("Spawn");
-            if (gos != null && gos.Length > 0)
-            {
-                spawnPoints = new Transform[gos.Length];
-                for (int i = 0; i < gos.Length; i++)
-                    spawnPoints[i] = gos[i].transform;
-            }
-            else
-            {
-                Debug.LogError("[NetworkGameManager] Nenhum spawn point com tag 'Spawn' encontrado na cena!");
-                return;
-            }
-        }
-
-        int actorID = PhotonNetwork.LocalPlayer.ActorNumber;
-
-        // Escolhe o prefab de acordo com o jogador
-        GameObject chosenPrefab = actorID == 1 ? player1Prefab : player2Prefab;
-
-        // Define spawn point (usa modulo para evitar overflow)
-        int index = (actorID - 1) % spawnPoints.Length;
-        Vector3 spawnPos = spawnPoints[index].position;
-        Quaternion spawnRot = spawnPoints[index].rotation;
-
-        // Instancia o jogador em rede
-        GameObject player = PhotonNetwork.Instantiate(chosenPrefab.name, spawnPos, spawnRot);
-
-        // Instancia HQ (apenas uma vez para todos)
-        if (PhotonNetwork.IsMasterClient)
-        {
-            if (GameObject.FindWithTag("HQCanvas") == null)
-            {
-                GameObject hqInstance = PhotonNetwork.Instantiate("HQCanvas", Vector3.zero, Quaternion.identity);
-                hqInstance.tag = "HQCanvas";
-                DontDestroyOnLoad(hqInstance);
-            }
-        }
-
-        // Configura o identificador
-        PlayerIdentifier identifier = player.GetComponent<PlayerIdentifier>();
-        if (identifier != null)
-            identifier.actorID = actorID;
-
-        // Apenas o dono local instancia sua UI e câmera
-        PhotonView pv = player.GetComponent<PhotonView>();
-        if (pv != null && pv.IsMine)
-        {
-            // 1) Instancia UI local
-            GameObject uiInstance = Instantiate(playerUiPrefab);
-            DontDestroyOnLoad(uiInstance);
-
-            // 2) Ajusta a tag do Canvas para cada jogador
-            Canvas canvas = uiInstance.GetComponentInChildren<Canvas>();
-            if (canvas != null)
-                canvas.gameObject.tag = actorID == 1 ? "CanvasP1" : "CanvasP2";
-
-            // 3) Vincula joystick ao script de movimentação
-            MovimentacaoIsometrica mov = player.GetComponent<MovimentacaoIsometrica>();
-            if (mov != null)
-            {
-                FixedJoystick joystick = uiInstance.GetComponentInChildren<FixedJoystick>();
-                if (joystick != null)
-                    mov.joystick = joystick;
-            }
-
-            // 4) Instancia a câmera e define o alvo
-            GameObject cam = Instantiate(cameraPrefab);
-            CameraIsometricaComRotacao camScript = cam.GetComponent<CameraIsometricaComRotacao>();
-            if (camScript != null)
-            {
-                camScript.player = player.transform;
-                if (mov != null)
-                    mov.cameraTransform = camScript.transform;
-            }
-
-            // 5) Vincula referências de diálogo
-            PlayerUIReferences uiRefs = uiInstance.GetComponent<PlayerUIReferences>();
-            if (uiRefs != null)
-            {
-                uiRefs.painelDialogo.SetActive(false); // Começa fechado
-            }
-        }
+        // Liste aqui as cenas onde os jogadores devem ser instanciados
+        return nomeCena == "Cena de Introducao" || nomeCena == "PI Fase 1";
     }
 
     new void OnEnable()
@@ -145,23 +64,112 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        hasSpawned = false;
-        // Start() pode ser chamado diretamente ou apenas chamar SpawnPlayer() se já conectado
-        if (PhotonNetwork.IsConnected && !hasSpawned)
+        string nomeCena = scene.name;
+
+        if (CenaEhJogavel(nomeCena))
         {
-            // dá pequeno delay para que objetos da cena carreguem (opcional)
-            Invoke(nameof(SpawnPlayer), 0.1f);
-            hasSpawned = true;
+            Debug.Log($"[NetworkGameManager] Cena jogável carregada: {nomeCena}");
+            hasSpawned = false;
+
+            // Pequeno delay pra garantir que tudo foi carregado
+            Invoke(nameof(SpawnPlayer), 0.3f);
+        }
+        else
+        {
+            Debug.Log($"[NetworkGameManager] Cena '{nomeCena}' não é jogável — sem spawn.");
         }
     }
 
-    public override void OnPlayerEnteredRoom(Player newPlayer)
+    void SpawnPlayer()
     {
-        // opcional: tratar
+        if (hasSpawned)
+        {
+            Debug.LogWarning("[NetworkGameManager] Spawn ignorado — já executado nesta cena.");
+            return;
+        }
+
+        // 🔹 Garante que os spawn points usados sejam sempre os da cena atual
+        GameObject[] gos = GameObject.FindGameObjectsWithTag("Spawn");
+        if (gos != null && gos.Length > 0)
+        {
+            spawnPoints = new Transform[gos.Length];
+            for (int i = 0; i < gos.Length; i++)
+                spawnPoints[i] = gos[i].transform;
+        }
+        else
+        {
+            Debug.LogError("[NetworkGameManager] Nenhum spawn point com tag 'Spawn' encontrado na cena!");
+            return;
+        }
+
+        int actorID = PhotonNetwork.LocalPlayer.ActorNumber;
+        GameObject chosenPrefab = actorID == 1 ? player1Prefab : player2Prefab;
+
+        int index = (actorID - 1) % spawnPoints.Length;
+        Vector3 spawnPos = spawnPoints[index].position;
+        Quaternion spawnRot = spawnPoints[index].rotation;
+
+        // Instancia o jogador em rede
+        GameObject player = PhotonNetwork.Instantiate(chosenPrefab.name, spawnPos, spawnRot);
+
+        // Marca o identificador do jogador
+        PlayerIdentifier identifier = player.GetComponent<PlayerIdentifier>();
+        if (identifier != null)
+            identifier.actorID = actorID;
+
+        // Instancia UI e câmera apenas para o dono local
+        PhotonView pv = player.GetComponent<PhotonView>();
+        if (pv != null && pv.IsMine)
+        {
+            // 🔹 Instancia a UI local
+            GameObject uiInstance = Instantiate(playerUiPrefab);
+            DontDestroyOnLoad(uiInstance);
+
+            // Ajusta tag do Canvas (CanvasP1 / CanvasP2)
+            Canvas canvas = uiInstance.GetComponentInChildren<Canvas>();
+            if (canvas != null)
+                canvas.gameObject.tag = actorID == 1 ? "CanvasP1" : "CanvasP2";
+
+            // Vincula joystick e câmera ao novo player
+            MovimentacaoIsometrica mov = player.GetComponent<MovimentacaoIsometrica>();
+            if (mov != null)
+            {
+                FixedJoystick joystick = uiInstance.GetComponentInChildren<FixedJoystick>();
+                if (joystick == null)
+                    joystick = FindObjectOfType<FixedJoystick>(); // busca caso o prefab não tenha
+
+                if (joystick != null)
+                {
+                    mov.joystick = joystick;
+                    Debug.Log($"[NetworkGameManager] Joystick vinculado ao Player {actorID}");
+                }
+                else
+                {
+                    Debug.LogWarning("[NetworkGameManager] Nenhum joystick encontrado na cena!");
+                }
+            }
+
+            // Instancia câmera e define o alvo
+            GameObject cam = Instantiate(cameraPrefab);
+            CameraIsometricaComRotacao camScript = cam.GetComponent<CameraIsometricaComRotacao>();
+            if (camScript != null)
+            {
+                camScript.player = player.transform;
+                if (mov != null)
+                    mov.cameraTransform = camScript.transform;
+            }
+
+            // Desativa painel de diálogo no início
+            PlayerUIReferences uiRefs = uiInstance.GetComponent<PlayerUIReferences>();
+            if (uiRefs != null)
+                uiRefs.painelDialogo.SetActive(false);
+        }
+
+        hasSpawned = true;
+
+        Debug.Log($"[NetworkGameManager] Player {actorID} spawnado com sucesso na cena {SceneManager.GetActiveScene().name}");
     }
 
-    public override void OnPlayerLeftRoom(Player otherPlayer)
-    {
-        // opcional: tratar
-    }
+    public override void OnPlayerEnteredRoom(Player newPlayer) { }
+    public override void OnPlayerLeftRoom(Player otherPlayer) { }
 }

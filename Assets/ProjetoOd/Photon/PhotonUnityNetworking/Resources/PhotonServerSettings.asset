@@ -64,6 +64,7 @@ MonoBehaviour:
   - IniciarTransicaoCena
   - RequestMasterLoadScene
   - RPC_ReportPlatePressed
+  - RPC_LoadSceneAll
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
