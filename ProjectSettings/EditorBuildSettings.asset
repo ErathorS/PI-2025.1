@@ -24,7 +24,7 @@ EditorBuildSettings:
     path: Assets/ProjetoOd/Cenas/CutscineFinal.unity
     guid: d61b6bd1b5eb4574790d80e0a954beb3
   - enabled: 1
-    path: Assets/Tacio/Cenas Tacio/Corredor Tutorial.unity
+    path: Assets/Tacio/Cenas Tacio/Cena de Introducao.unity
     guid: 33b181e17e7453a4da82efd8b026354d
   - enabled: 1
     path: Assets/Tacio/Cenas Tacio/PI Fase 1.unity

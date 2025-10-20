@@ -57,6 +57,11 @@ MonoBehaviour:
   - DesativarIndicadorGlobal
   - RPC_AtualizarProgresso
   - RPC_FaseConcluida
+  - RPC_CarregarProximaCena
+  - RPC_LiberarAcesso
+  - RPC_MarcarDialogoConcluido
+  - AtualizarEstadoPlataforma
+  - IniciarTransicaoCena
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

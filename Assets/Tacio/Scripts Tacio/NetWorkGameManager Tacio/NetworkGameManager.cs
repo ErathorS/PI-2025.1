@@ -4,14 +4,27 @@ using Photon.Realtime;
 
 public class NetworkGameManager : MonoBehaviourPunCallbacks
 {
+    private bool hasSpawned = false;
+
     [Header("Prefabs dos Jogadores")]
-    public GameObject player1Prefab;   // Aparência do Player 1
-    public GameObject player2Prefab;   // Aparência do Player 2
+    public GameObject player1Prefab;
+    public GameObject player2Prefab;
 
     [Header("Outros Prefabs")]
     public GameObject cameraPrefab;    // Prefab da câmera (CameraIsometricaComRotacao)
-    public GameObject playerUiPrefab;  // Prefab da UI (Canvas + Joystick + painéis)
+    public GameObject playerUiPrefab;  // Prefab da UI (Canvas + Joystick + Painéis)
     public Transform[] spawnPoints;    // Pontos de spawn (2 posições)
+
+    void Awake()
+    {
+        // Evita múltiplas instâncias do GameManager
+        if (FindObjectsOfType<NetworkGameManager>().Length > 1)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        DontDestroyOnLoad(gameObject);
+    }
 
     void Start()
     {
@@ -21,7 +34,11 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
             return;
         }
 
-        SpawnPlayer();
+        if (!hasSpawned)
+        {
+            SpawnPlayer();
+            hasSpawned = true;
+        }
     }
 
     void SpawnPlayer()
@@ -36,19 +53,17 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
         Vector3 spawnPos = spawnPoints[index].position;
         Quaternion spawnRot = spawnPoints[index].rotation;
 
-        // Instancia o jogador
+        // Instancia o jogador em rede
         GameObject player = PhotonNetwork.Instantiate(chosenPrefab.name, spawnPos, spawnRot);
 
-        // Instancia HQ apenas uma vez em rede (todos recebem)
+        // Instancia HQ (apenas uma vez para todos)
         if (PhotonNetwork.IsMasterClient)
         {
-            GameObject hqCanvas = GameObject.FindWithTag("HQCanvas");
-            if (hqCanvas == null)
+            if (GameObject.FindWithTag("HQCanvas") == null)
             {
                 GameObject hqInstance = PhotonNetwork.Instantiate("HQCanvas", Vector3.zero, Quaternion.identity);
                 hqInstance.tag = "HQCanvas";
                 DontDestroyOnLoad(hqInstance);
-                //Debug.Log("HQ instanciada em rede pelo Player 1 (MasterClient).");
             }
         }
 
@@ -61,36 +76,40 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
         PhotonView pv = player.GetComponent<PhotonView>();
         if (pv != null && pv.IsMine)
         {
-            // Instancia UI local
-            GameObject ui = Instantiate(playerUiPrefab);
+            // 1) Instancia UI local
+            GameObject uiInstance = Instantiate(playerUiPrefab);
+            DontDestroyOnLoad(uiInstance);
 
-            // Define a tag do Canvas conforme o jogador
-            Canvas canvas = ui.GetComponentInChildren<Canvas>();
+            // 2) Ajusta a tag do Canvas para cada jogador
+            Canvas canvas = uiInstance.GetComponentInChildren<Canvas>();
             if (canvas != null)
-            {
-                string tagName = actorID == 1 ? "CanvasP1" : "CanvasP2";
-                canvas.gameObject.tag = tagName;
-            }
+                canvas.gameObject.tag = actorID == 1 ? "CanvasP1" : "CanvasP2";
 
-            // Vincula joystick ao script de movimentação
-            var mov = player.GetComponent<MovimentacaoIsometrica>();
+            // 3) Vincula joystick ao script de movimentação
+            MovimentacaoIsometrica mov = player.GetComponent<MovimentacaoIsometrica>();
             if (mov != null)
             {
-                FixedJoystick joystick = ui.GetComponentInChildren<FixedJoystick>();
+                FixedJoystick joystick = uiInstance.GetComponentInChildren<FixedJoystick>();
                 if (joystick != null)
                     mov.joystick = joystick;
             }
 
-            // Instancia a câmera e define o alvo
+            // 4) Instancia a câmera e define o alvo
             GameObject cam = Instantiate(cameraPrefab);
             CameraIsometricaComRotacao camScript = cam.GetComponent<CameraIsometricaComRotacao>();
-
             if (camScript != null)
             {
                 camScript.player = player.transform;
-                // Vincula referência da câmera ao script de movimento
                 if (mov != null)
                     mov.cameraTransform = camScript.transform;
+            }
+
+            // 5) Vincula referências de diálogo
+            PlayerUIReferences uiRefs = uiInstance.GetComponent<PlayerUIReferences>();
+            if (uiRefs != null)
+            {
+                // Aqui você pode inicializar ou conectar os botões, texto e painel
+                uiRefs.painelDialogo.SetActive(false); // Começa fechado
             }
         }
     }
