@@ -1,21 +1,45 @@
 using UnityEngine;
 using Photon.Pun;
 
-public class PlayerUIController : MonoBehaviour
+public class PlayerUIController : MonoBehaviourPun
 {
+    [Header("Referências de UI")]
     public FixedJoystick joystick;
     public Canvas rootCanvas;
 
     void Awake()
     {
+        if (FindObjectsOfType<PlayerUIController>().Length > 1)
+        {
+            Destroy(gameObject);
+            return;
+        }   
         if (rootCanvas == null)
             rootCanvas = GetComponentInChildren<Canvas>();
 
-        // Marca o canvas como "CanvasP1" ou "CanvasP2" se ainda não estiver
-        if (rootCanvas != null && rootCanvas.gameObject.tag != "CanvasP1" && rootCanvas.gameObject.tag != "CanvasP2")
+        // 🔹 Garante que apenas o jogador local tenha a UI ativa
+        if (rootCanvas != null)
         {
-            int actor = PhotonNetwork.LocalPlayer.ActorNumber;
-            rootCanvas.gameObject.tag = actor == 1 ? "CanvasP1" : "CanvasP2";
+            if (photonView.IsMine)
+            {
+                rootCanvas.enabled = true;
+                if (joystick != null)
+                {
+                    joystick.gameObject.SetActive(true);
+                    Debug.Log($"[PlayerUIController] Joystick ativado para jogador local");
+                }
+            }
+            else
+            {
+                rootCanvas.enabled = false;
+                if (joystick != null)
+                    joystick.gameObject.SetActive(false);
+            }
         }
+    }
+
+    public FixedJoystick GetJoystick()
+    {
+        return joystick;
     }
 }

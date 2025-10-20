@@ -21,7 +21,8 @@ TagManager:
   - Baiana
   - HQCanvas
   - Plate
-  - Spawn
+  - Spawn 1
+  - Spawn 2
   layers:
   - Default
   - TransparentFX
