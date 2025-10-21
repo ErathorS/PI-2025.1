@@ -476,7 +476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c220ee57f51cf440a92374faa7f557b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  barraDeEnergia: {fileID: 5930474110888502804}
+  barraDeEnergia: {fileID: 0}
   totalNpcs: 5
   incrementoPorNpc: 1
   velocidadeExtra: 0.5
@@ -589,8 +589,6 @@ GameObject:
   - component: {fileID: 3563828027278559568}
   - component: {fileID: 530208613624892370}
   - component: {fileID: 6669084975844557883}
-  - component: {fileID: 1155013124087372032}
-  - component: {fileID: 2295594847836595525}
   - component: {fileID: 2683227287715514969}
   - component: {fileID: 1217783328149047940}
   - component: {fileID: -1733529114572554094}
@@ -722,50 +720,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0.06, y: 1.28, z: 0}
---- !u!114 &1155013124087372032
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3114417296834192033}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 0
-  ObservedComponents:
-  - {fileID: 1217783328149047940}
-  - {fileID: -2638233438867844539}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
---- !u!114 &2295594847836595525
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3114417296834192033}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9841f2cef19f56d4fa56aa785d105b04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walkSpeed: 5
-  runSpeed: 9
-  canRun: 1
-  runningKey: 304
-  jumpHeight: 1.5
-  gravity: -9.81
-  cameraTransform: {fileID: 2374865763544695484}
-  joystickMovement: {fileID: 8991446172862053951}
 --- !u!114 &2683227287715514969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2003,7 +1957,7 @@ MonoBehaviour:
   character: {fileID: 6036034515555843038}
   sensitivity: 2
   smoothing: 1.5
-  joystickRotation: {fileID: 3525289664588834588}
+  joystickRotation: {fileID: 0}
 --- !u!1 &8281348372952022289
 GameObject:
   m_ObjectHideFlags: 0
@@ -2383,44 +2337,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b22c17edee5fc5147b1b93c170143d7a, type: 3}
---- !u!114 &3525289664588834588 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1144277280072327555, guid: b22c17edee5fc5147b1b93c170143d7a, type: 3}
-  m_PrefabInstance: {fileID: 4543307777101956767}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45977bbae16431c46a013576a1aea384, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5930474110888502804 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7872385136401473675, guid: b22c17edee5fc5147b1b93c170143d7a, type: 3}
-  m_PrefabInstance: {fileID: 4543307777101956767}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &6233360255348806493 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7605535760421492162, guid: b22c17edee5fc5147b1b93c170143d7a, type: 3}
   m_PrefabInstance: {fileID: 4543307777101956767}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8991446172862053951 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4883339048121432224, guid: b22c17edee5fc5147b1b93c170143d7a, type: 3}
-  m_PrefabInstance: {fileID: 4543307777101956767}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45977bbae16431c46a013576a1aea384, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &8071524310425764640
 PrefabInstance:
   m_ObjectHideFlags: 0

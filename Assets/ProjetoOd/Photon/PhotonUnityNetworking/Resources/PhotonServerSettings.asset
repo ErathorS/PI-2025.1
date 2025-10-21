@@ -53,6 +53,10 @@ MonoBehaviour:
   - StopPushing
   - SyncPlateState
   - ExecutarAlgoZ
+  - AvancarDialogoRPC
+  - DesativarIndicadorGlobal
+  - RPC_AtualizarProgresso
+  - RPC_FaseConcluida
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
