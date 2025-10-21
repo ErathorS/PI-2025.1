@@ -65,6 +65,9 @@ MonoBehaviour:
   - RequestMasterLoadScene
   - RPC_ReportPlatePressed
   - RPC_LoadSceneAll
+  - RPC_AtualizarProgressoJornal
+  - RPC_AtualizarProgressoNPC
+  - RPC_ColetarJornal
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
