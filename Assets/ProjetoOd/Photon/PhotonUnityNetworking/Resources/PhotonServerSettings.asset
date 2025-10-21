@@ -68,6 +68,10 @@ MonoBehaviour:
   - RPC_AtualizarProgressoJornal
   - RPC_AtualizarProgressoNPC
   - RPC_ColetarJornal
+  - RPC_AtivarLugar
+  - RPC_AtualizarProgressoLugar
+  - RPC_ReportLugarVisitado
+  - RPC_DestruirJornal
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
