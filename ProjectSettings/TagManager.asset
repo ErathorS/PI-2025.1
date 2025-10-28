@@ -20,6 +20,11 @@ TagManager:
   - Salada
   - Baiana
   - HQCanvas
+  - Plate
+  - Spawn 1
+  - Spawn 2
+  - Spawn
+  - Jornal
   layers:
   - Default
   - TransparentFX

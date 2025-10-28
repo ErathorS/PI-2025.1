@@ -57,6 +57,22 @@ MonoBehaviour:
   - DesativarIndicadorGlobal
   - RPC_AtualizarProgresso
   - RPC_FaseConcluida
+  - RPC_CarregarProximaCena
+  - RPC_LiberarAcesso
+  - RPC_MarcarDialogoConcluido
+  - AtualizarEstadoPlataforma
+  - IniciarTransicaoCena
+  - RequestMasterLoadScene
+  - RPC_ReportPlatePressed
+  - RPC_LoadSceneAll
+  - RPC_AtualizarProgressoJornal
+  - RPC_AtualizarProgressoNPC
+  - RPC_ColetarJornal
+  - RPC_AtivarLugar
+  - RPC_AtualizarProgressoLugar
+  - RPC_ReportLugarVisitado
+  - RPC_DestruirJornal
+  - RPC_MarcarLugarCompleto_Global
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

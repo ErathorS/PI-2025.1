@@ -49,5 +49,5 @@ MonoBehaviour:
   cameraPrefab: {fileID: 4319147030054182623, guid: 898bfa915236c1c498fa28106c9aa1e7, type: 3}
   playerUiPrefab: {fileID: 1986514061674809623, guid: 56f26fa35f0df874aa51891f01e38f31, type: 3}
   spawnPoints:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 6833577351451949778, guid: e2c00d8bbc7d3844c9d8a7eabfe546bd, type: 3}
+  - {fileID: 1778481836974532131, guid: 6f48f8958a883c74ea1088a488a2bd71, type: 3}
