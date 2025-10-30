@@ -125,4 +125,9 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
         if (textoLugares != null)
             textoLugares.text = $"Lugares Visitados: {lugaresConcluidos}/{lugaresTotais}";
     }
+    
+    public int GetNpcsConcluidos() => npcsConcluidos;
+    public int GetJornaisColetados() => jornaisColetados;
+    public int GetLugaresConcluidos() => lugaresConcluidos;
+
 }

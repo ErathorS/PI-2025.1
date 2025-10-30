@@ -73,6 +73,7 @@ MonoBehaviour:
   - RPC_ReportLugarVisitado
   - RPC_DestruirJornal
   - RPC_MarcarLugarCompleto_Global
+  - TrocarCenaParaTodos
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
