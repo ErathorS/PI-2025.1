@@ -73,6 +73,11 @@ MonoBehaviour:
   - RPC_ReportLugarVisitado
   - RPC_DestruirJornal
   - RPC_MarcarLugarCompleto_Global
+  - RPC_VisitarLugar
+  - RPC_AtivarGrupo
+  - RPC_PlayerEntrouNaPlataforma
+  - RPC_PlayerSaiuDaPlataforma
+  - RPC_IniciarMissao
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

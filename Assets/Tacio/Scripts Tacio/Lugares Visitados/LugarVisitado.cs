@@ -2,60 +2,79 @@ using UnityEngine;
 using Photon.Pun;
 
 [RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(PhotonView))]
 public class LugarVisitado : MonoBehaviourPun
 {
     [Header("Identificação do Lugar")]
-    public int lugarID = 1; // ID único do lugar
+    public int lugarID = 1;
 
     [Header("Materiais")]
     public Material materialPadrao;
-    public Material materialAtivo; // cor verde, por exemplo
+    public Material materialVisitado;   // verde
 
-    private LugarVisitadoManager manager;
     private Renderer renderObj;
-    private bool ativado = false;
+    private bool visitado = false;
 
-    void Start()
+    void Awake()
     {
-        manager = FindObjectOfType<LugarVisitadoManager>();
-
-        // Garante que o collider seja trigger
-        Collider col = GetComponent<Collider>();
-        if (col != null)
-            col.isTrigger = true;
-
-        // Localiza automaticamente o Renderer (no próprio objeto ou em um filho)
+        // Pega o renderer no próprio objeto ou em um filho
         renderObj = GetComponent<Renderer>();
         if (renderObj == null)
             renderObj = GetComponentInChildren<Renderer>();
+    }
+
+    void Start()
+    {
+        // Garante que o collider é trigger
+        Collider col = GetComponent<Collider>();
+        col.isTrigger = true;
 
         // Define o material inicial
         if (renderObj != null && materialPadrao != null)
-            renderObj.material = materialPadrao;
+            renderObj.sharedMaterial = materialPadrao;
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (ativado) return; // já ativado, ignora
-        if (!other.CompareTag("Player")) return;
+        // Só reage a jogadores
+        if (!other.CompareTag("Player"))
+            return;
 
-        PhotonView pv = other.GetComponent<PhotonView>();
-        if (pv != null && pv.IsMine && manager != null && manager.photonView != null)
-        {
-            // Notifica o manager em rede
-            manager.photonView.RPC("RPC_ReportLugarVisitado", RpcTarget.AllBuffered, lugarID, pv.Owner.ActorNumber);
-        }
+        // Só o dono do player dispara o RPC
+        PhotonView pvPlayer = other.GetComponent<PhotonView>();
+        if (pvPlayer == null || !pvPlayer.IsMine)
+            return;
+
+        // Pede para TODOS (com buffer) marcarem este lugar como visitado
+        photonView.RPC("RPC_VisitarLugar", RpcTarget.AllBuffered);
     }
 
     [PunRPC]
-    public void RPC_AtivarLugar()
+    void RPC_VisitarLugar()
     {
-        ativado = true;
+        // Se já foi visitado antes, não faz nada
+        if (visitado)
+            return;
 
-        // Troca o material sincronizado entre todos os jogadores
-        if (renderObj != null && materialAtivo != null)
-            renderObj.material = materialAtivo;
+        visitado = true;
 
-        Debug.Log($"[LugarVisitado] Lugar {lugarID} completado — material alterado!");
+        // Troca o material para o verde
+        if (renderObj != null && materialVisitado != null)
+            renderObj.sharedMaterial = materialVisitado;
+
+        Debug.Log($"[LugarVisitado] Lugar {lugarID} foi visitado.");
+
+        // Só o Master aumenta o contador de lugares visitados no HUD
+        if (PhotonNetwork.IsMasterClient)
+        {
+            ProgressaoFaseController progresso = FindObjectOfType<ProgressaoFaseController>();
+            if (progresso != null && progresso.photonView != null)
+            {
+                progresso.photonView.RPC(
+                    "RPC_AtualizarProgressoLugar",
+                    RpcTarget.AllBuffered
+                );
+            }
+        }
     }
 }

@@ -143,10 +143,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  distance: 9
+  distance: 10
   height: 1.5
   rotationSpeed: 15
-  followSpeed: 5
+  followSpeed: 15
 --- !u!81 &2092971347000918874
 AudioListener:
   m_ObjectHideFlags: 0
