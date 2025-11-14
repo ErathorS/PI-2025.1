@@ -131,7 +131,6 @@ public class DialogoNPC : MonoBehaviourPun
             photonView.RPC("DesativarIndicadorGlobal", RpcTarget.AllBuffered);
         }
 
-        // 🔹 Se for NPC importante, avisa o sistema de introdução
         if (indicadorNPC != null && indicadorNPC.tipoExclamacao == 2)
         {
             var dialogoIntroducao = FindObjectOfType<FuroDeNoticia.DialogoNPCIntroducao>();
@@ -140,6 +139,9 @@ public class DialogoNPC : MonoBehaviourPun
                 int playerID = PhotonNetwork.LocalPlayer.ActorNumber;
                 dialogoIntroducao.MarcarDialogoConcluido(playerID);
             }
+
+            // 🔥 Iniciar a missão da Fase 1
+            MissaoFase1Manager.instancia.IniciarMissao();
         }
     }
 
