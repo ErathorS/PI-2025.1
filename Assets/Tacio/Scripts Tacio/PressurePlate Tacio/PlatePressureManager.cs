@@ -28,7 +28,7 @@ public class PlatePressureManager : MonoBehaviourPun
     public void EnableListening()
     {
         listening = true;
-        Debug.Log("[PlatePressureManager] Escutando as placas.");
+        //Debug.Log("[PlatePressureManager] Escutando as placas.");
 
         if (bloqueio != null)
             bloqueio.SetActive(false); // libera a passagem quando começa a escutar
@@ -48,11 +48,11 @@ public class PlatePressureManager : MonoBehaviourPun
         plateStates[plateID].pressed = true;
         plateStates[plateID].pressedByActorID = playerActorID;
 
-        Debug.Log($"[PlatePressureManager] Plate {plateID} pressionada por player {playerActorID}");
+        //Debug.Log($"[PlatePressureManager] Plate {plateID} pressionada por player {playerActorID}");
 
         if (AllPlatesPressed() && PlatesPressedByDifferentPlayers())
         {
-            Debug.Log("[PlatePressureManager] Condição satisfeita — carregando próxima cena!");
+            //Debug.Log("[PlatePressureManager] Condição satisfeita — carregando próxima cena!");
             listening = false;
 
             // 🔹 Transição sincronizada para a Fase 1

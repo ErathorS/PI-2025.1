@@ -21,6 +21,14 @@ public class DialogoNPC : MonoBehaviourPun
     private Button botaoDialogo;
     private PhotonView photonViewDoJogador;
 
+    [Header("Diálogos Alternativos")]
+    public string[] dialogoAposEntrega;
+    private bool dialogoDeEntregaAtivo = false;
+
+    public void AtivarDialogoDeEntrega()
+    {
+        dialogoDeEntregaAtivo = true;
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player")) return;
@@ -68,7 +76,7 @@ public class DialogoNPC : MonoBehaviourPun
 
     private void IniciarDialogo(GameObject jogador)
     {
-        if (dialogoAtivo || linhasDialogo.Length == 0) return;
+        if (dialogoAtivo) return;
 
         dialogoAtivo = true;
         linhaAtual = 0;
@@ -81,7 +89,11 @@ public class DialogoNPC : MonoBehaviourPun
         botaoDialogo = ui.botaoDialogo;
 
         painelDialogo.SetActive(true);
-        textoDialogo.text = linhasDialogo[linhaAtual];
+
+        if (dialogoDeEntregaAtivo)
+            textoDialogo.text = dialogoAposEntrega[linhaAtual];
+        else
+            textoDialogo.text = linhasDialogo[linhaAtual];
 
         StartCoroutine(EsperarToqueParaAvancar());
     }
@@ -106,19 +118,21 @@ public class DialogoNPC : MonoBehaviourPun
         }
     }
 
-    private void AvancarDialogo()
-    {
-        linhaAtual++;
+private void AvancarDialogo()
+{
+    linhaAtual++;
 
-        if (linhaAtual < linhasDialogo.Length)
-        {
-            textoDialogo.text = linhasDialogo[linhaAtual];
-        }
-        else
-        {
-            FinalizarDialogo();
-        }
+    string[] dialogoAtual = dialogoDeEntregaAtivo ? dialogoAposEntrega : linhasDialogo;
+
+    if (linhaAtual < dialogoAtual.Length)
+    {
+        textoDialogo.text = dialogoAtual[linhaAtual];
     }
+    else
+    {
+        FinalizarDialogo();
+    }
+}
 
     private void FinalizarDialogo()
     {

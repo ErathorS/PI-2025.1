@@ -73,7 +73,7 @@ public class MovimentacaoIsometrica : MonoBehaviourPun
                 joystick = canvasObj.GetComponentInChildren<FixedJoystick>();
                 if (joystick != null)
                 {
-                    Debug.Log($"[MovimentacaoIsometrica] Joystick encontrado via tag '{canvasTag}'");
+                   //Debug.Log($"[MovimentacaoIsometrica] Joystick encontrado via tag '{canvasTag}'");
                 }
             }
             
@@ -83,14 +83,14 @@ public class MovimentacaoIsometrica : MonoBehaviourPun
                 joystick = FindObjectOfType<FixedJoystick>();
                 if (joystick != null)
                 {
-                    Debug.Log($"[MovimentacaoIsometrica] Joystick encontrado via busca geral");
+                    //Debug.Log($"[MovimentacaoIsometrica] Joystick encontrado via busca geral");
                 }
             }
         }
 
         if (joystick == null)
         {
-            Debug.LogWarning($"[MovimentacaoIsometrica] Joystick ainda não encontrado para player {PhotonNetwork.LocalPlayer.ActorNumber}");
+            //Debug.LogWarning($"[MovimentacaoIsometrica] Joystick ainda não encontrado para player {PhotonNetwork.LocalPlayer.ActorNumber}");
             encontrouTudo = false;
         }
 
@@ -101,13 +101,13 @@ public class MovimentacaoIsometrica : MonoBehaviourPun
             if (camScript != null)
             {
                 cameraTransform = camScript.transform;
-                Debug.Log($"[MovimentacaoIsometrica] Câmera encontrada");
+                //Debug.Log($"[MovimentacaoIsometrica] Câmera encontrada");
             }
         }
 
         if (cameraTransform == null)
         {
-            Debug.LogWarning($"[MovimentacaoIsometrica] Câmera ainda não encontrada");
+            //Debug.LogWarning($"[MovimentacaoIsometrica] Câmera ainda não encontrada");
             encontrouTudo = false;
         }
 
@@ -115,7 +115,7 @@ public class MovimentacaoIsometrica : MonoBehaviourPun
         
         if (referenciasConfiguradas)
         {
-            Debug.Log($"[MovimentacaoIsometrica] Todas as referências configuradas para {gameObject.name}");
+            //Debug.Log($"[MovimentacaoIsometrica] Todas as referências configuradas para {gameObject.name}");
         }
     }
 

@@ -70,7 +70,7 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
 
         if (CenaEhJogavel(nomeCena))
         {
-            Debug.Log($"[NetworkGameManager] Cena jogável carregada: {nomeCena}");
+            //Debug.Log($"[NetworkGameManager] Cena jogável carregada: {nomeCena}");
             hasSpawned = false;
 
             // Delay pequeno pra garantir que tudo foi carregado

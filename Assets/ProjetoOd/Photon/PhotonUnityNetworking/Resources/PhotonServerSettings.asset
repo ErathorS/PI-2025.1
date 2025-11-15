@@ -78,6 +78,10 @@ MonoBehaviour:
   - RPC_PlayerEntrouNaPlataforma
   - RPC_PlayerSaiuDaPlataforma
   - RPC_IniciarMissao
+  - RPC_ResetarMissao
+  - RPC_ColetarCaixa
+  - RPC_DesativarIndicadorGlobal
+  - RPC_RegistrarNPCImportante
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

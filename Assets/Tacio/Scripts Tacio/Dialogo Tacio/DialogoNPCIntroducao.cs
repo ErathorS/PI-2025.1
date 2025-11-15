@@ -23,7 +23,7 @@ namespace FuroDeNoticia
             if (playerID == 1) player1Terminou = true;
             else if (playerID == 2) player2Terminou = true;
 
-            Debug.Log($"[DialogoNPCIntroducao] player1Terminou={player1Terminou} player2Terminou={player2Terminou}");
+            //Debug.Log($"[DialogoNPCIntroducao] player1Terminou={player1Terminou} player2Terminou={player2Terminou}");
 
             if (player1Terminou && player2Terminhou()) // evita typo: use helper
             {
@@ -31,11 +31,11 @@ namespace FuroDeNoticia
                 if (plateManager != null)
                 {
                     plateManager.EnableListening();
-                    Debug.Log("[DialogoNPCIntroducao] Ambos terminaram diálogo - placas ativadas.");
+                    //Debug.Log("[DialogoNPCIntroducao] Ambos terminaram diálogo - placas ativadas.");
                 }
                 else
                 {
-                    Debug.LogWarning("[DialogoNPCIntroducao] plateManager não atribuído!");
+                    //Debug.LogWarning("[DialogoNPCIntroducao] plateManager não atribuído!");
                 }
             }
         }

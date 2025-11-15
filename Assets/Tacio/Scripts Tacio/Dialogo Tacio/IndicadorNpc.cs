@@ -41,11 +41,11 @@ public class IndicadorNpc : MonoBehaviour
             if (progressoController != null)
             {
                 progressoController.NPCImportanteConcluido();
-                Debug.Log($"[IndicadorNpc] NPC importante '{gameObject.name}' marcou como conversado e pediu progresso.");
+                //Debug.Log($"[IndicadorNpc] NPC importante '{gameObject.name}' marcou como conversado e pediu progresso.");
             }
             else
             {
-                Debug.LogWarning($"[IndicadorNpc] Não foi possível registrar progresso para '{gameObject.name}' porque ProgressaoFaseController estava ausente.");
+                //Debug.LogWarning($"[IndicadorNpc] Não foi possível registrar progresso para '{gameObject.name}' porque ProgressaoFaseController estava ausente.");
             }
         }
     }
