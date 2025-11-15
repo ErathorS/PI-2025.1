@@ -1,27 +1,17 @@
 using UnityEngine;
 using Photon.Pun;
-using UnityEngine.UI;
 
 public class CaixaDeIngrediente : MonoBehaviourPun
 {
-    private Vector3 posicaoInicial;
-    private Quaternion rotacaoInicial;
-
-    private bool jogadorPerto = false;
     private PlayerUIReferences uiDoJogador;
-
-    private void Awake()
-    {
-        posicaoInicial = transform.position;
-        rotacaoInicial = transform.rotation;
-    }
+    private bool jogadorPerto = false;
 
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player")) return;
 
         PhotonView pv = other.GetComponent<PhotonView>();
-        if (pv == null || !pv.IsMine) return;
+        if (pv == null || !pv.IsMine) return;  // só o dono vê o botão
 
         jogadorPerto = true;
         uiDoJogador = other.GetComponentInChildren<PlayerUIReferences>();
@@ -52,26 +42,17 @@ public class CaixaDeIngrediente : MonoBehaviourPun
         uiDoJogador = null;
     }
 
-    public void Coletar()
+    private void Coletar()
     {
         if (!jogadorPerto) return;
 
-        photonView.RPC("RPC_ColetarCaixa", RpcTarget.AllBuffered);
+        photonView.RPC("RPC_Coletar", RpcTarget.AllBuffered);
     }
 
     [PunRPC]
-    private void RPC_ColetarCaixa()
+    private void RPC_Coletar()
     {
-        gameObject.SetActive(false);
-        ColetarCaixasManager coletor = FindObjectOfType<ColetarCaixasManager>();
-        coletor.RegistrarColeta();
-    }
-
-    public void ResetarEstado()
-    {
-        transform.position = posicaoInicial;
-        transform.rotation = rotacaoInicial;
-
-        gameObject.SetActive(true);
+        ColetarCaixasManager.instancia.RegistrarColeta();
+        Destroy(gameObject);
     }
 }

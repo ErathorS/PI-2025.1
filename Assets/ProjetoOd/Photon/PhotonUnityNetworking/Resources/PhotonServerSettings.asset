@@ -82,6 +82,7 @@ MonoBehaviour:
   - RPC_ColetarCaixa
   - RPC_DesativarIndicadorGlobal
   - RPC_RegistrarNPCImportante
+  - RPC_Coletar
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

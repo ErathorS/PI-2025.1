@@ -15,16 +15,13 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
     public float duracaoMissao = 240f; // 4 minutos
 
     [Header("Reset e Coleta")]
-    public GameObject botaoReset;         
+    public GameObject botaoReset;
     public ColetarCaixasManager coletor;
     public DialogoNPC npcEntrega;
 
     private bool missaoAtiva = false;
     private bool missaoConcluida = false;
     private float tempoRestante;
-
-    [Header("Caixas da missão")]
-    public CaixaDeIngrediente[] caixasDaMissao;
 
     private void Awake()
     {
@@ -50,13 +47,14 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
         botaoReset.SetActive(false);
 
         // textoMissao.text =
-        //     "As caixas de ingredientes de Dona Cida foram espalhadas.\n" +
+        //     "As caixas de ingredientes foram espalhadas.\n" +
         //     "Procurem pelo Largo e encontrem todas antes que estraguem!\n" +
         //     "Vocês têm 4 minutos.";
 
-        AtivarTodasAsCaixas();
         AtualizarUI();
-        coletor.ResetarCaixas(); // reseta UI e contador também
+
+        // Agora o manager cuida de resetar todas as caixas
+        coletor.AtivarCaixasParaMissao();
     }
 
     private void Update()
@@ -92,7 +90,7 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
             "O dendê estragou ao sol...\n\n" +
             "Vocês querem tentar novamente?";
 
-        // botão só aparece para o master
+        // botão só aparece para o MasterClient
         if (PhotonNetwork.IsMasterClient)
             botaoReset.SetActive(true);
     }
@@ -107,12 +105,13 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void RPC_ResetarMissao()
     {
-        coletor.ResetarCaixas();
-        tempoRestante = duracaoMissao;
+        coletor.ResetarFase();
 
-        botaoReset.SetActive(false);
+        tempoRestante = duracaoMissao;
         missaoAtiva = true;
         missaoConcluida = false;
+
+        botaoReset.SetActive(false);
 
         textoMissao.text =
             "Procurem as caixas de ingredientes de Dona Cida antes que estraguem!\n" +
@@ -132,21 +131,9 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
         botaoReset.SetActive(false);
 
         textoMissao.text =
-            "Excelente trabalho!\n" +
-            "Todas as caixas foram recuperadas.\n" +
-            "Voltem até o NPC para entregar a missão!";
+            "Excelente trabalho!, Todas as caixas foram recuperadas.\n" +
+            "Fale com Dona Cida para entregar os ingredientes.";
 
         npcEntrega.AtivarDialogoDeEntrega();
-    }
-    private void AtivarTodasAsCaixas()
-    {
-        foreach (var caixa in caixasDaMissao)
-        {
-            if (caixa != null)
-            {
-                caixa.gameObject.SetActive(true);
-                caixa.ResetarEstado();
-            }
-        }
     }
 }

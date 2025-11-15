@@ -13,7 +13,6 @@ TagManager:
   - Bullet
   - CanvasP1
   - CanvasP2
-  - Box
   - Acaraje
   - Pushable
   - Camarao
@@ -25,6 +24,7 @@ TagManager:
   - Spawn 2
   - Spawn
   - Jornal
+  - Caixa
   layers:
   - Default
   - TransparentFX

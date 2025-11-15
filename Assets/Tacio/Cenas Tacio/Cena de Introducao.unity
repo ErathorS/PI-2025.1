@@ -4354,13 +4354,63 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a186d2548c018924388c7f418c207f0c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1203295736}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a186d2548c018924388c7f418c207f0c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1203295735}
   m_SourcePrefab: {fileID: 100100000, guid: a186d2548c018924388c7f418c207f0c, type: 3}
 --- !u!4 &1203295733 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a186d2548c018924388c7f418c207f0c, type: 3}
   m_PrefabInstance: {fileID: 1203295732}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1203295734 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a186d2548c018924388c7f418c207f0c, type: 3}
+  m_PrefabInstance: {fileID: 1203295732}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1203295735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1203295734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
+--- !u!114 &1203295736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1203295734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 1203295735}
+  sceneViewId: 6
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &1210053163
 PrefabInstance:
   m_ObjectHideFlags: 0
