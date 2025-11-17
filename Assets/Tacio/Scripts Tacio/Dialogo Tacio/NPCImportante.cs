@@ -6,10 +6,10 @@ using TMPro;
 public class NPCImportante : MonoBehaviourPun
 {
     [Header("Diálogo")]
-    [TextArea(2, 5)] public string[] falas; // falas específicas desse NPC
-    public GameObject painelDialogo;        // painel de diálogo do jogador
-    public TMP_Text textoDialogo;           // texto do diálogo exibido
-    public Button botaoAvancar;             // botão de avançar diálogo
+    [TextArea(2, 5)] public string[] falas;
+    public GameObject painelDialogo;
+    public TMP_Text textoDialogo;
+    public Button botaoAvancar;
 
     private int indiceFala = 0;
     private bool emDialogo = false;
@@ -25,12 +25,21 @@ public class NPCImportante : MonoBehaviourPun
             painelDialogo.SetActive(false);
     }
 
+    // Chamado pelo botão de diálogo (que só aparece para o Master)
     public void IniciarDialogo()
     {
+        // 🔒 SOMENTE O MASTER PODE FALAR COM O NPC IMPORTANTE
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("[NPCImportante] Apenas o MasterClient pode iniciar este diálogo.");
+            return;
+        }
+
         if (jaConcluiu || falas.Length == 0) return;
 
         emDialogo = true;
         indiceFala = 0;
+
         painelDialogo.SetActive(true);
         AtualizarFala();
 
@@ -40,12 +49,15 @@ public class NPCImportante : MonoBehaviourPun
 
     void AtualizarFala()
     {
-        if (textoDialogo != null)
+        if (textoDialogo != null && indiceFala < falas.Length)
             textoDialogo.text = falas[indiceFala];
     }
 
     public void ProximaFala()
     {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
         indiceFala++;
 
         if (indiceFala >= falas.Length)
@@ -59,14 +71,18 @@ public class NPCImportante : MonoBehaviourPun
 
     void EncerrarDialogo()
     {
-        painelDialogo.SetActive(false);
+        if (painelDialogo != null)
+            painelDialogo.SetActive(false);
+
         emDialogo = false;
 
-        if (!jaConcluiu && progressoController != null)
+        // 🔥 Apenas o Master registra progresso
+        if (!jaConcluiu && PhotonNetwork.IsMasterClient && progressoController != null)
         {
             progressoController.NPCImportanteConcluido();
             jaConcluiu = true;
-            Debug.Log($"[NPCImportante] {gameObject.name} completado e progresso registrado!");
+
+            Debug.Log($"[NPCImportante] NPC '{gameObject.name}' concluído pelo MASTER e progresso registrado!");
         }
     }
 }

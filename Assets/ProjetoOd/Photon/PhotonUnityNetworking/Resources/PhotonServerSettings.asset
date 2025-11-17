@@ -83,6 +83,14 @@ MonoBehaviour:
   - RPC_DesativarIndicadorGlobal
   - RPC_RegistrarNPCImportante
   - RPC_Coletar
+  - RPC_ExibirTextoParaOutros
+  - RPC_FecharDialogoParaOutros
+  - RPC_MarcarVisitado
+  - RPC_FinalizarEntrega
+  - RPC_MissaoFinalizada
+  - RPC_PedirRegistroJornal
+  - RPC_PedirRegistroLugar
+  - RPC_PedirRegistroNPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

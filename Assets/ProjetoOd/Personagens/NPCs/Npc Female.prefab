@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6687568854238102268}
   - component: {fileID: 5361938873499665288}
   - component: {fileID: 145856496359055083}
-  - component: {fileID: 7833320198319097642}
+  - component: {fileID: 9012955161205815709}
   m_Layer: 0
   m_Name: Npc Female
   m_TagString: Npc
@@ -158,7 +158,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &7833320198319097642
+--- !u!114 &9012955161205815709
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -167,18 +167,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 3460631191588532180}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85319ad306aaa5948b6eadb62a46c46d, type: 3}
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  botaoDialogo1: {fileID: 0}
-  botaoDialogo2: {fileID: 0}
-  painelDialogo1: {fileID: 0}
-  painelDialogo2: {fileID: 0}
-  textoDialogo1: {fileID: 0}
-  textoDialogo2: {fileID: 0}
-  indicadorNPC: {fileID: 0}
-  dialogoGlobal: 0
-  linhasDialogo:
-  - "Ol\xE1, viajante!"
-  - "Voc\xEA est\xE1 pronto para uma nova aventura?"
-  - Boa sorte no seu caminho!
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0

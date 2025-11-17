@@ -5,19 +5,23 @@ using Photon.Pun;
 [RequireComponent(typeof(PhotonView))]
 public class LugarVisitado : MonoBehaviourPun
 {
-    [Header("Identificação do Lugar")]
-    public int lugarID = 1;
+    [Header("IDs")]
+    public int grupoID = 0;  // 1 ou 2
+    public int lugarID = 0;  // 1 ou 2
 
     [Header("Materiais")]
     public Material materialPadrao;
-    public Material materialVisitado;   // verde
+    public Material materialVisitado;
 
     private Renderer renderObj;
-    private bool visitado = false;
 
-    void Awake()
+    // Quem ativou este lugar
+    private int donoDaAtivacao = -1;
+
+    private LugarVisitadoManager manager;
+
+    private void Awake()
     {
-        // Pega o renderer no próprio objeto ou em um filho
         renderObj = GetComponent<Renderer>();
         if (renderObj == null)
             renderObj = GetComponentInChildren<Renderer>();
@@ -25,56 +29,52 @@ public class LugarVisitado : MonoBehaviourPun
 
     void Start()
     {
-        // Garante que o collider é trigger
         Collider col = GetComponent<Collider>();
         col.isTrigger = true;
 
-        // Define o material inicial
-        if (renderObj != null && materialPadrao != null)
+        if (materialPadrao != null)
             renderObj.sharedMaterial = materialPadrao;
+
+        manager = FindObjectOfType<LugarVisitadoManager>();
     }
 
     void OnTriggerEnter(Collider other)
     {
-        // Só reage a jogadores
         if (!other.CompareTag("Player"))
             return;
 
-        // Só o dono do player dispara o RPC
-        PhotonView pvPlayer = other.GetComponent<PhotonView>();
-        if (pvPlayer == null || !pvPlayer.IsMine)
+        PhotonView pv = other.GetComponent<PhotonView>();
+        if (pv == null || !pv.IsMine)
             return;
 
-        // Pede para TODOS (com buffer) marcarem este lugar como visitado
-        photonView.RPC("RPC_VisitarLugar", RpcTarget.AllBuffered);
+        // Envia quem pisou
+        photonView.RPC("RPC_MarcarVisitado", RpcTarget.AllBuffered, pv.OwnerActorNr);
     }
 
     [PunRPC]
-    void RPC_VisitarLugar()
+    private void RPC_MarcarVisitado(int playerID)
     {
-        // Se já foi visitado antes, não faz nada
-        if (visitado)
+        // ❌ Se este lugar já foi ativado por alguém → não muda nada
+        if (donoDaAtivacao != -1)
             return;
 
-        visitado = true;
+        // ❌ Se o jogador já ativou OUTRO lugar do MESMO grupo → ele não ativa este
+        if (manager.JogadorJaAtivouLugarNoGrupo(playerID, grupoID))
+            return;
 
-        // Troca o material para o verde
+        // 🔥 Marca dono
+        donoDaAtivacao = playerID;
+
+        // 🔥 Troca material
         if (renderObj != null && materialVisitado != null)
             renderObj.sharedMaterial = materialVisitado;
 
-        Debug.Log($"[LugarVisitado] Lugar {lugarID} foi visitado.");
+        // 🔥 Notifica manager
+        manager.MarcarLugar(grupoID, lugarID, playerID);
+    }
 
-        // Só o Master aumenta o contador de lugares visitados no HUD
-        if (PhotonNetwork.IsMasterClient)
-        {
-            ProgressaoFaseController progresso = FindObjectOfType<ProgressaoFaseController>();
-            if (progresso != null && progresso.photonView != null)
-            {
-                progresso.photonView.RPC(
-                    "RPC_AtualizarProgressoLugar",
-                    RpcTarget.AllBuffered
-                );
-            }
-        }
+    public bool FoiVisitado()
+    {
+        return donoDaAtivacao != -1;
     }
 }

@@ -9,32 +9,36 @@ public class PlayerUIController : MonoBehaviourPun
 
     void Awake()
     {
-        if (FindObjectsOfType<PlayerUIController>().Length > 1)
+        // 🔒 Proteção adicional: impede múltiplas UI Controllers
+        if (!photonView.IsMine)
         {
-            Destroy(gameObject);
+            // Se não é o jogador local, desativa toda a UI
+            if (rootCanvas != null)
+                rootCanvas.enabled = false;
+
+            if (joystick != null)
+                joystick.gameObject.SetActive(false);
+
             return;
-        }   
+        }
+
+        // 🔒 Se for o jogador local, ativa a UI dele
         if (rootCanvas == null)
             rootCanvas = GetComponentInChildren<Canvas>();
 
-        // 🔹 Garante que apenas o jogador local tenha a UI ativa
         if (rootCanvas != null)
         {
-            if (photonView.IsMine)
+            rootCanvas.enabled = true;
+
+            if (joystick != null)
             {
-                rootCanvas.enabled = true;
-                if (joystick != null)
-                {
-                    joystick.gameObject.SetActive(true);
-                    Debug.Log($"[PlayerUIController] Joystick ativado para jogador local");
-                }
+                joystick.gameObject.SetActive(true);
+                Debug.Log("[PlayerUIController] Joystick ativado para o jogador local.");
             }
-            else
-            {
-                rootCanvas.enabled = false;
-                if (joystick != null)
-                    joystick.gameObject.SetActive(false);
-            }
+        }
+        else
+        {
+            Debug.LogWarning("[PlayerUIController] Nenhum Canvas encontrado no jogador!");
         }
     }
 

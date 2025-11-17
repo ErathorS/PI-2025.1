@@ -11,7 +11,7 @@ public class CaixaDeIngrediente : MonoBehaviourPun
         if (!other.CompareTag("Player")) return;
 
         PhotonView pv = other.GetComponent<PhotonView>();
-        if (pv == null || !pv.IsMine) return;  // só o dono vê o botão
+        if (pv == null || !pv.IsMine) return;  // Só o jogador dono vê o botão
 
         jogadorPerto = true;
         uiDoJogador = other.GetComponentInChildren<PlayerUIReferences>();
@@ -46,13 +46,27 @@ public class CaixaDeIngrediente : MonoBehaviourPun
     {
         if (!jogadorPerto) return;
 
+        // 🔥 Chama coleta sincronizada
         photonView.RPC("RPC_Coletar", RpcTarget.AllBuffered);
     }
 
     [PunRPC]
     private void RPC_Coletar()
     {
+        // Atualiza contador
         ColetarCaixasManager.instancia.RegistrarColeta();
-        Destroy(gameObject);
+
+        // 🔥 Garante que o botão desapareça IMEDIATAMENTE
+        if (uiDoJogador != null)
+        {
+            uiDoJogador.botaoInteracao.gameObject.SetActive(false);
+            uiDoJogador.botaoInteracao.onClick.RemoveAllListeners();
+        }
+
+        uiDoJogador = null;
+        jogadorPerto = false;
+
+        // Desativa a caixa
+        gameObject.SetActive(false);
     }
 }

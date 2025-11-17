@@ -6,9 +6,8 @@ public class ColetarCaixasManager : MonoBehaviourPun
 {
     public static ColetarCaixasManager instancia;
 
-    [Header("Caixas na cena")]
+    [Header("Caixas na cena (originais)")]
     public CaixaDeIngrediente[] caixasOriginais;
-    public GameObject prefabCaixa;
 
     private Vector3[] posicoesIniciais;
     private Quaternion[] rotacoesIniciais;
@@ -37,6 +36,7 @@ public class ColetarCaixasManager : MonoBehaviourPun
         posicoesIniciais = new Vector3[totalCaixas];
         rotacoesIniciais = new Quaternion[totalCaixas];
 
+        // Salva posições originais e deixa TODAS desativadas
         for (int i = 0; i < totalCaixas; i++)
         {
             posicoesIniciais[i] = caixasOriginais[i].transform.position;
@@ -46,12 +46,14 @@ public class ColetarCaixasManager : MonoBehaviourPun
         }
     }
 
+    // 🔥 Chamada quando o Master inicia a missão
     public void AtivarCaixasParaMissao()
     {
         caixasColetadas = 0;
         tempoAtual = tempoLimite;
         faseAtiva = true;
 
+        // Reativa e reseta TODAS as caixas
         for (int i = 0; i < totalCaixas; i++)
         {
             caixasOriginais[i].transform.position = posicoesIniciais[i];
@@ -63,6 +65,7 @@ public class ColetarCaixasManager : MonoBehaviourPun
         botaoReset.SetActive(false);
     }
 
+    // 🔹 Chamado por CaixaDeIngrediente quando o jogador coleta
     public void RegistrarColeta()
     {
         caixasColetadas++;
@@ -80,24 +83,30 @@ public class ColetarCaixasManager : MonoBehaviourPun
         if (!faseAtiva) return;
 
         tempoAtual -= Time.deltaTime;
+
         if (tempoAtual <= 0)
         {
             tempoAtual = 0;
             faseAtiva = false;
 
-            botaoReset.SetActive(true);
+            // Mostra botão de reset SOMENTE NO MASTER
+            if (PhotonNetwork.IsMasterClient)
+                botaoReset.SetActive(true);
         }
 
         AtualizarUI();
     }
 
+    // 🔁 Reset total da fase (sem destruir nada)
     public void ResetarFase()
     {
-        foreach (var caixa in GameObject.FindGameObjectsWithTag("Caixa"))
-            Destroy(caixa);
-
+        // Reativa e reseta TODAS as caixas
         for (int i = 0; i < totalCaixas; i++)
-            Instantiate(prefabCaixa, posicoesIniciais[i], rotacoesIniciais[i]);
+        {
+            caixasOriginais[i].transform.position = posicoesIniciais[i];
+            caixasOriginais[i].transform.rotation = rotacoesIniciais[i];
+            caixasOriginais[i].gameObject.SetActive(true);
+        }
 
         caixasColetadas = 0;
         tempoAtual = tempoLimite;

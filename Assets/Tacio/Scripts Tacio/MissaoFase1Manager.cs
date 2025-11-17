@@ -11,9 +11,6 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
     public TMP_Text textoMissao;
     public TMP_Text textoTimer;
 
-    [Header("Configurações")]
-    public float duracaoMissao = 240f; // 4 minutos
-
     [Header("Reset e Coleta")]
     public GameObject botaoReset;
     public ColetarCaixasManager coletor;
@@ -28,10 +25,11 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
         instancia = this;
     }
 
-    // Inicia missão após diálogo do NPC importante
+    // === INICIAR MISSÃO ===
     public void IniciarMissao()
     {
-        if (missaoAtiva) return;
+        if (!PhotonNetwork.IsMasterClient) return;
+
         photonView.RPC("RPC_IniciarMissao", RpcTarget.AllBuffered);
     }
 
@@ -41,20 +39,13 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
         missaoAtiva = true;
         missaoConcluida = false;
 
-        tempoRestante = duracaoMissao;
-
         painelMissao.SetActive(true);
         botaoReset.SetActive(false);
 
-        // textoMissao.text =
-        //     "As caixas de ingredientes foram espalhadas.\n" +
-        //     "Procurem pelo Largo e encontrem todas antes que estraguem!\n" +
-        //     "Vocês têm 4 minutos.";
+        tempoRestante = 240f;
 
-        AtualizarUI();
-
-        // Agora o manager cuida de resetar todas as caixas
         coletor.AtivarCaixasParaMissao();
+        AtualizarUI();
     }
 
     private void Update()
@@ -77,20 +68,14 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
     {
         int m = Mathf.FloorToInt(tempoRestante / 60);
         int s = Mathf.FloorToInt(tempoRestante % 60);
-
         textoTimer.text = $"{m:00}:{s:00}";
     }
 
     private void MissaoFalhou()
     {
         painelMissao.SetActive(true);
+        textoMissao.text = "O tempo acabou!\nVocês querem tentar novamente?";
 
-        textoMissao.text =
-            "O tempo acabou!\n" +
-            "O dendê estragou ao sol...\n\n" +
-            "Vocês querem tentar novamente?";
-
-        // botão só aparece para o MasterClient
         if (PhotonNetwork.IsMasterClient)
             botaoReset.SetActive(true);
     }
@@ -98,7 +83,6 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
     public void BotaoResetarMissao()
     {
         if (!PhotonNetwork.IsMasterClient) return;
-
         photonView.RPC("RPC_ResetarMissao", RpcTarget.AllBuffered);
     }
 
@@ -107,33 +91,57 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
     {
         coletor.ResetarFase();
 
-        tempoRestante = duracaoMissao;
         missaoAtiva = true;
         missaoConcluida = false;
+        tempoRestante = 240f;
 
         botaoReset.SetActive(false);
-
-        textoMissao.text =
-            "Procurem as caixas de ingredientes de Dona Cida antes que estraguem!\n" +
-            "Vocês têm 4 minutos.";
-
+        textoMissao.text = "Procurem as caixas!";
         AtualizarUI();
     }
 
+    // === 🚀 MISSÃO FINALIZADA ===
     public void MissaoFinalizada()
     {
-        if (missaoConcluida) return;
+        if (!PhotonNetwork.IsMasterClient) return;
 
+        photonView.RPC("RPC_MissaoFinalizada", RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    private void RPC_MissaoFinalizada()
+    {
         missaoConcluida = true;
         missaoAtiva = false;
 
         painelMissao.SetActive(true);
         botaoReset.SetActive(false);
 
-        textoMissao.text =
-            "Excelente trabalho!, Todas as caixas foram recuperadas.\n" +
-            "Fale com Dona Cida para entregar os ingredientes.";
+        textoMissao.text = "Excelente trabalho!\nFalem com Dona Cida para entregar.";
 
         npcEntrega.AtivarDialogoDeEntrega();
+    }
+
+    // === 🚀 FINALIZAR ENTREGA ===
+    public void FinalizarEntrega()
+    {
+        photonView.RPC("RPC_FinalizarEntrega", RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    private void RPC_FinalizarEntrega()
+    {
+        // DESATIVA TUDO PARA TODOS OS PLAYERS
+        painelMissao.SetActive(false);
+        botaoReset.SetActive(false);
+
+        textoTimer.text = "";
+        textoMissao.text = "";
+
+        if (coletor != null)
+        {
+            coletor.textoCaixas.text = "";
+            coletor.textoTempo.text = "";
+        }
     }
 }
