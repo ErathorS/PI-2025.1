@@ -1,32 +1,32 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class CameraIsometricaComRotacao : MonoBehaviour
 {
     [Header("Referências")]
-    public Transform player;          // alvo da câmera
-    public float distance = 10f;      // distância da câmera ao jogador
-    public float height = 6f;         // altura da câmera
+    public Transform player;
+
+    [Header("Configurações")]
+    public float distance = 10f;
+    public float height = 6f;
     public float rotationSpeed = 120f;
-    public float followSpeed = 5f;
+    public float smoothTime = 0.15f;
 
     private float currentRotationY;
     private Vector2 lastTouchPos;
     private bool isDragging = false;
     private bool initialized = false;
 
-    private Vector3 initialOffset;
+    private Vector3 velocity = Vector3.zero;
+    private Vector3 fixedOffset;
 
     void Start()
     {
-        // Calcula o offset inicial com base na posição inicial da câmera e do player
         if (player != null)
         {
-            initialOffset = transform.position - player.position;
+            currentRotationY = transform.eulerAngles.y;
 
-            // Calcula o ângulo Y inicial baseado na posição da câmera
-            Vector3 flatOffset = new Vector3(initialOffset.x, 0f, initialOffset.z);
-            currentRotationY = Quaternion.LookRotation(-flatOffset).eulerAngles.y;
+            fixedOffset = Quaternion.Euler(30f, currentRotationY, 0f) * 
+                          new Vector3(0, height, -distance);
 
             initialized = true;
         }
@@ -34,8 +34,7 @@ public class CameraIsometricaComRotacao : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!initialized || player == null)
-            return;
+        if (!initialized || player == null) return;
 
         HandleTouchRotation();
         UpdateCameraPosition();
@@ -47,7 +46,6 @@ public class CameraIsometricaComRotacao : MonoBehaviour
         {
             Touch touch = Input.GetTouch(0);
 
-            // só rotaciona se tocar do lado direito da tela
             if (touch.position.x > Screen.width / 2)
             {
                 if (touch.phase == TouchPhase.Began)
@@ -58,10 +56,15 @@ public class CameraIsometricaComRotacao : MonoBehaviour
                 else if (touch.phase == TouchPhase.Moved && isDragging)
                 {
                     float deltaX = touch.position.x - lastTouchPos.x;
+
                     currentRotationY += deltaX * rotationSpeed * Time.deltaTime;
+
+                    fixedOffset = Quaternion.Euler(30f, currentRotationY, 0f) *
+                                  new Vector3(0, height, -distance);
+
                     lastTouchPos = touch.position;
                 }
-                else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+                else if (touch.phase == TouchPhase.Ended)
                 {
                     isDragging = false;
                 }
@@ -71,14 +74,16 @@ public class CameraIsometricaComRotacao : MonoBehaviour
 
     void UpdateCameraPosition()
     {
-        // Calcula posição relativa
-        Quaternion rotation = Quaternion.Euler(30f, currentRotationY, 0f);
-        Vector3 offset = rotation * new Vector3(0, height, -distance);
+        Vector3 targetPos = player.position + fixedOffset;
 
-        Vector3 targetPos = player.position + offset;
+        // Smooth camera movement
+        transform.position = Vector3.SmoothDamp(
+            transform.position,
+            targetPos,
+            ref velocity,
+            smoothTime
+        );
 
-        // Movimento suave até a posição calculada
-        transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * followSpeed);
         transform.LookAt(player.position + Vector3.up * 1.5f);
     }
 }

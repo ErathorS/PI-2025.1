@@ -145,8 +145,8 @@ MonoBehaviour:
   player: {fileID: 0}
   distance: 10
   height: 1.5
-  rotationSpeed: 15
-  followSpeed: 15
+  rotationSpeed: 25
+  smoothTime: 0.3
 --- !u!81 &2092971347000918874
 AudioListener:
   m_ObjectHideFlags: 0

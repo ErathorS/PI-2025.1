@@ -15,7 +15,7 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
     [Header("Configurações de Objetivos")]
     public int npcsImportantesTotais = 3;
     public int jornaisTotais = 20;
-    public int lugaresTotais = 2; // Quantos lugares precisam ser completados
+    public int lugaresTotais = 2;
 
     private int npcsConcluidos = 0;
     private int jornaisColetados = 0;
@@ -42,59 +42,61 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
         AtualizarTextoLugares();
     }
 
-    // =====================================================================
-    // 🟢 NPC IMPORTANTE ENTREVISTADO
-    // =====================================================================
+    // ========== NPC IMPORTANTE ENTREVISTADO ==========
 
     public void NPCImportanteConcluido()
     {
+        // Qualquer jogador chama isso -> pedido vai para o Master
         photonView.RPC("RPC_PedirRegistroNPC", RpcTarget.MasterClient);
     }
 
     [PunRPC]
     void RPC_PedirRegistroNPC()
     {
-        RPC_AtualizarProgressoNPC(); // Executa diretamente no Master
+        if (!PhotonNetwork.IsMasterClient) return;
+
+        // Master autoriza e manda atualizar para todos
+        photonView.RPC("RPC_SincronizarNPC", RpcTarget.AllBuffered);
     }
 
     [PunRPC]
-    void RPC_AtualizarProgressoNPC()
+    void RPC_SincronizarNPC()
     {
+        if (npcsConcluidos >= npcsImportantesTotais)
+            return;
+
         npcsConcluidos++;
         AtualizarProgresso();
         AtualizarTextoObjetivo();
     }
 
-    // =====================================================================
-    // 🟡 JORNAL COLETADO
-    // =====================================================================
+    // ========== JORNAL COLETADO ==========
 
-    // Chamado por QUALQUER jogador que pegou o jornal
     public void JornalColetado()
     {
         photonView.RPC("RPC_PedirRegistroJornal", RpcTarget.MasterClient);
     }
 
-    // Apenas o Master executa isso
     [PunRPC]
     void RPC_PedirRegistroJornal()
     {
-        RPC_AtualizarProgressoJornal();
+        if (!PhotonNetwork.IsMasterClient) return;
+
+        photonView.RPC("RPC_SincronizarJornal", RpcTarget.AllBuffered);
     }
 
     [PunRPC]
-    void RPC_AtualizarProgressoJornal()
+    void RPC_SincronizarJornal()
     {
-        if (jornaisColetados < jornaisTotais)
-            jornaisColetados++;
+        if (jornaisColetados >= jornaisTotais)
+            return;
 
+        jornaisColetados++;
         AtualizarProgresso();
         AtualizarTextoJornais();
     }
 
-    // =====================================================================
-    // 🔵 LUGAR VISITADO (GRUPO COMPLETO)
-    // =====================================================================
+    // ========== LUGAR VISITADO (GRUPO COMPLETO) ==========
 
     public void LugarVisitadoConcluido()
     {
@@ -104,22 +106,23 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_PedirRegistroLugar()
     {
-        RPC_AtualizarProgressoLugar();
+        if (!PhotonNetwork.IsMasterClient) return;
+
+        photonView.RPC("RPC_SincronizarLugar", RpcTarget.AllBuffered);
     }
 
     [PunRPC]
-    void RPC_AtualizarProgressoLugar()
+    void RPC_SincronizarLugar()
     {
-        if (lugaresConcluidos < lugaresTotais)
-            lugaresConcluidos++;
+        if (lugaresConcluidos >= lugaresTotais)
+            return;
 
+        lugaresConcluidos++;
         AtualizarProgresso();
         AtualizarTextoLugares();
     }
 
-    // =====================================================================
-    // 🎚️ ATUALIZAÇÃO VISUAL DA BARRA DE PROGRESSO
-    // =====================================================================
+    // ========== ATUALIZAÇÃO VISUAL DA BARRA ==========
 
     void Update()
     {
@@ -131,23 +134,18 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
             fillImage.color = Color.Lerp(corInicial, corFinal, barraProgresso.value);
     }
 
-    // =====================================================================
-    // 🧮 CÁLCULO DO PROGRESSO TOTAL
-    // =====================================================================
+    // ========== CÁLCULO DO PROGRESSO TOTAL ==========
 
     void AtualizarProgresso()
     {
-        float progressoNPC = (float)npcsConcluidos / npcsImportantesTotais;
-        float progressoJornal = (float)jornaisColetados / jornaisTotais;
-        float progressoLugar = (float)lugaresConcluidos / lugaresTotais;
+        float progressoNPC = npcsImportantesTotais > 0 ? (float)npcsConcluidos / npcsImportantesTotais : 0f;
+        float progressoJornal = jornaisTotais > 0 ? (float)jornaisColetados / jornaisTotais : 0f;
+        float progressoLugar = lugaresTotais > 0 ? (float)lugaresConcluidos / lugaresTotais : 0f;
 
-        // Média dos 3 objetivos
         progressoAlvo = (progressoNPC + progressoJornal + progressoLugar) / 3f;
     }
 
-    // =====================================================================
-    // 📝 ATUALIZAÇÃO DOS TEXTOS INDIVIDUAIS
-    // =====================================================================
+    // ========== TEXTOS DA UI ==========
 
     void AtualizarTextoObjetivo()
     {

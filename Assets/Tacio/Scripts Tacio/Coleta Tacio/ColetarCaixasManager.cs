@@ -36,7 +36,6 @@ public class ColetarCaixasManager : MonoBehaviourPun
         posicoesIniciais = new Vector3[totalCaixas];
         rotacoesIniciais = new Quaternion[totalCaixas];
 
-        // Salva posições originais e deixa TODAS desativadas
         for (int i = 0; i < totalCaixas; i++)
         {
             posicoesIniciais[i] = caixasOriginais[i].transform.position;
@@ -46,14 +45,13 @@ public class ColetarCaixasManager : MonoBehaviourPun
         }
     }
 
-    // 🔥 Chamada quando o Master inicia a missão
+    // Chamado pelo MissaoFase1Manager (RPC) quando a missão começa
     public void AtivarCaixasParaMissao()
     {
         caixasColetadas = 0;
         tempoAtual = tempoLimite;
         faseAtiva = true;
 
-        // Reativa e reseta TODAS as caixas
         for (int i = 0; i < totalCaixas; i++)
         {
             caixasOriginais[i].transform.position = posicoesIniciais[i];
@@ -65,8 +63,24 @@ public class ColetarCaixasManager : MonoBehaviourPun
         botaoReset.SetActive(false);
     }
 
-    // 🔹 Chamado por CaixaDeIngrediente quando o jogador coleta
+    // Chamado pela CaixaDeIngrediente quando um jogador coleta
     public void RegistrarColeta()
+    {
+        // Qualquer jogador pede para o Master registrar
+        photonView.RPC("RPC_PedirRegistrarColeta", RpcTarget.MasterClient);
+    }
+
+    [PunRPC]
+    void RPC_PedirRegistrarColeta()
+    {
+        if (!PhotonNetwork.IsMasterClient) return;
+
+        // Master manda sincronizar para todos
+        photonView.RPC("RPC_RegistrarColeta", RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    void RPC_RegistrarColeta()
     {
         caixasColetadas++;
         AtualizarUI();
@@ -74,7 +88,9 @@ public class ColetarCaixasManager : MonoBehaviourPun
         if (caixasColetadas >= totalCaixas)
         {
             faseAtiva = false;
-            MissaoFase1Manager.instancia.MissaoFinalizada();
+
+            if (MissaoFase1Manager.instancia != null)
+                MissaoFase1Manager.instancia.MissaoFinalizada();
         }
     }
 
@@ -89,7 +105,6 @@ public class ColetarCaixasManager : MonoBehaviourPun
             tempoAtual = 0;
             faseAtiva = false;
 
-            // Mostra botão de reset SOMENTE NO MASTER
             if (PhotonNetwork.IsMasterClient)
                 botaoReset.SetActive(true);
         }
@@ -97,10 +112,9 @@ public class ColetarCaixasManager : MonoBehaviourPun
         AtualizarUI();
     }
 
-    // 🔁 Reset total da fase (sem destruir nada)
+    // Reset total da fase (sem destruir nada)
     public void ResetarFase()
     {
-        // Reativa e reseta TODAS as caixas
         for (int i = 0; i < totalCaixas; i++)
         {
             caixasOriginais[i].transform.position = posicoesIniciais[i];
@@ -118,7 +132,10 @@ public class ColetarCaixasManager : MonoBehaviourPun
 
     private void AtualizarUI()
     {
-        textoCaixas.text = $"Caixas: {caixasColetadas}/{totalCaixas}";
-        textoTempo.text = $"{Mathf.RoundToInt(tempoAtual)}s";
+        if (textoCaixas != null)
+            textoCaixas.text = $"Caixas: {caixasColetadas}/{totalCaixas}";
+
+        if (textoTempo != null)
+            textoTempo.text = $"{Mathf.RoundToInt(tempoAtual)}s";
     }
 }

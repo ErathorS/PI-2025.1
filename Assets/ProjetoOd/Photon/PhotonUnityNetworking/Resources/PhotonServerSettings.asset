@@ -91,6 +91,11 @@ MonoBehaviour:
   - RPC_PedirRegistroJornal
   - RPC_PedirRegistroLugar
   - RPC_PedirRegistroNPC
+  - RPC_PedirRegistrarColeta
+  - RPC_RegistrarColeta
+  - RPC_SincronizarJornal
+  - RPC_SincronizarLugar
+  - RPC_SincronizarNPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -3436,7 +3436,7 @@ PrefabInstance:
     - target: {fileID: 7660439255949543271, guid: 1b8a6df0a5d7e1645affd635052f95b4, type: 3}
       propertyPath: linhasDialogo.Array.data[2]
       value: "Ot\xE1vio:\nVai existir diversos desafios que exigem coopera\xE7\xE3o
-        \u2014 nada de agir sozinho. Trabalhem juntos."
+        nada de agir sozinho. Trabalhem juntos."
       objectReference: {fileID: 0}
     - target: {fileID: 7660439255949543271, guid: 1b8a6df0a5d7e1645affd635052f95b4, type: 3}
       propertyPath: linhasDialogo.Array.data[3]
