@@ -7,181 +7,158 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
 {
     [Header("Referências")]
     public Slider barraProgresso;
-    public TMP_Text textoObjetivo;   // NPCs entrevistados
-    public TMP_Text textoJornais;    // Jornais coletados
-    public TMP_Text textoLugares;    // Lugares visitados
-    public Image fillImage;
+    public TMP_Text textoObjetivo;   // se quiser um título geral, tipo "Objetivos:"
+    public TMP_Text textoJornais;
+    public TMP_Text textoLugares;
+    public TMP_Text textoNpcs;
 
     [Header("Configurações de Objetivos")]
-    public int npcsImportantesTotais = 3;
-    public int jornaisTotais = 20;
-    public int lugaresTotais = 2;
+    public int npcsImportantesTotais = 1;
+    public int jornaisTotais = 10;
+    public int lugaresTotais = 4;   // ajusta aqui no inspector conforme seu jogo
 
+    [Header("Cores e Velocidade")]
+    public Image fillImage;
+    public Color corInicial = Color.white;
+    public Color corFinal = Color.blue;
+    public float velocidadeLerp = 4f;
+
+    [Header("Painel Final")]
+    public PainelFinalFaseController painelFinalFase;
+
+    // estados atuais
     private int npcsConcluidos = 0;
     private int jornaisColetados = 0;
     private int lugaresConcluidos = 0;
 
     private float progressoAlvo = 0f;
-
-    [Header("Cores e Velocidade")]
-    public Color corInicial = Color.cyan;
-    public Color corFinal = Color.green;
-    public float velocidadeLerp = 3f;
+    private float progressoAtual = 0f;
 
     void Start()
     {
-        if (barraProgresso != null)
-        {
-            barraProgresso.minValue = 0f;
-            barraProgresso.maxValue = 1f;
-            barraProgresso.value = 0f;
-        }
-
-        AtualizarTextoObjetivo();
-        AtualizarTextoJornais();
-        AtualizarTextoLugares();
+        AtualizarUI();
     }
-
-    // ========== NPC IMPORTANTE ENTREVISTADO ==========
-
-    public void NPCImportanteConcluido()
-    {
-        // Qualquer jogador chama isso -> pedido vai para o Master
-        photonView.RPC("RPC_PedirRegistroNPC", RpcTarget.MasterClient);
-    }
-
-    [PunRPC]
-    void RPC_PedirRegistroNPC()
-    {
-        if (!PhotonNetwork.IsMasterClient) return;
-
-        // Master autoriza e manda atualizar para todos
-        photonView.RPC("RPC_SincronizarNPC", RpcTarget.AllBuffered);
-    }
-
-    [PunRPC]
-    void RPC_SincronizarNPC()
-    {
-        if (npcsConcluidos >= npcsImportantesTotais)
-            return;
-
-        npcsConcluidos++;
-        AtualizarProgresso();
-        AtualizarTextoObjetivo();
-    }
-
-    // ========== JORNAL COLETADO ==========
-
-    public void JornalColetado()
-    {
-        photonView.RPC("RPC_PedirRegistroJornal", RpcTarget.MasterClient);
-    }
-
-    [PunRPC]
-    void RPC_PedirRegistroJornal()
-    {
-        if (!PhotonNetwork.IsMasterClient) return;
-
-        photonView.RPC("RPC_SincronizarJornal", RpcTarget.AllBuffered);
-    }
-
-    [PunRPC]
-    void RPC_SincronizarJornal()
-    {
-        if (jornaisColetados >= jornaisTotais)
-            return;
-
-        jornaisColetados++;
-        AtualizarProgresso();
-        AtualizarTextoJornais();
-    }
-
-    // ========== LUGAR VISITADO (GRUPO COMPLETO) ==========
-
-    public void LugarVisitadoConcluido()
-    {
-        photonView.RPC("RPC_PedirRegistroLugar", RpcTarget.MasterClient);
-    }
-
-    [PunRPC]
-    void RPC_PedirRegistroLugar()
-    {
-        if (!PhotonNetwork.IsMasterClient) return;
-
-        photonView.RPC("RPC_SincronizarLugar", RpcTarget.AllBuffered);
-    }
-
-    [PunRPC]
-    void RPC_SincronizarLugar()
-    {
-        if (lugaresConcluidos >= lugaresTotais)
-            return;
-
-        lugaresConcluidos++;
-        AtualizarProgresso();
-        AtualizarTextoLugares();
-    }
-
-    // ========== ATUALIZAÇÃO VISUAL DA BARRA ==========
 
     void Update()
     {
-        if (barraProgresso == null) return;
+        // animação suave da barra
+        progressoAtual = Mathf.Lerp(progressoAtual, progressoAlvo, Time.deltaTime * velocidadeLerp);
 
-        barraProgresso.value = Mathf.Lerp(barraProgresso.value, progressoAlvo, Time.deltaTime * velocidadeLerp);
+        if (barraProgresso != null)
+            barraProgresso.value = progressoAtual;
 
         if (fillImage != null)
-            fillImage.color = Color.Lerp(corInicial, corFinal, barraProgresso.value);
+            fillImage.color = Color.Lerp(corInicial, corFinal, progressoAtual);
     }
 
-    // ========== CÁLCULO DO PROGRESSO TOTAL ==========
+    // ============================
+    //  MÉTODOS PÚBLICOS (CHAMADOS
+    //  PELOS OUTROS SCRIPTS)
+    // ============================
 
-    void AtualizarProgresso()
+    public void JornalColetado()
     {
-        float progressoNPC = npcsImportantesTotais > 0 ? (float)npcsConcluidos / npcsImportantesTotais : 0f;
-        float progressoJornal = jornaisTotais > 0 ? (float)jornaisColetados / jornaisTotais : 0f;
-        float progressoLugar = lugaresTotais > 0 ? (float)lugaresConcluidos / lugaresTotais : 0f;
-
-        progressoAlvo = (progressoNPC + progressoJornal + progressoLugar) / 3f;
-    }
-
-    private void VerificarConclusaoGeral()
-    {
-        if (!PhotonNetwork.IsMasterClient) return;
-
-        bool npcOk = (npcsConcluidos >= npcsImportantesTotais);
-        bool jornalOk = (jornaisColetados >= jornaisTotais);
-        bool lugarOk = (lugaresConcluidos >= lugaresTotais);
-
-        if (npcOk && jornalOk && lugarOk)
+        if (!PhotonNetwork.IsMasterClient)
         {
-            Debug.Log("[Progressao] TODOS os objetivos concluídos!");
-
-            // Mostrar o painel final para TODOS os jogadores
-            PainelFinalFaseController.instancia.photonView.RPC(
-                "RPC_MostrarPainelFinal",
-                RpcTarget.All
-            );
+            photonView.RPC(nameof(RPC_JornalColetado), RpcTarget.MasterClient);
+            return;
         }
+
+        RPC_JornalColetado();
     }
 
-    // ========== TEXTOS DA UI ==========
-
-    void AtualizarTextoObjetivo()
+    public void LugarVisitadoConcluido()
     {
-        if (textoObjetivo != null)
-            textoObjetivo.text = $"Pessoas Entrevistadas: {npcsConcluidos}/{npcsImportantesTotais}";
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC(nameof(RPC_LugarVisitadoConcluido), RpcTarget.MasterClient);
+            return;
+        }
+
+        RPC_LugarVisitadoConcluido();
     }
 
-    void AtualizarTextoJornais()
+    public void NPCImportanteConcluido()
     {
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC(nameof(RPC_NPCImportanteConcluido), RpcTarget.MasterClient);
+            return;
+        }
+
+        RPC_NPCImportanteConcluido();
+    }
+
+    // ============================
+    //       RPCs NO MASTER
+    // ============================
+
+    [PunRPC]
+    private void RPC_JornalColetado()
+    {
+        jornaisColetados = Mathf.Min(jornaisColetados + 1, jornaisTotais);
+        SincronizarEstadoParaTodos();
+    }
+
+    [PunRPC]
+    private void RPC_LugarVisitadoConcluido()
+    {
+        lugaresConcluidos = Mathf.Min(lugaresConcluidos + 1, lugaresTotais);
+        SincronizarEstadoParaTodos();
+    }
+
+    [PunRPC]
+    private void RPC_NPCImportanteConcluido()
+    {
+        npcsConcluidos = Mathf.Min(npcsConcluidos + 1, npcsImportantesTotais);
+        SincronizarEstadoParaTodos();
+    }
+
+    private void SincronizarEstadoParaTodos()
+    {
+        photonView.RPC(nameof(RPC_SyncEstado), RpcTarget.All,
+            npcsConcluidos, jornaisColetados, lugaresConcluidos);
+    }
+
+    // ============================
+    //     RPC DE SINCRONIZAÇÃO
+    // ============================
+
+    [PunRPC]
+    private void RPC_SyncEstado(int npcs, int jornais, int lugares)
+    {
+        npcsConcluidos = npcs;
+        jornaisColetados = jornais;
+        lugaresConcluidos = lugares;
+
+        AtualizarUI();
+    }
+
+    // ============================
+    //        LÓGICA DE UI
+    // ============================
+
+    private void AtualizarUI()
+    {
+        // Aqui voltamos ao formato "frase + valor":
+        if (textoNpcs != null)
+            textoNpcs.text = $"Pessoa Entrevistada: {npcsConcluidos}/{npcsImportantesTotais}";
+
         if (textoJornais != null)
             textoJornais.text = $"Jornais Coletados: {jornaisColetados}/{jornaisTotais}";
-    }
 
-    void AtualizarTextoLugares()
-    {
         if (textoLugares != null)
             textoLugares.text = $"Lugares Visitados: {lugaresConcluidos}/{lugaresTotais}";
+
+        float totalPontos = npcsImportantesTotais + jornaisTotais + lugaresTotais;
+        float feitos = npcsConcluidos + jornaisColetados + lugaresConcluidos;
+
+        progressoAlvo = totalPontos > 0 ? feitos / totalPontos : 0f;
+
+        // Quando chegar em 100%, mostra painel final
+        if (feitos >= totalPontos && painelFinalFase != null)
+        {
+            painelFinalFase.MostrarPainelFinal();
+        }
     }
 }

@@ -15,6 +15,10 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
     public GameObject cameraPrefab;
     public GameObject playerUiPrefab;
 
+    [Header("Cenas jogáveis (onde o player deve nascer)")]
+    [SerializeField]
+    private string[] cenasJogaveis = { "Cena de Introducao 1", "PI Fase 1" };
+
     // 🔹 Mantém referências únicas locais entre cenas
     private static GameObject _localUI;
     private static GameObject _localCamera;
@@ -38,7 +42,7 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.IsConnected)
         {
-            Debug.LogError("❌ Não conectado ao Photon!");
+            Debug.LogError("❌ Não conectado ao Photon! (Se der Play direto nessa cena, é normal não spawnear nada)");
             return;
         }
 
@@ -48,8 +52,12 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
 
     private bool CenaEhJogavel(string nomeCena)
     {
-        // Liste aqui as cenas onde os jogadores devem ser instanciados
-        return nomeCena == "Cena de Introducao" || nomeCena == "PI Fase 1";
+        foreach (var c in cenasJogaveis)
+        {
+            if (c == nomeCena)
+                return true;
+        }
+        return false;
     }
 
     new void OnEnable()
@@ -67,12 +75,12 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         string nomeCena = scene.name;
+        Debug.Log($"[NetworkGameManager] Cena carregada: {nomeCena}");
+
+        hasSpawned = false;
 
         if (CenaEhJogavel(nomeCena))
         {
-            //Debug.Log($"[NetworkGameManager] Cena jogável carregada: {nomeCena}");
-            hasSpawned = false;
-
             // Delay pequeno pra garantir que tudo foi carregado
             Invoke(nameof(SpawnPlayer), 0.3f);
         }
@@ -90,6 +98,12 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
             return;
         }
 
+        if (!PhotonNetwork.IsConnected)
+        {
+            Debug.LogWarning("[NetworkGameManager] Tentou spawnar sem estar conectado ao Photon.");
+            return;
+        }
+
         int actorID = PhotonNetwork.LocalPlayer.ActorNumber;
         GameObject chosenPrefab = actorID == 1 ? player1Prefab : player2Prefab;
 
@@ -98,7 +112,7 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
 
         if (spawnObj == null)
         {
-            Debug.LogError($"[NetworkGameManager] Nenhum objeto com a tag '{spawnTag}' encontrado!");
+            Debug.LogError($"[NetworkGameManager] Nenhum objeto com a tag '{spawnTag}' encontrado na cena {SceneManager.GetActiveScene().name}!");
             return;
         }
 
@@ -133,7 +147,7 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
             }
             else
             {
-                Debug.Log($"[NetworkGameManager] UI já existente — reutilizando o Canvas atual");
+                Debug.Log("[NetworkGameManager] UI já existente — reutilizando o Canvas atual");
             }
 
             // ============================
@@ -143,11 +157,11 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
             {
                 _localCamera = Instantiate(cameraPrefab);
                 DontDestroyOnLoad(_localCamera);
-                Debug.Log($"[NetworkGameManager] Câmera criada e persistente.");
+                Debug.Log("[NetworkGameManager] Câmera criada e persistente.");
             }
             else
             {
-                Debug.Log($"[NetworkGameManager] Câmera já existente — reutilizando a atual");
+                Debug.Log("[NetworkGameManager] Câmera já existente — reutilizando a atual");
             }
 
             // Vincula a câmera ao player
@@ -178,7 +192,7 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
         }
 
         hasSpawned = true;
-        Debug.Log($"[NetworkGameManager] Player {actorID} spawnado com sucesso");
+        Debug.Log($"[NetworkGameManager] Player {actorID} spawnado com sucesso na cena {SceneManager.GetActiveScene().name}");
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)

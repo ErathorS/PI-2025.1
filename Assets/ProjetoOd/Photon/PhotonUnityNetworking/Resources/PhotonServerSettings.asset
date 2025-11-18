@@ -106,6 +106,10 @@ MonoBehaviour:
   - RPC_RegistrarNoMaster
   - RPC_SincronizarUI
   - RPC_MostrarPainelFinal
+  - RPC_JornalColetado
+  - RPC_LugarVisitadoConcluido
+  - RPC_NPCImportanteConcluido
+  - RPC_SyncEstado
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

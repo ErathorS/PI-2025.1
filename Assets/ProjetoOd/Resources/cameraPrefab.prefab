@@ -143,9 +143,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  distance: 10
+  distance: 8.5
   height: 1.5
-  rotationSpeed: 25
+  rotationSpeed: 20
   smoothTime: 0.3
 --- !u!81 &2092971347000918874
 AudioListener:

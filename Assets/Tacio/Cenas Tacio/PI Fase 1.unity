@@ -1041,7 +1041,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8897240587062997348}
         m_TargetAssemblyTypeName: PainelFinalFaseController, Assembly-CSharp
-        m_MethodName: ConfirmarIrParaProximaCena
+        m_MethodName: BotaoIrParaProximaFase
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -42017,7 +42017,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Pessoa Entrevistada:'
+  m_text: 'Pessoa Entrevistada: 0/1'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 96aec8f2b03140a4cbc99c900eff3fbc, type: 2}
   m_sharedMaterial: {fileID: 4810043910364526431, guid: 96aec8f2b03140a4cbc99c900eff3fbc, type: 2}
@@ -53433,13 +53433,15 @@ MonoBehaviour:
   textoObjetivo: {fileID: 1217489423069608552}
   textoJornais: {fileID: 418260508}
   textoLugares: {fileID: 1266646719}
-  fillImage: {fileID: 3855353593491210482}
+  textoNpcs: {fileID: 1217489423069608552}
   npcsImportantesTotais: 1
   jornaisTotais: 10
   lugaresTotais: 2
+  fillImage: {fileID: 3855353593491210482}
   corInicial: {r: 1, g: 1, b: 1, a: 1}
   corFinal: {r: 0.23921567, g: 0.5346699, b: 1, a: 1}
   velocidadeLerp: 4
+  painelFinalFase: {fileID: 8897240587062997348}
 --- !u!1 &7424521934931185339
 GameObject:
   m_ObjectHideFlags: 0
@@ -55929,6 +55931,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   painelFimDeFase: {fileID: 112458082}
+  nomeCenaHQ: Cena de Introducao 2
 --- !u!1001 &8904113109228802089
 PrefabInstance:
   m_ObjectHideFlags: 0
