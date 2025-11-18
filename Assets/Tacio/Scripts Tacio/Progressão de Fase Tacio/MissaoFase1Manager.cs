@@ -25,11 +25,9 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
         instancia = this;
     }
 
-    // === INICIAR MISSÃO ===
     public void IniciarMissao()
     {
         if (!PhotonNetwork.IsMasterClient) return;
-
         photonView.RPC("RPC_IniciarMissao", RpcTarget.AllBuffered);
     }
 
@@ -89,7 +87,7 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void RPC_ResetarMissao()
     {
-        coletor.ResetarFase();
+        coletor.ResetarFase(); // <-- CORRETO! Chamando do Coletor.
 
         missaoAtiva = true;
         missaoConcluida = false;
@@ -100,11 +98,9 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
         AtualizarUI();
     }
 
-    // === 🚀 MISSÃO FINALIZADA ===
     public void MissaoFinalizada()
     {
         if (!PhotonNetwork.IsMasterClient) return;
-
         photonView.RPC("RPC_MissaoFinalizada", RpcTarget.AllBuffered);
     }
 
@@ -122,7 +118,6 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
         npcEntrega.AtivarDialogoDeEntrega();
     }
 
-    // === 🚀 FINALIZAR ENTREGA ===
     public void FinalizarEntrega()
     {
         photonView.RPC("RPC_FinalizarEntrega", RpcTarget.AllBuffered);
@@ -131,7 +126,6 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void RPC_FinalizarEntrega()
     {
-        // DESATIVA TUDO PARA TODOS OS PLAYERS
         painelMissao.SetActive(false);
         botaoReset.SetActive(false);
 

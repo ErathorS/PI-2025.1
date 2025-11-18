@@ -967,7 +967,7 @@ MonoBehaviour:
   - falas:
     - "Editora\r\nRicardo e Laura\u2026 Voc\xEAs j\xE1 terminaram a mat\xE9ria? A
       deadline \xE9 at\xE9 amanh\xE3, e espero que voc\xEAs n\xE3o me decepcionem\u2026\r\n"
-    - "Laura\r\n\u2014Calma que j\xE1 terminamos. Entrega Para ela, Ricardo!\r\n"
+    - "Laura:\r\nCalma que j\xE1 terminamos. Entrega Para ela, Ricardo!\r\n"
   - falas:
     - "Ricardo\r\nT\xE1 T\xE1, n\xE3o precisa ficar toda animada\u2026 Eu at\xE9
       acho que poderia ser melhor\u2026\r\n"

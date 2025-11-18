@@ -101,6 +101,11 @@ MonoBehaviour:
   - RPC_PedirAcionarSemaforo
   - RPC_RespawnPlayer
   - RPC_SincronizarEstado
+  - RPC_CarregarTodos
+  - RPC_DestruirCaixa
+  - RPC_RegistrarNoMaster
+  - RPC_SincronizarUI
+  - RPC_MostrarPainelFinal
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

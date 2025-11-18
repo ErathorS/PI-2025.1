@@ -145,6 +145,26 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
         progressoAlvo = (progressoNPC + progressoJornal + progressoLugar) / 3f;
     }
 
+    private void VerificarConclusaoGeral()
+    {
+        if (!PhotonNetwork.IsMasterClient) return;
+
+        bool npcOk = (npcsConcluidos >= npcsImportantesTotais);
+        bool jornalOk = (jornaisColetados >= jornaisTotais);
+        bool lugarOk = (lugaresConcluidos >= lugaresTotais);
+
+        if (npcOk && jornalOk && lugarOk)
+        {
+            Debug.Log("[Progressao] TODOS os objetivos concluídos!");
+
+            // Mostrar o painel final para TODOS os jogadores
+            PainelFinalFaseController.instancia.photonView.RPC(
+                "RPC_MostrarPainelFinal",
+                RpcTarget.All
+            );
+        }
+    }
+
     // ========== TEXTOS DA UI ==========
 
     void AtualizarTextoObjetivo()

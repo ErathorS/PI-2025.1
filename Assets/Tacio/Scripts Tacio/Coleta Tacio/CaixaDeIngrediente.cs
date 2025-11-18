@@ -5,13 +5,17 @@ public class CaixaDeIngrediente : MonoBehaviourPun
 {
     private PlayerUIReferences uiDoJogador;
     private bool jogadorPerto = false;
+    private bool coletado = false;
 
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player")) return;
 
         PhotonView pv = other.GetComponent<PhotonView>();
-        if (pv == null || !pv.IsMine) return;  // Só o jogador dono vê o botão
+        if (pv == null || !pv.IsMine) return; // Apenas o jogador dono vê UI
+
+        // Se já foi coletado, ignora
+        if (coletado) return;
 
         jogadorPerto = true;
         uiDoJogador = other.GetComponentInChildren<PlayerUIReferences>();
@@ -20,7 +24,7 @@ public class CaixaDeIngrediente : MonoBehaviourPun
         {
             uiDoJogador.botaoInteracao.gameObject.SetActive(true);
             uiDoJogador.botaoInteracao.onClick.RemoveAllListeners();
-            uiDoJogador.botaoInteracao.onClick.AddListener(Coletar);
+            uiDoJogador.botaoInteracao.onClick.AddListener(() => Coletar(pv.OwnerActorNr));
         }
     }
 
@@ -42,31 +46,34 @@ public class CaixaDeIngrediente : MonoBehaviourPun
         uiDoJogador = null;
     }
 
-    private void Coletar()
+    private void Coletar(int actorId)
     {
-        if (!jogadorPerto) return;
+        if (!jogadorPerto || coletado) return;
 
-        // 🔥 Chama coleta sincronizada
-        photonView.RPC("RPC_Coletar", RpcTarget.AllBuffered);
+        coletado = true;
+
+        // 🔥 MASTER registra a coleta
+        photonView.RPC("RPC_RegistrarNoMaster", RpcTarget.MasterClient, actorId);
     }
 
     [PunRPC]
-    private void RPC_Coletar()
+    private void RPC_RegistrarNoMaster(int actorId)
     {
-        // Atualiza contador
-        ColetarCaixasManager.instancia.RegistrarColeta();
+        if (!PhotonNetwork.IsMasterClient) return;
 
-        // 🔥 Garante que o botão desapareça IMEDIATAMENTE
+        // Adiciona 1 caixa
+        ColetarCaixasManager.instancia.AdicionarColetaMaster();
+
+        // Sincroniza destruição
+        photonView.RPC("RPC_DestruirCaixa", RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    private void RPC_DestruirCaixa()
+    {
         if (uiDoJogador != null)
-        {
             uiDoJogador.botaoInteracao.gameObject.SetActive(false);
-            uiDoJogador.botaoInteracao.onClick.RemoveAllListeners();
-        }
 
-        uiDoJogador = null;
-        jogadorPerto = false;
-
-        // Desativa a caixa
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 }
