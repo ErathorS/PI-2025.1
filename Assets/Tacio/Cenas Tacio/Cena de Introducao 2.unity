@@ -3889,19 +3889,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7660439255949543271, guid: 1b8a6df0a5d7e1645affd635052f95b4, type: 3}
       propertyPath: linhasDialogo.Array.data[0]
-      value: "Ot\xE1vio:\nEi, voc\xEAs dois s\xE3o os rep\xF3rteres novos, certo?
-        A Editora Chefe me mandou pra garantir que entenderam a miss\xE3o."
+      value: "Ot\xE1vio:\nEi, voc\xEAs dois, a editora chefe me mandou pra garantir
+        que entenderam a  proxima miss\xE3o."
       objectReference: {fileID: 0}
     - target: {fileID: 7660439255949543271, guid: 1b8a6df0a5d7e1645affd635052f95b4, type: 3}
       propertyPath: linhasDialogo.Array.data[1]
-      value: "Ot\xE1vio:\nvoc\xEAs v\xE3o entrevistar pessoas importantes, coletar
-        materiais jornal\xEDsticos e ajudar a resolver casos pelo mapa. Cada hist\xF3ria
-        conta."
+      value: "Ot\xE1vio:\ndo mesmo jeito que voces fizeram da ultima vez so que agora
+        em um ambiente novo."
       objectReference: {fileID: 0}
     - target: {fileID: 7660439255949543271, guid: 1b8a6df0a5d7e1645affd635052f95b4, type: 3}
       propertyPath: linhasDialogo.Array.data[2]
-      value: "Ot\xE1vio:\nVai existir diversos desafios que exigem coopera\xE7\xE3o
-        nada de agir sozinho. Trabalhem juntos."
+      value: "Ot\xE1vio:\nvoc\xEAs v\xE3o entrevistar pessoas importantes, coletar
+        materiais jornal\xEDsticos e ajudar a resolver casos pelo mapa. Cada hist\xF3ria
+        conta."
       objectReference: {fileID: 0}
     - target: {fileID: 7660439255949543271, guid: 1b8a6df0a5d7e1645affd635052f95b4, type: 3}
       propertyPath: linhasDialogo.Array.data[3]
@@ -9781,6 +9781,10 @@ PrefabInstance:
     - target: {fileID: 1900838266182818047, guid: bd5d0e71107fde0489397fb7ed13eb95, type: 3}
       propertyPath: plateTag
       value: Plate
+      objectReference: {fileID: 0}
+    - target: {fileID: 1900838266182818047, guid: bd5d0e71107fde0489397fb7ed13eb95, type: 3}
+      propertyPath: proximaCena
+      value: PI Fase 2 -DvD
       objectReference: {fileID: 0}
     - target: {fileID: 2377690126370057793, guid: bd5d0e71107fde0489397fb7ed13eb95, type: 3}
       propertyPath: m_Name
