@@ -2,22 +2,35 @@ using UnityEngine;
 
 public class CarMovemetn : MonoBehaviour
 {
+    [Header("Config do Carro")]
     public float DeSlow = 0;
-    public Vector3 SpawnPlayer = new Vector3(-2.5f, -0.001f, -7.4f);
+    public bool DirecaoContraria = false;
 
-    public bool DirecaoContraria = false;  // 👈 NOVO
+    [Header("Spawn dos Players")]
+    public Transform SpawnPlayer1;
+    public Transform SpawnPlayer2;
+
+    private Vector3 initialPosition;
+
+    void Start()
+    {
+        // Salva a posição inicial do carro
+        initialPosition = transform.position;
+    }
 
     void Update()
     {
-        // 👇 Escolhe a direção (1 normal, -1 invertida)
         float direction = DirecaoContraria ? -1f : 1f;
 
+        // Movimento do carro
         transform.Translate(transform.right * Time.deltaTime * DeSlow * direction);
 
         RaycastHit hit;
 
+        // RAYCAST na direção correta
         if (Physics.Raycast(transform.position, transform.right * direction, out hit, 15))
         {
+            // 🛑 Semáforo
             if (hit.transform.CompareTag("Stop Car"))
             {
                 if (BotaoInterativo.StateSemaforo)
@@ -30,22 +43,29 @@ public class CarMovemetn : MonoBehaviour
                 }
             }
 
-            if (hit.transform.CompareTag("Respawn"))
+            // 👤 PLAYER
+            if (hit.transform.CompareTag("Player"))
             {
-                transform.position = new Vector3(
-                    transform.position.x - Random.Range(120, 150) * direction,
-                    transform.position.y,
-                    transform.position.z
-                );
+                // velocidade alta e muito perto -> atropela
+                if (DeSlow > 5 && Vector3.Distance(transform.position, hit.transform.position) < 5)
+                {
+                    Transform playerHit = hit.transform;
+
+                    // Detecta qual player encostou
+                    if (playerHit.name == "Player1" && SpawnPlayer1 != null)
+                    {
+                        playerHit.position = SpawnPlayer1.position;
+                    }
+                    else if (playerHit.name == "Player2" && SpawnPlayer2 != null)
+                    {
+                        playerHit.position = SpawnPlayer2.position;
+                    }
+                }
             }
 
-            if (hit.transform.CompareTag("Player") && DeSlow > 5 &&
-                Vector3.Distance(transform.position, hit.transform.position) < 5)
-            {
-                hit.collider.gameObject.transform.position = SpawnPlayer;
-            }
-
-            if (DeSlow < 15 && !hit.transform.CompareTag("Player") &&
+            // 🚗 Aceleração natural
+            if (DeSlow < 15 &&
+                !hit.transform.CompareTag("Player") &&
                 !hit.transform.CompareTag("Respawn") &&
                 !hit.transform.CompareTag("Stop Car"))
             {
@@ -55,8 +75,31 @@ public class CarMovemetn : MonoBehaviour
         else
         {
             if (DeSlow < 15)
-            {
                 DeSlow += 0.1f;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // 🔄 Respawn dos carros
+        if (other.CompareTag("Respawn"))
+        {
+            transform.position = initialPosition;
+            DeSlow = Random.Range(5f, 15f);
+        }
+
+        // 👤 Player bate diretamente no trigger do carro (em vez do Ray)
+        if (other.CompareTag("Player"))
+        {
+            Transform playerHit = other.transform;
+
+            if (playerHit.name == "Player1" && SpawnPlayer1 != null)
+            {
+                playerHit.position = SpawnPlayer1.position;
+            }
+            else if (playerHit.name == "Player2" && SpawnPlayer2 != null)
+            {
+                playerHit.position = SpawnPlayer2.position;
             }
         }
     }
