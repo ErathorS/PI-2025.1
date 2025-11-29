@@ -125,6 +125,8 @@ MonoBehaviour:
   - RPC_ResetarEstadoNPC
   - RPC_ProcessarColeta
   - RPC_MarcarLugarNoMaster
+  - RPC_DebugEstado
+  - RPC_SolicitarSincronizacao
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

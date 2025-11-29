@@ -376,4 +376,22 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
         DebugEstadoAtual();
         ForcarSincronizacao();
     }
+
+    // 🔴 NOVO: Método para forçar verificação de lugares (debug)
+    public void ForcarVerificacaoLugares()
+    {
+        LugarVisitadoManager lugarManager = FindObjectOfType<LugarVisitadoManager>();
+        if (lugarManager != null)
+        {
+            lugarManager.VerificarEAtualizarProgresso();
+            lugarManager.DebugEstadoAtual();
+            Debug.Log("[ProgressaoFaseController] Verificação de lugares forçada!");
+        }
+        else
+        {
+            Debug.LogError("[ProgressaoFaseController] LugarVisitadoManager não encontrado!");
+        }
+    }
+
+
 }

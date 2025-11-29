@@ -2588,7 +2588,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grupoID: 1
-  lugarID: 2
+  lugarID: 1
   materialPadrao: {fileID: 7080396514068641953, guid: 74684f7757ec42d42b460f53f2bd3dee, type: 3}
   materialVisitado: {fileID: -5443899501136742354, guid: 1d7e9e3a14a890340a80ad91edb84193, type: 3}
 --- !u!65 &234838260
@@ -2679,7 +2679,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &240922408
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3931,7 +3931,7 @@ Transform:
   m_GameObject: {fileID: 323474783}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7070552, z: -0, w: 0.70715845}
-  m_LocalPosition: {x: 17.732838, y: 16.738071, z: 33.477417}
+  m_LocalPosition: {x: 17.732838, y: 17.87, z: 33.477417}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6594,7 +6594,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grupoID: 1
-  lugarID: 1
+  lugarID: 0
   materialPadrao: {fileID: 7080396514068641953, guid: 74684f7757ec42d42b460f53f2bd3dee, type: 3}
   materialVisitado: {fileID: -5443899501136742354, guid: 1d7e9e3a14a890340a80ad91edb84193, type: 3}
 --- !u!65 &576687461
@@ -9485,7 +9485,7 @@ Transform:
   m_GameObject: {fileID: 710759744}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 41, y: 0, z: -25.7}
   m_LocalScale: {x: 1.8199999, y: 0.29119998, z: 1.8199999}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -9543,7 +9543,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grupoID: 2
-  lugarID: 4
+  lugarID: 1
   materialPadrao: {fileID: 7080396514068641953, guid: 74684f7757ec42d42b460f53f2bd3dee, type: 3}
   materialVisitado: {fileID: -5443899501136742354, guid: 1d7e9e3a14a890340a80ad91edb84193, type: 3}
 --- !u!65 &710759749
@@ -10417,7 +10417,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
-  m_Intensity: 0.5
+  m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -10804,6 +10804,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 797971452}
+  - component: {fileID: 797971453}
   m_Layer: 0
   m_Name: Lugares visitados
   m_TagString: Untagged
@@ -10830,6 +10831,24 @@ Transform:
   - {fileID: 710759745}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -89.992, z: 0}
+--- !u!114 &797971453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797971451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d33193de727d35348b3c17ee461673bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grupo1:
+  - {fileID: 576687460}
+  - {fileID: 234838259}
+  grupo2:
+  - {fileID: 1682136294}
+  - {fileID: 710759748}
 --- !u!1001 &799462045
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19767,7 +19786,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Lugares Visitados: 0/4'
+  m_text: 'Lugares Visitados: 0/2'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 96aec8f2b03140a4cbc99c900eff3fbc, type: 2}
   m_sharedMaterial: {fileID: 4810043910364526431, guid: 96aec8f2b03140a4cbc99c900eff3fbc, type: 2}
@@ -21857,7 +21876,7 @@ Transform:
   m_GameObject: {fileID: 1682136290}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.1599998, y: 0, z: 0.03000021}
+  m_LocalPosition: {x: 43.2, y: 0, z: -25.7}
   m_LocalScale: {x: 1.8199999, y: 0.29119998, z: 1.8199999}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -21915,7 +21934,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grupoID: 2
-  lugarID: 3
+  lugarID: 0
   materialPadrao: {fileID: 7080396514068641953, guid: 74684f7757ec42d42b460f53f2bd3dee, type: 3}
   materialVisitado: {fileID: -5443899501136742354, guid: 1d7e9e3a14a890340a80ad91edb84193, type: 3}
 --- !u!65 &1682136295
