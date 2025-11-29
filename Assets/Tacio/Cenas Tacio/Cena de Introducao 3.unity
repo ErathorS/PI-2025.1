@@ -2420,34 +2420,36 @@ MonoBehaviour:
   - {fileID: 744597783}
   falasPorQuadro:
   - falas:
-    - "Editora\r\nRicardo e Laura\u2026 Voc\xEAs j\xE1 terminaram a mat\xE9ria? A
-      deadline \xE9 at\xE9 amanh\xE3, e espero que voc\xEAs n\xE3o me decepcionem\u2026\r\n"
-    - "Laura:\r\nCalma que j\xE1 terminamos. Entrega Para ela, Ricardo!\r\n"
-  - falas:
-    - "Ricardo\r\nT\xE1 T\xE1, n\xE3o precisa ficar toda animada\u2026 Eu at\xE9
-      acho que poderia ser melhor\u2026\r\n"
-  - falas:
-    - "Editora\r\nRicardo, se essa reportagem for ruim, voc\xEA j\xE1 sabe n\xE9?\r\n"
-    - "Ricardo\r\nEu sei, eu sei, t\xF4 na olho da rua\u2026 Mas eu tenho certeza
-      que voc\xEA vai querer me promover hahaha!\r\n"
-  - falas:
+    - "Editora\nRicardo, Laura\u2026 Recebi o material do apag\xE3o. J\xE1 posso
+      respirar aliviada ou vou ter outro surto hoje?"
     - 'Laura
 
-      Quem escreveu a maioria foi ele!
-
-'
-    - "Editora\r\n...Caramba, que \xF3timo trabalho que voc\xEAs fizeram! Vai ser
-      a reportagem principal amanh\xE3! Ricardo, Voc\xEA evoluiu bastante, gostei
-      de ver!\r\n"
+      Pode relaxar. A gente viu de perto o que tava acontecendo. Entrega
+      pra ela, Ricardo.'
   - falas:
-    - "Laura\r\nAinda bem que n\xE3o vou precisar mais dar uns tapas para voc\xEA
-      aprender!\r\n"
-    - "Ricardo(Olhando para Editora)\r\n...Ser\xE1 que rola uma promo\xE7\xE3-\r\n"
-    - 'Editora
-
-      Ha HA. Boa tentativa.
-
-'
+    - "Ricardo\nDessa vez eu t\xF4\u2026 hm\u2026 confiante. O neg\xF3cio l\xE1 em
+      cima do morro mexeu comigo. Acho que a mat\xE9ria ficou mais forte do que eu
+      esperava."
+  - falas:
+    - "Editora\nOlha surpresa.\nRicardo? Confiante e sens\xEDvel ao tema? Isso sim
+      \xE9 novidade."
+    - "Ricardo\n\xC9\u2026 vendo o contraste entre Copacabana e o resto da cidade\u2026
+      dif\xEDcil sair de l\xE1 igual. A luz volta, mas a desigualdade fica estampada,
+      sabe?"
+    - "Laura\nOlha s\xF3 quem t\xE1 come\xE7ando a enxergar mais do que os pr\xE9dios
+      da Zona Sul."
+    - "Editora\nPois eu adorei. A mat\xE9ria ficou excelente. Voc\xEAs dois est\xE3o
+      ficando bons nisso.\nE j\xE1 aviso: tenho outra miss\xE3o."
+  - falas:
+    - "Ricardo\nL\xE1 vem bomba\u2026"
+    - "Editora\nS\xE3o Paulo. Tr\xE2nsito ca\xF3tico, \xF4nibus lotado, gente perdendo
+      horas da vida na rua. Quero que voc\xEAs descubram o que t\xE1 por tr\xE1s
+      desse colapso."
+  - falas:
+    - "Laura\nO caos da mobilidade\u2026"
+    - "Ricardo\n\u2026e como sempre, quem sofre mais. T\xE1, tudo bem. Depois do
+      Rio, acho que estou pronto pra encarar isso."
+    - "Editora\n\xD3timo. Arrumem as malas. A metr\xF3pole espera por voc\xEAs."
 --- !u!114 &545862372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9784,7 +9786,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1900838266182818047, guid: bd5d0e71107fde0489397fb7ed13eb95, type: 3}
       propertyPath: proximaCena
-      value: PI Fase 2 -DvD
+      value: PI Fase 3
       objectReference: {fileID: 0}
     - target: {fileID: 2377690126370057793, guid: bd5d0e71107fde0489397fb7ed13eb95, type: 3}
       propertyPath: m_Name
@@ -9911,7 +9913,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aaefc1eb25290b42ab4f203e7acf32f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sceneToLoad: PI Fase 2 -DvD
+  _sceneToLoad: PI Fase 3
   apenasMasterCarrega: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

@@ -32010,8 +32010,7 @@ MonoBehaviour:
   - "Dona Cida: (sorri, cansada) \xC9 isso, meu filho. Quando chutam o acaraj\xE9,
     n\xE3o chutam s\xF3 farinha e feij\xE3o-fradinho  chutam um peda\xE7o da Bahia."
   ehNPCFase2: 0
-  botoesSincronizacao: []
-  postesParaControlar: []
+  tarefaConcluida: 0
 --- !u!1 &1573767159
 GameObject:
   m_ObjectHideFlags: 0
@@ -58858,7 +58857,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   painelFimDeFase: {fileID: 112458082}
-  nomeCenaHQ: Cena de Introducao 2
+  nomeCenaHQ: PI Fase 2
 --- !u!1001 &8904113109228802089
 PrefabInstance:
   m_ObjectHideFlags: 0

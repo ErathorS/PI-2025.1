@@ -11,7 +11,9 @@ public class AudioManager : MonoBehaviour
     [Header("Músicas")]
     public AudioClip menuMusic;   // Menu, Load, Lobby
     public AudioClip fase1Music;  // Fase 1
+    
     public AudioClip fase2Music;  // Fase 2
+    public AudioClip fase3Music;  // Fase 3
 
     private void Awake()
     {
@@ -57,13 +59,17 @@ public class AudioManager : MonoBehaviour
         {
             novaMusica = menuMusic;
         }
-        else if (sceneName == "Cena de Introducao" || sceneName == "PI Fase 1")
+        else if (sceneName == "Cena de Introducao 1" || sceneName == "PI Fase 1")
         {
             novaMusica = fase1Music;
         }
-        else if (sceneName == "PI Fase 2")
+        else if (sceneName == "Cena de Introducao 2" || sceneName == "PI Fase 2")
         {
             novaMusica = fase2Music;
+        }
+        else if (sceneName == "Cena de Introducao 3" || sceneName == "PI Fase 3")
+        {
+            novaMusica = fase3Music;
         }
 
         // Se encontrou uma música e ela é diferente da atual, troca

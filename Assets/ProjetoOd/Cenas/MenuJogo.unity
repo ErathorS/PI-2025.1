@@ -495,7 +495,8 @@ MonoBehaviour:
   musicSource: {fileID: 245054944}
   menuMusic: {fileID: 8300000, guid: 7f9da6c76509a9546af0f1b30e5d3117, type: 3}
   fase1Music: {fileID: 8300000, guid: 653897277860eb24cb010c99f32eea89, type: 3}
-  fase2Music: {fileID: 8300000, guid: 653897277860eb24cb010c99f32eea89, type: 3}
+  fase2Music: {fileID: 8300000, guid: 862a26cbc9d12dc4f8911fc5805913f3, type: 3}
+  fase3Music: {fileID: 8300000, guid: 7f9da6c76509a9546af0f1b30e5d3117, type: 3}
 --- !u!4 &245054946
 Transform:
   m_ObjectHideFlags: 0
