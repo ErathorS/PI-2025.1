@@ -49,4 +49,13 @@ public class IndicadorNpc : MonoBehaviour
             }
         }
     }
+
+    public void AtivarParaEntrega()
+    {
+        if (iconeExclamacao != null)
+        {
+            iconeExclamacao.SetActive(true);
+            // Opcional: mudar cor ou ícone para indicar "entrega"
+        }
+    }
 }

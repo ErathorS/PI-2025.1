@@ -11,9 +11,6 @@ public class NPCImportanteFase2 : MonoBehaviourPun
     public TMP_Text textoDialogo;
     public Button botaoAvancar;
 
-    [Header("Sincronização de Luzes")]
-    public GameObject[] botoesSincronizacao; // Botões que aparecem após o diálogo
-
     private int indiceFala = 0;
     private bool emDialogo = false;
     private bool jaConcluiu = false;
@@ -22,9 +19,6 @@ public class NPCImportanteFase2 : MonoBehaviourPun
     {
         if (painelDialogo != null)
             painelDialogo.SetActive(false);
-            
-        // Esconde os botões de sincronização inicialmente
-        EsconderBotoesSincronizacao();
     }
 
     public void IniciarDialogo()
@@ -71,33 +65,8 @@ public class NPCImportanteFase2 : MonoBehaviourPun
 
         if (!jaConcluiu && PhotonNetwork.IsMasterClient)
         {
-            // Ativa os botões de sincronização para todos os jogadores
-            photonView.RPC("RPC_AtivarBotoesSincronizacao", RpcTarget.All);
-        }
-    }
-
-    [PunRPC]
-    private void RPC_AtivarBotoesSincronizacao()
-    {
-        MostrarBotoesSincronizacao();
-        Debug.Log("[NPCImportanteFase2] Botões de sincronização ativados!");
-    }
-
-    private void MostrarBotoesSincronizacao()
-    {
-        foreach (var botao in botoesSincronizacao)
-        {
-            if (botao != null)
-                botao.SetActive(true);
-        }
-    }
-
-    private void EsconderBotoesSincronizacao()
-    {
-        foreach (var botao in botoesSincronizacao)
-        {
-            if (botao != null)
-                botao.SetActive(false);
+            // 🔴 CORREÇÃO: Usar o SincronizacaoManager para iniciar a sincronização
+            SincronizacaoManager.instancia.IniciarSincronizacao();
         }
     }
 
@@ -105,9 +74,7 @@ public class NPCImportanteFase2 : MonoBehaviourPun
     public void SincronizacaoConcluida()
     {
         jaConcluiu = true;
-        EsconderBotoesSincronizacao();
         
-        var progresso = FindObjectOfType<ProgressaoFaseController>();
-        progresso?.NPCImportanteConcluido();
+        // 🔴 REMOVIDO: O SincronizacaoManager agora cuida da progressão
     }
 }

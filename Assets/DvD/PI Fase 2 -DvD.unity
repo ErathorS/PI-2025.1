@@ -11911,6 +11911,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 518007960451841433, guid: 2d7b93edaa776914794682e1b44a0cde, type: 3}
+      propertyPath: tarefaConcluida
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 518007960451841433, guid: 2d7b93edaa776914794682e1b44a0cde, type: 3}
       propertyPath: apenasMasterPodeDialogar
       value: 1
       objectReference: {fileID: 0}
@@ -14305,7 +14309,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c93c8105f38af9b4393a07f830716c8f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -38.72
+      value: 16.3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c93c8105f38af9b4393a07f830716c8f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -14313,7 +14317,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c93c8105f38af9b4393a07f830716c8f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -29.04
+      value: -53.9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c93c8105f38af9b4393a07f830716c8f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -19517,7 +19521,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eca1bb3cadf50194096ae627bcb99a43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tempoMaximoSincronizacao: 3
+  tempoMaximoSincronizacao: 10
   botoesSincronizacao:
   - {fileID: 2114268889}
   - {fileID: 1113217325}
@@ -19530,6 +19534,7 @@ MonoBehaviour:
   - {fileID: 957970749}
   - {fileID: 1476006099}
   - {fileID: 1142727477}
+  npcImportante: {fileID: 901488092}
 --- !u!4 &1481708933
 Transform:
   m_ObjectHideFlags: 0

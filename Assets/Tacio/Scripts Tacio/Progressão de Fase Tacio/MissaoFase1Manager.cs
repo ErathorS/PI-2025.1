@@ -87,7 +87,7 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void RPC_ResetarMissao()
     {
-        coletor.ResetarFase(); // <-- CORRETO! Chamando do Coletor.
+        coletor.ResetarFase();
 
         missaoAtiva = true;
         missaoConcluida = false;
@@ -115,7 +115,23 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
 
         textoMissao.text = "Excelente trabalho!\nFalem com Dona Cida para entregar.";
 
-        npcEntrega.AtivarDialogoDeEntrega();
+        // 🔴 CORREÇÃO: Verificar se o NPC existe e é da Fase 1
+        if (npcEntrega != null)
+        {
+            // Para Fase 1, usar o método original
+            if (!npcEntrega.ehNPCFase2)
+            {
+                npcEntrega.AtivarDialogoDeEntrega();
+            }
+            else
+            {
+                Debug.LogError("[MissaoFase1Manager] NPC de entrega está configurado como Fase 2!");
+            }
+        }
+        else
+        {
+            Debug.LogError("[MissaoFase1Manager] npcEntrega não está atribuído!");
+        }
     }
 
     public void FinalizarEntrega()

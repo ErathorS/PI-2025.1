@@ -5,9 +5,11 @@ using Photon.Pun;
 
 public class ProgressaoFaseController : MonoBehaviourPunCallbacks
 {
+    public static ProgressaoFaseController instancia;
+
     [Header("Referências")]
     public Slider barraProgresso;
-    public TMP_Text textoObjetivo;   // se quiser um título geral, tipo "Objetivos:"
+    public TMP_Text textoObjetivo;
     public TMP_Text textoJornais;
     public TMP_Text textoLugares;
     public TMP_Text textoNpcs;
@@ -15,7 +17,7 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
     [Header("Configurações de Objetivos")]
     public int npcsImportantesTotais = 1;
     public int jornaisTotais = 10;
-    public int lugaresTotais = 4;   // ajusta aqui no inspector conforme seu jogo
+    public int lugaresTotais = 4;
 
     [Header("Cores e Velocidade")]
     public Image fillImage;
@@ -33,15 +35,69 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
 
     private float progressoAlvo = 0f;
     private float progressoAtual = 0f;
+    
+    // Controle rigoroso
+    private bool npcImportanteJaConcluido = false;
+    private bool npcImportanteIniciado = false;
+    private bool inicializado = false;
+
+    private PhotonView photonView;
+
+    // Se não tiver PhotonView, adicione este código no Awake():
+    private void Awake()
+    {
+        if (instancia == null)
+        {
+            instancia = this;
+            photonView = GetComponent<PhotonView>();
+            
+            // 🔴 CORREÇÃO: Se não tiver PhotonView, adicionar automaticamente
+            if (photonView == null)
+            {
+                photonView = gameObject.AddComponent<PhotonView>();
+                Debug.Log("[ProgressaoFaseController] PhotonView adicionado automaticamente");
+            }
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
+        // Inicializar com valores zerados
+        if (!inicializado)
+        {
+            ResetarProgressoInicial();
+            inicializado = true;
+        }
+        
         AtualizarUI();
+        
+        // 🔴 CORREÇÃO: Sincronizar estado com todos os jogadores ao iniciar
+        if (PhotonNetwork.IsMasterClient)
+        {
+            SincronizarEstadoParaTodos();
+        }
+    }
+
+    // Método para resetar progresso inicial
+    private void ResetarProgressoInicial()
+    {
+        npcsConcluidos = 0;
+        jornaisColetados = 0;
+        lugaresConcluidos = 0;
+        npcImportanteJaConcluido = false;
+        npcImportanteIniciado = false;
+        progressoAlvo = 0f;
+        progressoAtual = 0f;
+        
+        Debug.Log("[ProgressaoFaseController] Progresso inicial RESETADO para zero");
     }
 
     void Update()
     {
-        // animação suave da barra
         progressoAtual = Mathf.Lerp(progressoAtual, progressoAlvo, Time.deltaTime * velocidadeLerp);
 
         if (barraProgresso != null)
@@ -52,18 +108,17 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
     }
 
     // ============================
-    //  MÉTODOS PÚBLICOS (CHAMADOS
-    //  PELOS OUTROS SCRIPTS)
+    //  MÉTODOS PÚBLICOS
     // ============================
 
     public void JornalColetado()
     {
         if (!PhotonNetwork.IsMasterClient)
         {
+            Debug.Log($"[ProgressaoFaseController] JornalColetado enviado para Master");
             photonView.RPC(nameof(RPC_JornalColetado), RpcTarget.MasterClient);
             return;
         }
-
         RPC_JornalColetado();
     }
 
@@ -71,21 +126,30 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.IsMasterClient)
         {
+            Debug.Log($"[ProgressaoFaseController] LugarVisitadoConcluido enviado para Master");
             photonView.RPC(nameof(RPC_LugarVisitadoConcluido), RpcTarget.MasterClient);
             return;
         }
-
         RPC_LugarVisitadoConcluido();
     }
 
     public void NPCImportanteConcluido()
     {
-        if (!PhotonNetwork.IsMasterClient)
+        // Verificações rigorosas
+        if (npcImportanteJaConcluido)
         {
-            photonView.RPC(nameof(RPC_NPCImportanteConcluido), RpcTarget.MasterClient);
+            Debug.LogWarning("[ProgressaoFaseController] NPC importante JÁ FOI CONCLUÍDO! Ignorando chamada dupla.");
             return;
         }
 
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log($"[ProgressaoFaseController] Cliente enviando NPCImportanteConcluido para Master");
+            photonView.RPC(nameof(RPC_NPCImportanteConcluido), RpcTarget.MasterClient);
+            return;
+        }
+        
+        Debug.Log($"[ProgressaoFaseController] Master processando NPCImportanteConcluido");
         RPC_NPCImportanteConcluido();
     }
 
@@ -97,6 +161,7 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
     private void RPC_JornalColetado()
     {
         jornaisColetados = Mathf.Min(jornaisColetados + 1, jornaisTotais);
+        Debug.Log($"[ProgressaoFaseController] Jornal coletado! Total: {jornaisColetados}/{jornaisTotais}");
         SincronizarEstadoParaTodos();
     }
 
@@ -104,19 +169,34 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
     private void RPC_LugarVisitadoConcluido()
     {
         lugaresConcluidos = Mathf.Min(lugaresConcluidos + 1, lugaresTotais);
+        Debug.Log($"[ProgressaoFaseController] Lugar visitado! Total: {lugaresConcluidos}/{lugaresTotais}");
         SincronizarEstadoParaTodos();
     }
 
     [PunRPC]
     private void RPC_NPCImportanteConcluido()
     {
+        // Verificação dupla no Master
+        if (npcImportanteJaConcluido)
+        {
+            Debug.LogWarning("[ProgressaoFaseController] Master: NPC importante já concluído! Ignorando.");
+            return;
+        }
+
+        npcImportanteJaConcluido = true;
         npcsConcluidos = Mathf.Min(npcsConcluidos + 1, npcsImportantesTotais);
+        
+        Debug.Log($"[ProgressaoFaseController] ✅✅✅ NPC IMPORTANTE CONCLUÍDO APÓS ENTREGA! Progresso: {npcsConcluidos}/{npcsImportantesTotais}");
+        
         SincronizarEstadoParaTodos();
     }
 
     private void SincronizarEstadoParaTodos()
     {
-        photonView.RPC(nameof(RPC_SyncEstado), RpcTarget.All,
+        Debug.Log($"[ProgressaoFaseController] SincronizarEstadoParaTodos - Enviando estado para todos: NPCs={npcsConcluidos}, Jornais={jornaisColetados}, Lugares={lugaresConcluidos}");
+        
+        // 🔴 CORREÇÃO: Usar AllBuffered para garantir que novos jogadores recebam o estado
+        photonView.RPC(nameof(RPC_SyncEstado), RpcTarget.AllBuffered, 
             npcsConcluidos, jornaisColetados, lugaresConcluidos);
     }
 
@@ -127,11 +207,26 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
     [PunRPC]
     private void RPC_SyncEstado(int npcs, int jornais, int lugares)
     {
-        npcsConcluidos = npcs;
-        jornaisColetados = jornais;
-        lugaresConcluidos = lugares;
+        Debug.Log($"[ProgressaoFaseController] RPC_SyncEstado recebido - NPCs={npcs}, Jornais={jornais}, Lugares={lugares} | Sou o jogador {PhotonNetwork.LocalPlayer.ActorNumber}");
 
-        AtualizarUI();
+        // Só atualizar se for diferente
+        if (npcs != npcsConcluidos || jornais != jornaisColetados || lugares != lugaresConcluidos)
+        {
+            npcsConcluidos = npcs;
+            jornaisColetados = jornais;
+            lugaresConcluidos = lugares;
+
+            // Atualizar flag baseado no estado atual
+            npcImportanteJaConcluido = (npcsConcluidos > 0);
+
+            Debug.Log($"[ProgressaoFaseController] Estado sincronizado - NPCs: {npcsConcluidos}, Jornais: {jornaisColetados}, Lugares: {lugaresConcluidos}");
+            
+            AtualizarUI();
+        }
+        else
+        {
+            Debug.Log($"[ProgressaoFaseController] Estado recebido é igual ao atual, ignorando.");
+        }
     }
 
     // ============================
@@ -140,7 +235,8 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
 
     private void AtualizarUI()
     {
-        // Aqui voltamos ao formato "frase + valor":
+        Debug.Log($"[ProgressaoFaseController] AtualizarUI chamado - NPCs: {npcsConcluidos}");
+
         if (textoNpcs != null)
             textoNpcs.text = $"Pessoa Entrevistada: {npcsConcluidos}/{npcsImportantesTotais}";
 
@@ -155,10 +251,43 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
 
         progressoAlvo = totalPontos > 0 ? feitos / totalPontos : 0f;
 
-        // Quando chegar em 100%, mostra painel final
+        Debug.Log($"[ProgressaoFaseController] Progresso atual: {progressoAlvo:P0} ({feitos}/{totalPontos})");
+
         if (feitos >= totalPontos && painelFinalFase != null)
         {
             painelFinalFase.MostrarPainelFinal();
+            Debug.Log("[ProgressaoFaseController] TODOS OBJETIVOS CONCLUÍDOS! Mostrando painel final...");
         }
+    }
+
+    // 🔴 NOVO: Método para forçar sincronização manual
+    public void ForcarSincronizacao()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("[ProgressaoFaseController] Forçando sincronização manual...");
+            SincronizarEstadoParaTodos();
+        }
+    }
+
+    // 🔴 NOVO: Chamado quando um jogador entra na sala
+    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+    {
+        Debug.Log($"[ProgressaoFaseController] Novo jogador entrou na sala: {newPlayer.ActorNumber}");
+        
+        // Sincronizar estado com o novo jogador
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("[ProgressaoFaseController] Sincronizando estado com novo jogador...");
+            SincronizarEstadoParaTodos();
+        }
+    }
+
+    // Método para debug
+    public void DebugEstadoAtual()
+    {
+        Debug.Log($"[ProgressaoFaseController] DEBUG - NPCs: {npcsConcluidos}/{npcsImportantesTotais}, " +
+                 $"Jornais: {jornaisColetados}/{jornaisTotais}, Lugares: {lugaresConcluidos}/{lugaresTotais}, " +
+                 $"FlagNPCConcluido: {npcImportanteJaConcluido}");
     }
 }
