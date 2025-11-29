@@ -5,13 +5,13 @@ using Photon.Pun;
 public class ColetarJornal : MonoBehaviourPun
 {
     [Header("Configuração")]
-    public string tagJogador = "Player";  // Tag usada pelos jogadores
+    public string tagJogador = "Player";
+    public int jornalID = 0;
 
     private bool coletado = false;
 
     void Start()
     {
-        // Garante que o collider é um trigger
         Collider col = GetComponent<Collider>();
         if (col != null)
             col.isTrigger = true;
@@ -19,10 +19,7 @@ public class ColetarJornal : MonoBehaviourPun
 
     void OnTriggerEnter(Collider other)
     {
-        // Evita múltiplas ativações
         if (coletado) return;
-
-        // Verifica se quem encostou é um jogador
         if (!other.CompareTag(tagJogador)) return;
 
         PhotonView pv = other.GetComponent<PhotonView>();
@@ -30,27 +27,51 @@ public class ColetarJornal : MonoBehaviourPun
         {
             coletado = true;
 
-            // 🔍 Busca segura do controlador de progresso
-            ProgressaoFaseController progresso = FindObjectOfType<ProgressaoFaseController>();
+            Debug.Log($"[ColetarJornal] Jornal {jornalID} coletado por jogador {pv.OwnerActorNr}");
 
-            if (progresso != null)
+            // 🔴 CORREÇÃO: Processar imediatamente e sincronizar
+            if (PhotonNetwork.IsMasterClient)
             {
-                progresso.JornalColetado();
+                // Master processa diretamente
+                ProcessarColeta();
             }
             else
             {
-                Debug.LogError("[ColetarJornal] Nenhum ProgressaoFaseController encontrado na cena!");
+                // Cliente envia para master
+                photonView.RPC("RPC_ColetarJornal", RpcTarget.MasterClient, jornalID);
             }
 
-            // 🔥 Chama RPC para todos destruírem o jornal
+            // 🔴 CORREÇÃO: Destruir visualmente para todos imediatamente
             photonView.RPC("RPC_DestruirJornal", RpcTarget.AllBuffered);
+        }
+    }
+
+    [PunRPC]
+    void RPC_ColetarJornal(int idJornal)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            ProcessarColeta();
+        }
+    }
+
+    private void ProcessarColeta()
+    {
+        ProgressaoFaseController progresso = ProgressaoFaseController.instancia;
+        if (progresso != null)
+        {
+            progresso.JornalColetado();
+            Debug.Log($"[ColetarJornal] ✅ Jornal {jornalID} processado pelo Master");
         }
     }
 
     [PunRPC]
     void RPC_DestruirJornal()
     {
-        // 🔥 Destrói o objeto para todos os jogadores
-        Destroy(gameObject);
+        if (gameObject != null)
+        {
+            Destroy(gameObject);
+            Debug.Log($"[ColetarJornal] 🗑️ Jornal {jornalID} destruído para todos");
+        }
     }
 }

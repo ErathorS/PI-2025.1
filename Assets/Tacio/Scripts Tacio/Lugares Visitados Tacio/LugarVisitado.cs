@@ -6,18 +6,15 @@ using Photon.Pun;
 public class LugarVisitado : MonoBehaviourPun
 {
     [Header("IDs")]
-    public int grupoID = 0;  // 1 ou 2
-    public int lugarID = 0;  // 1 ou 2
+    public int grupoID = 0;
+    public int lugarID = 0;
 
     [Header("Materiais")]
     public Material materialPadrao;
     public Material materialVisitado;
 
     private Renderer renderObj;
-
-    // Quem ativou este lugar
     private int donoDaAtivacao = -1;
-
     private LugarVisitadoManager manager;
 
     private void Awake()
@@ -40,37 +37,37 @@ public class LugarVisitado : MonoBehaviourPun
 
     void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player"))
-            return;
+        if (!other.CompareTag("Player")) return;
 
         PhotonView pv = other.GetComponent<PhotonView>();
-        if (pv == null || !pv.IsMine)
-            return;
+        if (pv == null || !pv.IsMine) return;
 
-        // Envia quem pisou
+        // 🔴 CORREÇÃO: Enviar para todos processarem (Master decide a lógica)
         photonView.RPC("RPC_MarcarVisitado", RpcTarget.AllBuffered, pv.OwnerActorNr);
     }
 
     [PunRPC]
     private void RPC_MarcarVisitado(int playerID)
     {
-        // ❌ Se este lugar já foi ativado por alguém → não muda nada
-        if (donoDaAtivacao != -1)
-            return;
+        // Evitar duplicação
+        if (donoDaAtivacao != -1) return;
 
-        // ❌ Se o jogador já ativou OUTRO lugar do MESMO grupo → ele não ativa este
-        if (manager.JogadorJaAtivouLugarNoGrupo(playerID, grupoID))
-            return;
-
-        // 🔥 Marca dono
+        // 🔴 CORREÇÃO: Atualizar visual primeiro
         donoDaAtivacao = playerID;
 
-        // 🔥 Troca material
         if (renderObj != null && materialVisitado != null)
             renderObj.sharedMaterial = materialVisitado;
 
-        // 🔥 Notifica manager
-        manager.MarcarLugar(grupoID, lugarID, playerID);
+        // 🔴 CORREÇÃO: Só notificar manager se for Master
+        if (PhotonNetwork.IsMasterClient)
+        {
+            if (manager != null && !manager.JogadorJaAtivouLugarNoGrupo(playerID, grupoID))
+            {
+                manager.MarcarLugar(grupoID, lugarID, playerID);
+            }
+        }
+
+        Debug.Log($"[LugarVisitado] Lugar {lugarID}-{grupoID} visitado por {playerID} | Master: {PhotonNetwork.IsMasterClient}");
     }
 
     public bool FoiVisitado()

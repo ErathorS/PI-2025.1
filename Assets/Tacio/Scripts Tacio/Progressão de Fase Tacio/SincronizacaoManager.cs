@@ -146,42 +146,39 @@ public class SincronizacaoManager : MonoBehaviourPun
         {
             foreach (var poste in postesPiscando)
             {
-                if (poste != null)
-                {
-                    poste.PararDePiscar();
-                    Debug.Log($"[SincronizacaoManager] Poste {poste.name} parou de piscar");
-                }
+                if (poste != null) poste.PararDePiscar();
             }
-        }
-        else
-        {
-            Debug.LogError("[SincronizacaoManager] Array postesPiscando está vazio!");
         }
 
         EsconderBotoesSincronizacao();
 
-        // 🔴 CORREÇÃO: Usar referência direta em vez de FindObjectOfType
-        if (npcImportante != null)
+        // 🔴 CORREÇÃO: Notificar o NPC importante sobre conclusão da tarefa
+        if (npcImportante != null && npcImportante.ehNPCFase2)
         {
-            if (npcImportante.ehNPCFase2)
+            npcImportante.TarefaConcluida();
+            Debug.Log("[SincronizacaoManager] NPC importante notificado sobre conclusão!");
+            
+            // 🔴 CORREÇÃO EXTRA: Forçar atualização do indicador visual
+            if (npcImportante.indicadorNPC != null)
             {
-                npcImportante.TarefaConcluida();
-                Debug.Log("[SincronizacaoManager] NPC notificado sobre conclusão da tarefa!");
-            }
-            else
-            {
-                Debug.LogError("[SincronizacaoManager] NPC atribuído não é da Fase 2!");
+                npcImportante.indicadorNPC.AtivarParaEntrega();
             }
         }
         else
         {
-            Debug.LogError("[SincronizacaoManager] npcImportante não está atribuído!");
+            Debug.LogError("[SincronizacaoManager] NPC importante não configurado corretamente!");
         }
 
-        // Notifica o MissaoFase2Manager
+        // Notificar o manager da missão
         if (MissaoFase2Manager.instancia != null)
         {
             MissaoFase2Manager.instancia.MissaoConcluida();
+        }
+        
+        // 🔴 NOVA CORREÇÃO: Forçar verificação de progresso
+        if (ProgressaoFaseController.instancia != null)
+        {
+            ProgressaoFaseController.instancia.VerificarESincronizarProgresso();
         }
     }
 
