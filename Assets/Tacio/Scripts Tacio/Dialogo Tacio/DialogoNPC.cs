@@ -14,28 +14,91 @@ public class DialogoNPC : MonoBehaviourPun
     [Header("Configuração de Acesso")]
     public bool apenasMasterPodeDialogar = false;
 
+    [Header("Diálogos Alternativos (Entrega)")]
+    public string[] dialogoAposEntrega;
+    private bool dialogoDeEntregaAtivo = false;
+
+    [Header("Configuração Fase 2")]
+    public bool ehNPCFase2 = false;
+
     private int linhaAtual = 0;
     private bool dialogoAtivo = false;
+    private bool missaoJaEntregue = false;
 
     private GameObject jogadorAtual;
     private TMP_Text textoDialogo;
     private GameObject painelDialogo;
     private Button botaoDialogo;
 
-    private PhotonView photonViewDoJogador;
-
-    [Header("Diálogos Alternativos (Entrega)")]
-    public string[] dialogoAposEntrega;
-    private bool dialogoDeEntregaAtivo = false;
-
-    // 🔥 Novo: garante que a missão só inicia 1 vez
-    private bool missaoJaEntregue = false;
-
-    public void AtivarDialogoDeEntrega()
+    private void FinalizarDialogo()
     {
-        dialogoDeEntregaAtivo = true;
+        painelDialogo.SetActive(false);
+        dialogoAtivo = false;
+
+        // Marca como já conversado
+        if (indicadorNPC != null)
+        {
+            indicadorNPC.MarcarComoConversado();
+            photonView.RPC("DesativarIndicadorGlobal", RpcTarget.AllBuffered);
+        }
+
+        // --- SE FOR DIÁLOGO DE ENTREGA ---
+        if (dialogoDeEntregaAtivo)
+        {
+            missaoJaEntregue = true;
+            if (MissaoFase1Manager.instancia != null)
+                MissaoFase1Manager.instancia.FinalizarEntrega();
+            return;
+        }
+
+        // --- SE FOR NPC DA FASE 2 ---
+        if (ehNPCFase2 && !missaoJaEntregue)
+        {
+            // 🔴 CORREÇÃO: Verificação segura do manager
+            if (MissaoFase2Manager.instancia != null)
+            {
+                MissaoFase2Manager.instancia.IniciarMissao();
+                Debug.Log("[DialogoNPC] Missão da Fase 2 iniciada via manager.");
+            }
+            else
+            {
+                Debug.LogError("[DialogoNPC] MissaoFase2Manager.instancia é null! Verifique se o manager está na cena.");
+                
+                // Fallback: tenta encontrar o manager na cena
+                var manager = FindObjectOfType<MissaoFase2Manager>();
+                if (manager != null)
+                {
+                    Debug.Log("[DialogoNPC] Manager encontrado via FindObjectOfType.");
+                    manager.IniciarMissao();
+                }
+                else
+                {
+                    Debug.LogError("[DialogoNPC] Nenhum MissaoFase2Manager encontrado na cena!");
+                }
+            }
+            return;
+        }
+
+        // --- SE ESTE NPC INICIA A MISSÃO (lógica original da Fase 1) ---
+        if (indicadorNPC != null && indicadorNPC.tipoExclamacao == 2 && !ehNPCFase2)
+        {
+            if (missaoJaEntregue) return;
+
+            var dialogoIntroducao = FindObjectOfType<FuroDeNoticia.DialogoNPCIntroducao>();
+            if (dialogoIntroducao != null)
+            {
+                int playerID = PhotonNetwork.LocalPlayer.ActorNumber;
+                dialogoIntroducao.MarcarDialogoConcluido(playerID);
+            }
+
+            if (PhotonNetwork.IsMasterClient && MissaoFase1Manager.instancia != null)
+            {
+                MissaoFase1Manager.instancia.IniciarMissao();
+            }
+        }
     }
 
+    // ... resto do código permanece igual
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player")) return;
@@ -43,12 +106,10 @@ public class DialogoNPC : MonoBehaviourPun
         PhotonView pv = other.GetComponent<PhotonView>();
         if (pv != null && pv.IsMine)
         {
-            if (apenasMasterPodeDialogar && !PhotonNetwork.IsMasterClient)
+            if (apenasMasterPodeDialogar && !PhotonNetwork.IsMasterClient) 
                 return;
 
             jogadorAtual = other.gameObject;
-            photonViewDoJogador = pv;
-
             MostrarBotaoDialogo(jogadorAtual, true);
         }
     }
@@ -86,9 +147,7 @@ public class DialogoNPC : MonoBehaviourPun
     private void IniciarDialogo(GameObject jogador)
     {
         if (dialogoAtivo) return;
-
-        if (apenasMasterPodeDialogar && !PhotonNetwork.IsMasterClient)
-            return;
+        if (apenasMasterPodeDialogar && !PhotonNetwork.IsMasterClient) return;
 
         linhaAtual = 0;
         dialogoAtivo = true;
@@ -125,7 +184,6 @@ public class DialogoNPC : MonoBehaviourPun
                 AvancarDialogo();
                 yield return new WaitForSeconds(0.2f);
             }
-
             yield return null;
         }
     }
@@ -146,60 +204,15 @@ public class DialogoNPC : MonoBehaviourPun
         }
     }
 
-    private void FinalizarDialogo()
-    {
-        painelDialogo.SetActive(false);
-        dialogoAtivo = false;
-
-        // Marca como já conversado
-        if (indicadorNPC != null)
-        {
-            indicadorNPC.MarcarComoConversado();
-            photonView.RPC("DesativarIndicadorGlobal", RpcTarget.AllBuffered);
-        }
-
-        // ------------------------------------------
-        // 🔥 SE FOR DIÁLOGO DE ENTREGA
-        // ------------------------------------------
-        if (dialogoDeEntregaAtivo)
-        {
-            missaoJaEntregue = true;
-
-            // Esconde UI da missão
-            if (MissaoFase1Manager.instancia != null)
-                MissaoFase1Manager.instancia.FinalizarEntrega();
-
-            return; // 🔥 Para aqui! Nada mais depois disso roda!
-        }
-
-        // ----------------------------------------------
-        // 🔥 SE ESTE NPC INICIA A MISSÃO
-        // ----------------------------------------------
-        if (indicadorNPC != null && indicadorNPC.tipoExclamacao == 2)
-        {
-            // 🚫 Se missão já foi entregue, NÃO inicia de novo
-            if (missaoJaEntregue)
-                return;
-
-            var dialogoIntroducao = FindObjectOfType<FuroDeNoticia.DialogoNPCIntroducao>();
-            if (dialogoIntroducao != null)
-            {
-                int playerID = PhotonNetwork.LocalPlayer.ActorNumber;
-                dialogoIntroducao.MarcarDialogoConcluido(playerID);
-            }
-
-            // Apenas Master pode iniciar a missão
-            if (PhotonNetwork.IsMasterClient && MissaoFase1Manager.instancia != null)
-            {
-                MissaoFase1Manager.instancia.IniciarMissao();
-            }
-        }
-    }
-
     [PunRPC]
     private void DesativarIndicadorGlobal()
     {
         if (indicadorNPC != null && indicadorNPC.iconeExclamacao != null)
             indicadorNPC.iconeExclamacao.SetActive(false);
+    }
+
+    public void AtivarDialogoDeEntrega()
+    {
+        dialogoDeEntregaAtivo = true;
     }
 }

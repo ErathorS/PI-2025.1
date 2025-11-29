@@ -2,24 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class PostePiscando : MonoBehaviour
 {
-    public Light posteLuz;               // arraste a luz do poste aqui (ou Light2D se quiser adaptar)
-    public float intervalo = 1f;         // tempo entre cada piscada
-    public float duracaoPiscar = 0.1f;   // quanto tempo a luz fica apagada durante a piscada
+    public Light posteLuz;
+    public float intervalo = 1f;
+    public float duracaoPiscar = 0.1f;
 
     private float timer;
     private bool piscando;
+    private bool devePiscar = true;
 
     void Start()
     {
         if (posteLuz == null)
-            posteLuz = GetComponentInChildren<Light>();  
+            posteLuz = GetComponentInChildren<Light>();
     }
 
     void Update()
     {
+        if (!devePiscar) return;
+        
         if (!piscando)
         {
             timer += Time.deltaTime;
@@ -45,5 +47,21 @@ public class PostePiscando : MonoBehaviour
         posteLuz.enabled = true;
 
         piscando = false;
+    }
+
+    // Novo método para parar de piscar
+    public void PararDePiscar()
+    {
+        devePiscar = false;
+        posteLuz.enabled = true; // Garante que a luz fique acesa
+        StopAllCoroutines();
+    }
+
+    // Novo método para voltar a piscar (se necessário)
+    public void VoltarAPiscar()
+    {
+        devePiscar = true;
+        piscando = false;
+        timer = 0f;
     }
 }

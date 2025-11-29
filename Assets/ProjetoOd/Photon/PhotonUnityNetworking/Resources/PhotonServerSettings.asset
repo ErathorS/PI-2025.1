@@ -110,6 +110,17 @@ MonoBehaviour:
   - RPC_LugarVisitadoConcluido
   - RPC_NPCImportanteConcluido
   - RPC_SyncEstado
+  - RPC_AtivarBotoesSincronizacao
+  - RPC_IniciarSincronizacao
+  - RPC_ResetarSincronizacao
+  - RPC_SincronizacaoConcluida
+  - AtivarBotao
+  - DesativarBotao
+  - RPC_IniciarMissaoFase2
+  - RPC_ConcluirSincronizacao
+  - RPC_FinalizarMissao
+  - RPC_MissaoConcluida
+  - RPC_RegistrarToque
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

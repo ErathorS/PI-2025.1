@@ -93,11 +93,11 @@ public class CarMovemetn : MonoBehaviour
         {
             Transform playerHit = other.transform;
 
-            if (playerHit.name == "Player1" && SpawnPlayer1 != null)
+            if (playerHit.name == "Player_1" && SpawnPlayer1 != null)
             {
                 playerHit.position = SpawnPlayer1.position;
             }
-            else if (playerHit.name == "Player2" && SpawnPlayer2 != null)
+            else if (playerHit.name == "Player_2" && SpawnPlayer2 != null)
             {
                 playerHit.position = SpawnPlayer2.position;
             }

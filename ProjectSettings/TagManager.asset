@@ -25,6 +25,7 @@ TagManager:
   - Spawn
   - Jornal
   - Caixa
+  - Car
   layers:
   - Default
   - TransparentFX
