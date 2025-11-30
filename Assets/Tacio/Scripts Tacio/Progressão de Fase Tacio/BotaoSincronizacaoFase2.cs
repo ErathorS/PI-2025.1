@@ -47,13 +47,13 @@ public class BotaoSincronizacaoFase2 : MonoBehaviourPun
 
         jogadorPerto = true;
         uiDoJogador = other.GetComponentInChildren<PlayerUIReferences>();
-        
         if (uiDoJogador != null && uiDoJogador.botaoInteracao != null)
         {
             uiDoJogador.botaoInteracao.gameObject.SetActive(true);
             uiDoJogador.botaoInteracao.onClick.RemoveAllListeners();
             uiDoJogador.botaoInteracao.onClick.AddListener(Interagir);
-            Debug.Log($"[BotaoSincronizacao] {gameObject.name} - Botão de interação mostrado para Player {pv.OwnerActorNr}");
+
+            Debug.Log($"[BotaoSincronizacao] {gameObject.name} - Botão de interação mostrado para Player {pv.Owner.ActorNumber}");
         }
     }
 
@@ -65,13 +65,13 @@ public class BotaoSincronizacaoFase2 : MonoBehaviourPun
         if (pv == null || !pv.IsMine) return;
 
         jogadorPerto = false;
-        
+
         if (uiDoJogador != null && uiDoJogador.botaoInteracao != null)
         {
             uiDoJogador.botaoInteracao.gameObject.SetActive(false);
             uiDoJogador.botaoInteracao.onClick.RemoveAllListeners();
         }
-        
+
         uiDoJogador = null;
     }
 
@@ -80,13 +80,16 @@ public class BotaoSincronizacaoFase2 : MonoBehaviourPun
         if (!jogadorPerto) return;
 
         int actorID = PhotonNetwork.LocalPlayer.ActorNumber;
-        
-        Debug.Log($"[BotaoSincronizacao] {gameObject.name} - Jogador {actorID} interagiu!");
-        
-        // Chama o SincronizacaoManager
-        SincronizacaoManager.instancia.RegistrarToque(actorID);
 
-        // 🔴 CORREÇÃO: Esconder o botão após interação bem-sucedida
+        Debug.Log($"[BotaoSincronizacao] {gameObject.name} - Jogador {actorID} interagiu!");
+
+        // Chama o SincronizacaoManager
+        if (SincronizacaoManager.instancia != null)
+        {
+            SincronizacaoManager.instancia.RegistrarToque(actorID);
+        }
+
+        // Esconder o botão após interação bem-sucedida
         if (uiDoJogador != null && uiDoJogador.botaoInteracao != null)
         {
             uiDoJogador.botaoInteracao.gameObject.SetActive(false);

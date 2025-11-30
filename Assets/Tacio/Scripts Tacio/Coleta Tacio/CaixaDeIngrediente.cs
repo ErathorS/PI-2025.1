@@ -12,19 +12,17 @@ public class CaixaDeIngrediente : MonoBehaviourPun
         if (!other.CompareTag("Player")) return;
 
         PhotonView pv = other.GetComponent<PhotonView>();
-        if (pv == null || !pv.IsMine) return; // Apenas o jogador dono vê UI
+        if (pv == null || !pv.IsMine) return;
 
-        // Se já foi coletado, ignora
         if (coletado) return;
 
         jogadorPerto = true;
         uiDoJogador = other.GetComponentInChildren<PlayerUIReferences>();
-
         if (uiDoJogador != null)
         {
             uiDoJogador.botaoInteracao.gameObject.SetActive(true);
             uiDoJogador.botaoInteracao.onClick.RemoveAllListeners();
-            uiDoJogador.botaoInteracao.onClick.AddListener(() => Coletar(pv.OwnerActorNr));
+            uiDoJogador.botaoInteracao.onClick.AddListener(() => Coletar(pv.Owner.ActorNumber));
         }
     }
 
@@ -52,7 +50,7 @@ public class CaixaDeIngrediente : MonoBehaviourPun
 
         coletado = true;
 
-        // 🔥 MASTER registra a coleta
+        // MASTER registra a coleta
         photonView.RPC("RPC_RegistrarNoMaster", RpcTarget.MasterClient, actorId);
     }
 
@@ -62,7 +60,10 @@ public class CaixaDeIngrediente : MonoBehaviourPun
         if (!PhotonNetwork.IsMasterClient) return;
 
         // Adiciona 1 caixa
-        ColetarCaixasManager.instancia.AdicionarColetaMaster();
+        if (ColetarCaixasManager.instancia != null)
+        {
+            ColetarCaixasManager.instancia.AdicionarColetaMaster();
+        }
 
         // Sincroniza destruição
         photonView.RPC("RPC_DestruirCaixa", RpcTarget.AllBuffered);
@@ -74,6 +75,25 @@ public class CaixaDeIngrediente : MonoBehaviourPun
         if (uiDoJogador != null)
             uiDoJogador.botaoInteracao.gameObject.SetActive(false);
 
-        Destroy(gameObject);
+        // Desativa a caixa em vez de destruir para poder reutilizar
+        gameObject.SetActive(false);
+        
+        Debug.Log($"[CaixaDeIngrediente] Caixa coletada e desativada");
+    }
+
+    // NOVO: Método para resetar a caixa
+    public void ResetarCaixa()
+    {
+        coletado = false;
+        gameObject.SetActive(true);
+        
+        if (uiDoJogador != null)
+        {
+            uiDoJogador.botaoInteracao.gameObject.SetActive(false);
+            uiDoJogador.botaoInteracao.onClick.RemoveAllListeners();
+        }
+        
+        uiDoJogador = null;
+        jogadorPerto = false;
     }
 }

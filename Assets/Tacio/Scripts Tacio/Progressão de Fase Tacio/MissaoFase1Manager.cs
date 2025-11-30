@@ -6,38 +6,38 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
 {
     public static MissaoFase1Manager instancia;
 
-    [Header("UI da Missão")]
-    public GameObject painelMissao;
-    public TMP_Text textoMissao;
+    [Header("UI da Missão")] 
+    public GameObject painelMissao; 
+    public TMP_Text textoMissao; 
     public TMP_Text textoTimer;
 
-    [Header("Reset e Coleta")]
-    public GameObject botaoReset;
-    public ColetarCaixasManager coletor;
+    [Header("Reset e Coleta")] 
+    public GameObject botaoReset; 
+    public ColetarCaixasManager coletor; 
     public DialogoNPC npcEntrega;
 
-    private bool missaoAtiva = false;
-    private bool missaoConcluida = false;
+    private bool missaoAtiva = false; 
+    private bool missaoConcluida = false; 
     private float tempoRestante;
 
-    private void Awake()
+    private void Awake() 
     {
         instancia = this;
     }
 
-    public void IniciarMissao()
+    public void IniciarMissao() 
     {
-        if (!PhotonNetwork.IsMasterClient) return;
-        photonView.RPC("RPC_IniciarMissao", RpcTarget.AllBuffered);
+        if (!PhotonNetwork.IsMasterClient) return; 
+        photonView.RPC("RPC_IniciarMissao", RpcTarget.AllBuffered); 
     }
 
-    [PunRPC]
-    private void RPC_IniciarMissao()
+    [PunRPC] 
+    private void RPC_IniciarMissao() 
     {
-        missaoAtiva = true;
+        missaoAtiva = true; 
         missaoConcluida = false;
 
-        painelMissao.SetActive(true);
+        painelMissao.SetActive(true); 
         botaoReset.SetActive(false);
 
         tempoRestante = 240f;
@@ -113,20 +113,14 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
         painelMissao.SetActive(true);
         botaoReset.SetActive(false);
 
-        textoMissao.text = "Excelente trabalho!\nFalem com Dona Cida para entregar.";
+        textoMissao.text = "Excelente trabalho\nFalem com Dona Cida para entregar.";
 
-        // 🔴 CORREÇÃO: Verificar se o NPC existe e é da Fase 1
+        // CORREÇÃO: Verificar se o NPC existe
         if (npcEntrega != null)
         {
             // Para Fase 1, usar o método original
-            if (!npcEntrega.ehNPCFase2)
-            {
-                npcEntrega.AtivarDialogoDeEntrega();
-            }
-            else
-            {
-                Debug.LogError("[MissaoFase1Manager] NPC de entrega está configurado como Fase 2!");
-            }
+            // CORREÇÃO: Removida verificação de ehNPCFase2 para compatibilidade
+            npcEntrega.AtivarDialogoDeEntrega();
         }
         else
         {

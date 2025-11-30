@@ -2618,7 +2618,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -2637,9 +2637,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 916278380493442218}
-  SpawnPlayer2: {fileID: 2593304044583119322}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &116840427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3444,9 +3446,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 0}
-  SpawnPlayer2: {fileID: 0}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!65 &135209945
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6703,9 +6707,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 0}
-  SpawnPlayer2: {fileID: 0}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!65 &307128727
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9277,7 +9283,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -9296,9 +9302,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 916278380493442218}
-  SpawnPlayer2: {fileID: 2593304044583119322}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &460752933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13909,7 +13917,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -13928,9 +13936,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 916278380493442218}
-  SpawnPlayer2: {fileID: 2593304044583119322}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &708572294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14595,7 +14605,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -14614,9 +14624,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 916278380493442218}
-  SpawnPlayer2: {fileID: 2593304044583119322}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &730801492
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14856,7 +14868,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -14875,9 +14887,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 916278380493442218}
-  SpawnPlayer2: {fileID: 2593304044583119322}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &735002562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15659,9 +15673,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 0}
-  SpawnPlayer2: {fileID: 0}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!65 &757571367
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16949,7 +16965,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -16968,9 +16984,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 916278380493442218}
-  SpawnPlayer2: {fileID: 2593304044583119322}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &807920923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18711,7 +18729,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -18730,9 +18748,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 916278380493442218}
-  SpawnPlayer2: {fileID: 2593304044583119322}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &937776080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19490,9 +19510,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 0}
-  SpawnPlayer2: {fileID: 0}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!65 &996013154
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20116,7 +20138,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -20135,9 +20157,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 916278380493442218}
-  SpawnPlayer2: {fileID: 2593304044583119322}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &1030720682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20962,9 +20986,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 0}
-  SpawnPlayer2: {fileID: 0}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!65 &1075955201
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -21066,7 +21092,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -21085,9 +21111,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 916278380493442218}
-  SpawnPlayer2: {fileID: 2593304044583119322}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &1076241579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24388,7 +24416,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -24407,9 +24435,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 916278380493442218}
-  SpawnPlayer2: {fileID: 2593304044583119322}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &1242169735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28466,9 +28496,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 0}
-  SpawnPlayer2: {fileID: 0}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!65 &1453431569
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -30299,7 +30331,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -30318,9 +30350,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 916278380493442218}
-  SpawnPlayer2: {fileID: 2593304044583119322}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &1516386119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30633,7 +30667,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -30652,9 +30686,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 916278380493442218}
-  SpawnPlayer2: {fileID: 2593304044583119322}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &1522351483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31116,9 +31152,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 0}
-  SpawnPlayer2: {fileID: 0}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!65 &1548171474
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -31397,9 +31435,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 0}
-  SpawnPlayer2: {fileID: 0}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!65 &1554311978
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -31692,9 +31732,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 0}
-  SpawnPlayer2: {fileID: 0}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!65 &1570858113
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -32009,6 +32051,8 @@ MonoBehaviour:
     vandalismo. Foi negar o direito da senhora existir com a sua f\xE9. "
   - "Dona Cida: (sorri, cansada) \xC9 isso, meu filho. Quando chutam o acaraj\xE9,
     n\xE3o chutam s\xF3 farinha e feij\xE3o-fradinho  chutam um peda\xE7o da Bahia."
+  ehNPCZona1: 0
+  ehNPCZona2: 0
   ehNPCFase2: 0
   tarefaConcluida: 0
 --- !u!1 &1573767159
@@ -34780,7 +34824,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -34799,9 +34843,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 916278380493442218}
-  SpawnPlayer2: {fileID: 2593304044583119322}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &1704114032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35702,6 +35748,8 @@ MonoBehaviour:
   textoTempo: {fileID: 2007018566}
   botaoReset: {fileID: 1323990676}
   tempoLimite: 240
+  caixasColetadas: 0
+  totalCaixas: 0
 --- !u!1 &1768474480
 GameObject:
   m_ObjectHideFlags: 0
@@ -36667,9 +36715,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 0}
-  SpawnPlayer2: {fileID: 0}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!65 &1825359262
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -37059,9 +37109,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 0}
-  SpawnPlayer2: {fileID: 0}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!65 &1837748029
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -39652,9 +39704,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 0}
-  SpawnPlayer2: {fileID: 0}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!65 &1973283032
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -40506,9 +40560,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 0}
-  SpawnPlayer2: {fileID: 0}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!65 &2032077684
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -40718,7 +40774,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -40737,9 +40793,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 916278380493442218}
-  SpawnPlayer2: {fileID: 2593304044583119322}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &2037372249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42673,9 +42731,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 0}
-  SpawnPlayer2: {fileID: 0}
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!65 &2146921357
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -44194,11 +44254,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e2c00d8bbc7d3844c9d8a7eabfe546bd, type: 3}
---- !u!4 &916278380493442218 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6833577351451949778, guid: e2c00d8bbc7d3844c9d8a7eabfe546bd, type: 3}
-  m_PrefabInstance: {fileID: 916278380493442217}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &919132149299583941
 GameObject:
   m_ObjectHideFlags: 0
@@ -47663,11 +47718,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f48f8958a883c74ea1088a488a2bd71, type: 3}
---- !u!4 &2593304044583119322 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1778481836974532131, guid: 6f48f8958a883c74ea1088a488a2bd71, type: 3}
-  m_PrefabInstance: {fileID: 2593304044583119321}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2613420969945616611
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -58857,7 +58907,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   painelFimDeFase: {fileID: 112458082}
-  nomeCenaHQ: PI Fase 2
+  nomeCenaHQ: PI Fase 3 -DvD
 --- !u!1001 &8904113109228802089
 PrefabInstance:
   m_ObjectHideFlags: 0

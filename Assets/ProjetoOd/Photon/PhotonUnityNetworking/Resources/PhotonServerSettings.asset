@@ -129,6 +129,11 @@ MonoBehaviour:
   - RPC_SolicitarSincronizacao
   - RPC_AtivacaoBloqueada
   - RPC_TentarMarcarVisitado
+  - RPC_AtualizarNPCsConcluidos
+  - RPC_ConcluirMissao1
+  - RPC_ConcluirMissao2
+  - RPC_IniciarMissao1
+  - RPC_IniciarMissao2
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
