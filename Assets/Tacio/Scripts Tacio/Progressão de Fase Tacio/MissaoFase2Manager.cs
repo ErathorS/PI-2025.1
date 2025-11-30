@@ -12,10 +12,12 @@ public class MissaoFase2Manager : MonoBehaviourPunCallbacks
 
     [Header("Referências")]
     public SincronizacaoManager sincronizacaoManager;
-    public DialogoNPC npcImportante; // NPC que inicia a missão
+    public DialogoNPC npcImportante;
 
     private bool missaoAtiva = false;
     private bool missaoConcluida = false;
+
+    private PhotonView photonView; // 🔴 CORREÇÃO: Referência explícita
 
     private void Awake()
     {
@@ -30,7 +32,14 @@ public class MissaoFase2Manager : MonoBehaviourPunCallbacks
             return;
         }
 
-        // 🔴 CORREÇÃO: Inicializar UI
+        // 🔴 CORREÇÃO: Obter referência do PhotonView
+        photonView = GetComponent<PhotonView>();
+        if (photonView == null)
+        {
+            Debug.LogError("[MissaoFase2Manager] PhotonView não encontrado no GameObject!");
+        }
+
+        // Inicializar UI
         if (painelMissao != null)
             painelMissao.SetActive(false);
     }
@@ -39,17 +48,24 @@ public class MissaoFase2Manager : MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.IsMasterClient) return;
         
-        // 🔴 CORREÇÃO: Verificar se o manager está configurado
         if (sincronizacaoManager == null)
         {
             Debug.LogError("[MissaoFase2Manager] sincronizacaoManager não está atribuído!");
             return;
         }
 
-        photonView.RPC("RPC_IniciarMissao", RpcTarget.AllBuffered);
+        // 🔴 CORREÇÃO: Usar referência local do PhotonView
+        if (photonView != null)
+        {
+            photonView.RPC("RPC_IniciarMissao", RpcTarget.AllBuffered);
+        }
+        else
+        {
+            Debug.LogError("[MissaoFase2Manager] photonView é null!");
+        }
     }
 
-    [PunRPC]
+    [PunRPC] // 🔴 CORREÇÃO: Garantir que está marcado como PunRPC
     private void RPC_IniciarMissao()
     {
         missaoAtiva = true;
@@ -78,14 +94,22 @@ public class MissaoFase2Manager : MonoBehaviourPunCallbacks
         Debug.Log("[MissaoFase2Manager] Missão da Fase 2 iniciada!");
     }
 
-    // ... resto do código permanece igual
     public void MissaoConcluida()
     {
         if (!PhotonNetwork.IsMasterClient) return;
-        photonView.RPC("RPC_MissaoConcluida", RpcTarget.AllBuffered);
+        
+        // 🔴 CORREÇÃO: Usar referência local do PhotonView
+        if (photonView != null)
+        {
+            photonView.RPC("RPC_MissaoConcluida", RpcTarget.AllBuffered);
+        }
+        else
+        {
+            Debug.LogError("[MissaoFase2Manager] photonView é null no MissaoConcluida!");
+        }
     }
 
-    [PunRPC]
+    [PunRPC] // 🔴 CORREÇÃO: Garantir que está marcado como PunRPC
     private void RPC_MissaoConcluida()
     {
         missaoConcluida = true;
@@ -97,26 +121,23 @@ public class MissaoFase2Manager : MonoBehaviourPunCallbacks
             textoMissao.text = "Energia restaurada! Missão concluída.";
         }
 
-        // Marca progresso no sistema
-        var progresso = FindObjectOfType<ProgressaoFaseController>();
-        if (progresso != null)
-        {
-            progresso.NPCImportanteConcluido();
-        }
-        else
-        {
-            Debug.LogError("[MissaoFase2Manager] ProgressaoFaseController não encontrado!");
-        }
-
         Debug.Log("[MissaoFase2Manager] Missão da Fase 2 concluída!");
     }
 
     public void FinalizarMissao()
     {
-        photonView.RPC("RPC_FinalizarMissao", RpcTarget.AllBuffered);
+        // 🔴 CORREÇÃO: Usar referência local do PhotonView
+        if (photonView != null)
+        {
+            photonView.RPC("RPC_FinalizarMissao", RpcTarget.AllBuffered);
+        }
+        else
+        {
+            Debug.LogError("[MissaoFase2Manager] photonView é null no FinalizarMissao!");
+        }
     }
 
-    [PunRPC]
+    [PunRPC] // 🔴 CORREÇÃO: Garantir que está marcado como PunRPC
     private void RPC_FinalizarMissao()
     {
         if (painelMissao != null)

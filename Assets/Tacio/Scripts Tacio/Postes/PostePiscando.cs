@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PostePiscando : MonoBehaviour
@@ -11,24 +10,28 @@ public class PostePiscando : MonoBehaviour
     private float timer;
     private bool piscando;
     private bool devePiscar = true;
+    private Coroutine coroutinePiscar;
 
     void Start()
     {
         if (posteLuz == null)
             posteLuz = GetComponentInChildren<Light>();
+            
+        if (posteLuz == null)
+            Debug.LogError($"[PostePiscando] {gameObject.name} não tem Light atribuída!");
     }
 
     void Update()
     {
         if (!devePiscar) return;
         
-        if (!piscando)
+        if (!piscando && coroutinePiscar == null)
         {
             timer += Time.deltaTime;
 
             if (timer >= intervalo)
             {
-                StartCoroutine(Piscar());
+                coroutinePiscar = StartCoroutine(Piscar());
                 timer = 0f;
             }
         }
@@ -39,29 +42,42 @@ public class PostePiscando : MonoBehaviour
         piscando = true;
 
         // Apaga a luz
-        posteLuz.enabled = false;
+        if (posteLuz != null)
+            posteLuz.enabled = false;
 
         yield return new WaitForSeconds(duracaoPiscar);
 
         // Acende a luz
-        posteLuz.enabled = true;
+        if (posteLuz != null)
+            posteLuz.enabled = true;
 
         piscando = false;
+        coroutinePiscar = null;
     }
 
-    // Novo método para parar de piscar
     public void PararDePiscar()
     {
         devePiscar = false;
-        posteLuz.enabled = true; // Garante que a luz fique acesa
-        StopAllCoroutines();
+        
+        if (coroutinePiscar != null)
+        {
+            StopCoroutine(coroutinePiscar);
+            coroutinePiscar = null;
+        }
+
+        if (posteLuz != null)
+            posteLuz.enabled = true;
+
+        piscando = false;
+        
+        Debug.Log($"[PostePiscando] {gameObject.name} parou de piscar");
     }
 
-    // Novo método para voltar a piscar (se necessário)
     public void VoltarAPiscar()
     {
         devePiscar = true;
         piscando = false;
         timer = 0f;
+        coroutinePiscar = null;
     }
 }

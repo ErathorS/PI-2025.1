@@ -121,6 +121,14 @@ MonoBehaviour:
   - RPC_FinalizarMissao
   - RPC_MissaoConcluida
   - RPC_RegistrarToque
+  - RPC_TarefaConcluida
+  - RPC_ResetarEstadoNPC
+  - RPC_ProcessarColeta
+  - RPC_MarcarLugarNoMaster
+  - RPC_DebugEstado
+  - RPC_SolicitarSincronizacao
+  - RPC_AtivacaoBloqueada
+  - RPC_TentarMarcarVisitado
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

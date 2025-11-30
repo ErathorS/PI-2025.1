@@ -12,6 +12,7 @@ public class SincronizacaoManager : MonoBehaviourPun
     [Header("Referências")]
     public GameObject[] botoesSincronizacao;
     public PostePiscando[] postesPiscando;
+    public DialogoNPC npcImportante; // 🔴 CORREÇÃO: Referência direta
 
     // Estado
     private HashSet<int> jogadoresQueTocaram = new HashSet<int>();
@@ -27,11 +28,30 @@ public class SincronizacaoManager : MonoBehaviourPun
     private void Start()
     {
         EsconderBotoesSincronizacao();
+        
+        // 🔴 CORREÇÃO: Verificar referências no Start
+        if (npcImportante == null)
+        {
+            Debug.LogError("[SincronizacaoManager] npcImportante não está atribuído no Inspector!");
+        }
+        
+        if (postesPiscando == null || postesPiscando.Length == 0)
+        {
+            Debug.LogError("[SincronizacaoManager] postesPiscando não está configurado!");
+        }
     }
 
     public void IniciarSincronizacao()
     {
         if (!PhotonNetwork.IsMasterClient) return;
+        
+        // 🔴 CORREÇÃO: Verificar se o PhotonView está configurado
+        if (photonView == null)
+        {
+            Debug.LogError("[SincronizacaoManager] PhotonView não encontrado!");
+            return;
+        }
+        
         photonView.RPC("RPC_IniciarSincronizacao", RpcTarget.AllBuffered);
     }
 
@@ -49,28 +69,50 @@ public class SincronizacaoManager : MonoBehaviourPun
 
     public void RegistrarToque(int actorID)
     {
-        if (!sincronizacaoAtiva || sincronizacaoConcluida) return;
+        if (!sincronizacaoAtiva || sincronizacaoConcluida) 
+        {
+            Debug.Log($"[SincronizacaoManager] Sincronização não está ativa, ignorando toque do jogador {actorID}");
+            return;
+        }
 
+        // 🔴 CORREÇÃO: Verificar PhotonView antes de chamar RPC
+        if (photonView == null)
+        {
+            Debug.LogError("[SincronizacaoManager] PhotonView é null no RegistrarToque!");
+            return;
+        }
+        
         photonView.RPC("RPC_RegistrarToque", RpcTarget.All, actorID);
     }
 
     [PunRPC]
     private void RPC_RegistrarToque(int actorID)
     {
+        if (!sincronizacaoAtiva || sincronizacaoConcluida) 
+        {
+            Debug.Log($"[SincronizacaoManager] Sincronização não ativa no RPC, ignorando jogador {actorID}");
+            return;
+        }
+
         jogadoresQueTocaram.Add(actorID);
         tempoUltimoToque = Time.time;
 
         Debug.Log($"[SincronizacaoManager] Jogador {actorID} tocou. Total: {jogadoresQueTocaram.Count}/2");
 
-        if (jogadoresQueTocaram.Count >= 2)
+        if (PhotonNetwork.IsMasterClient && jogadoresQueTocaram.Count >= 2)
         {
+            Debug.Log($"[SincronizacaoManager] ✅ Dois jogadores tocaram! Concluindo sincronização...");
             ConcluirSincronizacao();
+        }
+        else if (PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log($"[SincronizacaoManager] Aguardando mais jogadores... ({jogadoresQueTocaram.Count}/2)");
         }
     }
 
     private void Update()
     {
-        if (sincronizacaoAtiva && !sincronizacaoConcluida)
+        if (sincronizacaoAtiva && !sincronizacaoConcluida && PhotonNetwork.IsMasterClient)
         {
             if (Time.time - tempoUltimoToque > tempoMaximoSincronizacao)
             {
@@ -84,36 +126,85 @@ public class SincronizacaoManager : MonoBehaviourPun
         sincronizacaoConcluida = true;
         sincronizacaoAtiva = false;
 
+        // 🔴 CORREÇÃO: Verificar PhotonView
+        if (photonView == null)
+        {
+            Debug.LogError("[SincronizacaoManager] PhotonView é null no ConcluirSincronizacao!");
+            return;
+        }
+        
         photonView.RPC("RPC_ConcluirSincronizacao", RpcTarget.All);
     }
 
     [PunRPC]
     private void RPC_ConcluirSincronizacao()
     {
-        Debug.Log("[SincronizacaoManager] Sincronização concluída!");
+        Debug.Log("[SincronizacaoManager] ✅✅✅ Sincronização concluída para todos os jogadores!");
 
-        // Para as luzes de piscar
-        foreach (var poste in postesPiscando)
+        // Parar as luzes de piscar
+        if (postesPiscando != null)
         {
-            if (poste != null)
+            foreach (var poste in postesPiscando)
             {
-                poste.PararDePiscar();
+                if (poste != null) poste.PararDePiscar();
             }
         }
 
         EsconderBotoesSincronizacao();
 
-        // Notifica o MissaoFase2Manager
-        MissaoFase2Manager.instancia.MissaoConcluida();
+        // 🔴 CORREÇÃO: Notificar o NPC importante sobre conclusão da tarefa
+        if (npcImportante != null && npcImportante.ehNPCFase2)
+        {
+            npcImportante.TarefaConcluida();
+            Debug.Log("[SincronizacaoManager] NPC importante notificado sobre conclusão!");
+            
+            // 🔴 CORREÇÃO EXTRA: Forçar atualização do indicador visual
+            if (npcImportante.indicadorNPC != null)
+            {
+                npcImportante.indicadorNPC.AtivarParaEntrega();
+            }
+        }
+        else
+        {
+            Debug.LogError("[SincronizacaoManager] NPC importante não configurado corretamente!");
+        }
+
+        // Notificar o manager da missão
+        if (MissaoFase2Manager.instancia != null)
+        {
+            MissaoFase2Manager.instancia.MissaoConcluida();
+        }
+        
+        // 🔴 NOVA CORREÇÃO: Forçar verificação de progresso
+        if (ProgressaoFaseController.instancia != null)
+        {
+            ProgressaoFaseController.instancia.VerificarESincronizarProgresso();
+        }
     }
 
     private void ResetarSincronizacao()
     {
+        if (!PhotonNetwork.IsMasterClient) return;
+
         jogadoresQueTocaram.Clear();
         sincronizacaoAtiva = false;
+        
         Debug.Log("[SincronizacaoManager] Sincronização resetada - tempo esgotado");
         
-        // Opcional: feedback visual/sonoro de falha
+        // Preparar para nova tentativa
+        Debug.Log("[SincronizacaoManager] Pronto para nova tentativa...");
+        
+        // Reiniciar automaticamente após 2 segundos
+        Invoke("ReiniciarSincronizacao", 2f);
+    }
+
+    private void ReiniciarSincronizacao()
+    {
+        if (!sincronizacaoConcluida && PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("[SincronizacaoManager] Reiniciando sincronização automaticamente...");
+            IniciarSincronizacao();
+        }
     }
 
     private void MostrarBotoesSincronizacao()
@@ -130,7 +221,6 @@ public class SincronizacaoManager : MonoBehaviourPun
         {
             if (botao != null)
             {
-                // 🔴 CORREÇÃO: Usar método controlado em vez de SetActive direto
                 var botaoScript = botao.GetComponent<BotaoSincronizacaoFase2>();
                 if (botaoScript != null)
                 {
@@ -140,7 +230,7 @@ public class SincronizacaoManager : MonoBehaviourPun
                 else
                 {
                     Debug.LogError($"[SincronizacaoManager] Botão {botao.name} não tem script BotaoSincronizacaoFase2!");
-                    botao.SetActive(true); // Fallback
+                    botao.SetActive(true);
                 }
             }
             else
@@ -163,6 +253,4 @@ public class SincronizacaoManager : MonoBehaviourPun
             }
         }
     }
-
-    
 }

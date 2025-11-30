@@ -8,11 +8,10 @@ public class BotaoSincronizacaoFase2 : MonoBehaviourPun
 
     private bool jogadorPerto = false;
     private PlayerUIReferences uiDoJogador;
-    private bool jaInicializado = false; // 🔴 NOVO: Evitar múltiplas inicializações
+    private bool jaInicializado = false;
 
     private void Start()
     {
-        // 🔴 CORREÇÃO: Só desativa se não foi ativado pelo SincronizacaoManager
         if (!jaInicializado)
         {
             Debug.Log($"[BotaoSincronizacao] {gameObject.name} - Start chamado, desativando botão (inicial)");
@@ -24,8 +23,6 @@ public class BotaoSincronizacaoFase2 : MonoBehaviourPun
     private void OnEnable()
     {
         Debug.Log($"[BotaoSincronizacao] {gameObject.name} - OnEnable chamado, botão ATIVADO");
-        
-        // 🔴 CORREÇÃO: Marcar como inicializado quando ativado pelo manager
         jaInicializado = true;
     }
 
@@ -34,7 +31,6 @@ public class BotaoSincronizacaoFase2 : MonoBehaviourPun
         Debug.Log($"[BotaoSincronizacao] {gameObject.name} - OnDisable chamado, botão DESATIVADO");
     }
 
-    // 🔴 NOVO: Método para ativação controlada pelo manager
     public void AtivarParaMissao()
     {
         Debug.Log($"[BotaoSincronizacao] {gameObject.name} - Ativado pelo manager");
@@ -58,10 +54,6 @@ public class BotaoSincronizacaoFase2 : MonoBehaviourPun
             uiDoJogador.botaoInteracao.onClick.RemoveAllListeners();
             uiDoJogador.botaoInteracao.onClick.AddListener(Interagir);
             Debug.Log($"[BotaoSincronizacao] {gameObject.name} - Botão de interação mostrado para Player {pv.OwnerActorNr}");
-        }
-        else
-        {
-            Debug.LogError($"[BotaoSincronizacao] {gameObject.name} - UI do jogador não encontrada!");
         }
     }
 
@@ -89,13 +81,16 @@ public class BotaoSincronizacaoFase2 : MonoBehaviourPun
 
         int actorID = PhotonNetwork.LocalPlayer.ActorNumber;
         
-        // ✅ Chama o SincronizacaoManager
+        Debug.Log($"[BotaoSincronizacao] {gameObject.name} - Jogador {actorID} interagiu!");
+        
+        // Chama o SincronizacaoManager
         SincronizacaoManager.instancia.RegistrarToque(actorID);
 
-        // Esconde o botão após o uso
+        // 🔴 CORREÇÃO: Esconder o botão após interação bem-sucedida
         if (uiDoJogador != null && uiDoJogador.botaoInteracao != null)
         {
             uiDoJogador.botaoInteracao.gameObject.SetActive(false);
+            Debug.Log($"[BotaoSincronizacao] {gameObject.name} - Botão de interação escondido após uso");
         }
     }
 }

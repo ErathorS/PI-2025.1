@@ -50,5 +50,8 @@ MonoBehaviour:
   playerUiPrefab: {fileID: 1986514061674809623, guid: 56f26fa35f0df874aa51891f01e38f31, type: 3}
   cenasJogaveis:
   - Cena de Introducao 1
+  - Cena de Introducao 2
+  - Cena de Introducao 3
   - PI Fase 1
-  - PI Fase 1
+  - PI Fase 2
+  - PI Fase 3

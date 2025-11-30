@@ -35,18 +35,41 @@ public class IndicadorNpc : MonoBehaviour
         if (iconeExclamacao != null)
             iconeExclamacao.SetActive(false);
 
-        // Se for NPC importante (tipo 2), registra progresso (com segurança)
-        if (tipoExclamacao == 2)
+        // 🔴 CORREÇÃO CRÍTICA: REMOVER a contagem automática de progresso aqui!
+        // O progresso do NPC importante deve ser contado APENAS no DialogoNPC
+        // após o diálogo de entrega, não automaticamente aqui.
+        
+        Debug.Log($"[IndicadorNpc] NPC '{gameObject.name}' marcado como conversado. " +
+                 $"Tipo: {tipoExclamacao} | Progresso NÃO contado automaticamente.");
+    }
+
+    public void AtivarParaEntrega()
+    {
+        if (iconeExclamacao != null)
         {
-            if (progressoController != null)
-            {
-                progressoController.NPCImportanteConcluido();
-                //Debug.Log($"[IndicadorNpc] NPC importante '{gameObject.name}' marcou como conversado e pediu progresso.");
-            }
-            else
-            {
-                //Debug.LogWarning($"[IndicadorNpc] Não foi possível registrar progresso para '{gameObject.name}' porque ProgressaoFaseController estava ausente.");
-            }
+            iconeExclamacao.SetActive(true);
+            jogadorJaConversou = false; // 🔴 Permite mostrar o ícone novamente
+            Debug.Log($"[IndicadorNpc] Indicador ativado para entrega - {gameObject.name}");
         }
+    }
+
+    // 🔴 NOVO: Método para reativar o indicador (usado no reset)
+    public void ReativarIndicador()
+    {
+        if (iconeExclamacao != null)
+        {
+            iconeExclamacao.SetActive(true);
+            jogadorJaConversou = false;
+            Debug.Log($"[IndicadorNpc] Indicador reativado - {gameObject.name}");
+        }
+    }
+
+    // 🔴 NOVO: Método para verificar estado atual (debug)
+    public void DebugEstado()
+    {
+        Debug.Log($"[IndicadorNpc] {gameObject.name} - " +
+                 $"Conversado: {jogadorJaConversou}, " +
+                 $"Tipo: {tipoExclamacao}, " +
+                 $"Ícone Ativo: {iconeExclamacao != null && iconeExclamacao.activeSelf}");
     }
 }

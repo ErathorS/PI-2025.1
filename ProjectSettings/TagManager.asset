@@ -26,11 +26,12 @@ TagManager:
   - Jornal
   - Caixa
   - Car
+  - Semaforo
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Semaforo
   - Water
   - UI
   - 
