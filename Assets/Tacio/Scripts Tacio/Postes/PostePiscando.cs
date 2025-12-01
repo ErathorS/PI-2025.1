@@ -41,13 +41,11 @@ public class PostePiscando : MonoBehaviour
     {
         piscando = true;
 
-        // Apaga a luz
         if (posteLuz != null)
             posteLuz.enabled = false;
 
         yield return new WaitForSeconds(duracaoPiscar);
 
-        // Acende a luz
         if (posteLuz != null)
             posteLuz.enabled = true;
 

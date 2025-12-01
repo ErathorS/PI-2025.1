@@ -83,13 +83,11 @@ public class BotaoSincronizacaoFase2 : MonoBehaviourPun
 
         Debug.Log($"[BotaoSincronizacao] {gameObject.name} - Jogador {actorID} interagiu!");
 
-        // Chama o SincronizacaoManager
         if (SincronizacaoManager.instancia != null)
         {
             SincronizacaoManager.instancia.RegistrarToque(actorID);
         }
 
-        // Esconder o botão após interação bem-sucedida
         if (uiDoJogador != null && uiDoJogador.botaoInteracao != null)
         {
             uiDoJogador.botaoInteracao.gameObject.SetActive(false);
