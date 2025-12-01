@@ -8,13 +8,13 @@ public class GerenciadorTransito : MonoBehaviour
     {
         public string nome;
         public bool semaforoAtivo = false;
-        public Collider triggerSemaforo; // Trigger que os carros detectam
-        public List<Collider> paredesBarreira = new List<Collider>(); // Barreiras invisíveis
+        public Collider triggerSemaforo;
+        public List<Collider> paredesBarreira = new List<Collider>();
     }
 
     [Header("Configurações dos Semáforos")]
     public List<SemaforoConfig> semaforos = new List<SemaforoConfig>();
-
+    
     [Header("Controle Automático")]
     public bool controleAutomatico = true;
     public float tempoTrocaSemaforo = 10f;
@@ -23,7 +23,6 @@ public class GerenciadorTransito : MonoBehaviour
 
     void Start()
     {
-        // Inicializa todos os estados baseado nos semáforos
         AtualizarEstadosSemaforos();
     }
 
@@ -31,7 +30,6 @@ public class GerenciadorTransito : MonoBehaviour
     {
         if (controleAutomatico)
         {
-            // Controle automático do semáforo
             tempoDecorrido += Time.deltaTime;
             if (tempoDecorrido >= tempoTrocaSemaforo)
             {
@@ -40,7 +38,6 @@ public class GerenciadorTransito : MonoBehaviour
             }
         }
 
-        // Atualiza os estados continuamente
         AtualizarEstadosSemaforos();
     }
 
@@ -48,9 +45,6 @@ public class GerenciadorTransito : MonoBehaviour
     {
         foreach (SemaforoConfig semaforo in semaforos)
         {
-            // Lógica: Semáforo ativo = barreiras DESATIVADAS (players podem passar)
-            //          Semáforo inativo = barreiras ATIVADAS (players NÃO podem passar)
-            
             foreach (Collider parede in semaforo.paredesBarreira)
             {
                 if (parede != null)
@@ -59,7 +53,6 @@ public class GerenciadorTransito : MonoBehaviour
                 }
             }
 
-            // Ativa/desativa o trigger do semáforo para os carros detectarem
             if (semaforo.triggerSemaforo != null)
             {
                 semaforo.triggerSemaforo.enabled = semaforo.semaforoAtivo;
@@ -69,26 +62,47 @@ public class GerenciadorTransito : MonoBehaviour
 
     void TrocarSemaforos()
     {
-        // Alterna o estado de todos os semáforos
         foreach (SemaforoConfig semaforo in semaforos)
         {
             semaforo.semaforoAtivo = !semaforo.semaforoAtivo;
         }
-
         Debug.Log("Estados dos semáforos trocados automaticamente");
     }
 
-    // Método para verificar se um carro deve parar baseado no semáforo
+    // NOVO: Método para liberar o trânsito
+    public void LiberarTransito()
+    {
+        foreach (SemaforoConfig semaforo in semaforos)
+        {
+            semaforo.semaforoAtivo = true;
+        }
+        
+        AtualizarEstadosSemaforos();
+        Debug.Log("[GerenciadorTransito] Trânsito liberado!");
+    }
+
+    // NOVO: Método para bloquear o trânsito
+    public void BloquearTransito()
+    {
+        foreach (SemaforoConfig semaforo in semaforos)
+        {
+            semaforo.semaforoAtivo = false;
+        }
+        
+        AtualizarEstadosSemaforos();
+        Debug.Log("[GerenciadorTransito] Trânsito bloqueado!");
+    }
+
     public bool DevePararNoSemaforo(Collider triggerDetectado)
     {
         foreach (SemaforoConfig semaforo in semaforos)
         {
             if (semaforo.triggerSemaforo == triggerDetectado && semaforo.semaforoAtivo)
             {
-                return true; // Carro deve parar
+                return true;
             }
         }
-        return false; // Carro pode continuar
+        return false;
     }
 
     // Métodos para controle manual dos semáforos
@@ -119,26 +133,23 @@ public class GerenciadorTransito : MonoBehaviour
         }
     }
 
-    // Método para controle alternativo externo
     public void SetarEstadoSemaforo(int index, bool estado)
     {
         if (index >= 0 && index < semaforos.Count)
         {
             semaforos[index].semaforoAtivo = estado;
-            Debug.Log($"Semáforo {semaforos[index].nome} setado para: {estado}");
+            Debug.Log($"Semáforo {semaforos[index].nome} estado para: {estado}");
         }
     }
 
-    // Gizmos para visualização no Editor
     void OnDrawGizmosSelected()
     {
         foreach (SemaforoConfig semaforo in semaforos)
         {
-            // Gizmo para o trigger do semáforo
             if (semaforo.triggerSemaforo != null)
             {
                 Gizmos.color = semaforo.semaforoAtivo ? Color.red : Color.green;
-                
+
                 if (semaforo.triggerSemaforo is BoxCollider boxCollider)
                 {
                     Gizmos.matrix = semaforo.triggerSemaforo.transform.localToWorldMatrix;
@@ -146,7 +157,6 @@ public class GerenciadorTransito : MonoBehaviour
                 }
             }
 
-            // Gizmo para as paredes barreira
             Gizmos.color = semaforo.semaforoAtivo ? Color.blue : Color.yellow;
             foreach (Collider parede in semaforo.paredesBarreira)
             {

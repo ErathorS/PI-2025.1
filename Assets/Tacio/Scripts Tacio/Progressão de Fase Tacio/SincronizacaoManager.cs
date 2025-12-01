@@ -12,7 +12,6 @@ public class SincronizacaoManager : MonoBehaviourPun
     [Header("Referências")]
     public GameObject[] botoesSincronizacao;
     public PostePiscando[] postesPiscando;
-    public DialogoNPC npcImportante; // 🔴 CORREÇÃO: Referência direta
 
     // Estado
     private HashSet<int> jogadoresQueTocaram = new HashSet<int>();
@@ -28,30 +27,18 @@ public class SincronizacaoManager : MonoBehaviourPun
     private void Start()
     {
         EsconderBotoesSincronizacao();
-        
-        // 🔴 CORREÇÃO: Verificar referências no Start
-        if (npcImportante == null)
-        {
-            Debug.LogError("[SincronizacaoManager] npcImportante não está atribuído no Inspector!");
-        }
-        
-        if (postesPiscando == null || postesPiscando.Length == 0)
-        {
-            Debug.LogError("[SincronizacaoManager] postesPiscando não está configurado!");
-        }
     }
 
     public void IniciarSincronizacao()
     {
         if (!PhotonNetwork.IsMasterClient) return;
-        
-        // 🔴 CORREÇÃO: Verificar se o PhotonView está configurado
+
         if (photonView == null)
         {
             Debug.LogError("[SincronizacaoManager] PhotonView não encontrado!");
             return;
         }
-        
+
         photonView.RPC("RPC_IniciarSincronizacao", RpcTarget.AllBuffered);
     }
 
@@ -69,26 +56,25 @@ public class SincronizacaoManager : MonoBehaviourPun
 
     public void RegistrarToque(int actorID)
     {
-        if (!sincronizacaoAtiva || sincronizacaoConcluida) 
+        if (!sincronizacaoAtiva || sincronizacaoConcluida)
         {
             Debug.Log($"[SincronizacaoManager] Sincronização não está ativa, ignorando toque do jogador {actorID}");
             return;
         }
 
-        // 🔴 CORREÇÃO: Verificar PhotonView antes de chamar RPC
         if (photonView == null)
         {
             Debug.LogError("[SincronizacaoManager] PhotonView é null no RegistrarToque!");
             return;
         }
-        
+
         photonView.RPC("RPC_RegistrarToque", RpcTarget.All, actorID);
     }
 
     [PunRPC]
     private void RPC_RegistrarToque(int actorID)
     {
-        if (!sincronizacaoAtiva || sincronizacaoConcluida) 
+        if (!sincronizacaoAtiva || sincronizacaoConcluida)
         {
             Debug.Log($"[SincronizacaoManager] Sincronização não ativa no RPC, ignorando jogador {actorID}");
             return;
@@ -101,7 +87,7 @@ public class SincronizacaoManager : MonoBehaviourPun
 
         if (PhotonNetwork.IsMasterClient && jogadoresQueTocaram.Count >= 2)
         {
-            Debug.Log($"[SincronizacaoManager] ✅ Dois jogadores tocaram! Concluindo sincronização...");
+            Debug.Log($"[SincronizacaoManager] ✔️ Dois jogadores tocaram! Concluindo sincronização...");
             ConcluirSincronizacao();
         }
         else if (PhotonNetwork.IsMasterClient)
@@ -126,13 +112,12 @@ public class SincronizacaoManager : MonoBehaviourPun
         sincronizacaoConcluida = true;
         sincronizacaoAtiva = false;
 
-        // 🔴 CORREÇÃO: Verificar PhotonView
         if (photonView == null)
         {
             Debug.LogError("[SincronizacaoManager] PhotonView é null no ConcluirSincronizacao!");
             return;
         }
-        
+
         photonView.RPC("RPC_ConcluirSincronizacao", RpcTarget.All);
     }
 
@@ -152,33 +137,24 @@ public class SincronizacaoManager : MonoBehaviourPun
 
         EsconderBotoesSincronizacao();
 
-        // 🔴 CORREÇÃO: Notificar o NPC importante sobre conclusão da tarefa
-        if (npcImportante != null && npcImportante.ehNPCFase2)
-        {
-            npcImportante.TarefaConcluida();
-            Debug.Log("[SincronizacaoManager] NPC importante notificado sobre conclusão!");
-            
-            // 🔴 CORREÇÃO EXTRA: Forçar atualização do indicador visual
-            if (npcImportante.indicadorNPC != null)
-            {
-                npcImportante.indicadorNPC.AtivarParaEntrega();
-            }
-        }
-        else
-        {
-            Debug.LogError("[SincronizacaoManager] NPC importante não configurado corretamente!");
-        }
+        // NOVO: Notificar NPC da Zona 2 que a tarefa está concluída
+        NotificarNPCZona2();
 
-        // Notificar o manager da missão
-        if (MissaoFase2Manager.instancia != null)
+        Debug.Log("[SincronizacaoManager] Tarefa de sincronização concluída!");
+    }
+
+    // NOVO: Método para notificar NPC da Zona 2
+    private void NotificarNPCZona2()
+    {
+        DialogoNPC[] npcs = FindObjectsOfType<DialogoNPC>();
+        foreach (DialogoNPC npc in npcs)
         {
-            MissaoFase2Manager.instancia.MissaoConcluida();
-        }
-        
-        // 🔴 NOVA CORREÇÃO: Forçar verificação de progresso
-        if (ProgressaoFaseController.instancia != null)
-        {
-            ProgressaoFaseController.instancia.VerificarESincronizarProgresso();
+            if (npc.ehNPCZona2)
+            {
+                npc.TarefaConcluida();
+                Debug.Log("[SincronizacaoManager] NPC Zona 2 notificado sobre conclusão da tarefa!");
+                break;
+            }
         }
     }
 
@@ -188,12 +164,12 @@ public class SincronizacaoManager : MonoBehaviourPun
 
         jogadoresQueTocaram.Clear();
         sincronizacaoAtiva = false;
-        
+
         Debug.Log("[SincronizacaoManager] Sincronização resetada - tempo esgotado");
-        
+
         // Preparar para nova tentativa
         Debug.Log("[SincronizacaoManager] Pronto para nova tentativa...");
-        
+
         // Reiniciar automaticamente após 2 segundos
         Invoke("ReiniciarSincronizacao", 2f);
     }
@@ -210,7 +186,7 @@ public class SincronizacaoManager : MonoBehaviourPun
     private void MostrarBotoesSincronizacao()
     {
         Debug.Log("[SincronizacaoManager] MostrarBotoesSincronizacao chamado");
-        
+
         if (botoesSincronizacao == null || botoesSincronizacao.Length == 0)
         {
             Debug.LogError("[SincronizacaoManager] Array botoesSincronizacao está vazio ou null!");
@@ -243,14 +219,29 @@ public class SincronizacaoManager : MonoBehaviourPun
     private void EsconderBotoesSincronizacao()
     {
         Debug.Log("[SincronizacaoManager] EsconderBotoesSincronizacao chamado");
-        
-        foreach (var botao in botoesSincronizacao)
+
+        if (botoesSincronizacao != null)
         {
-            if (botao != null)
+            foreach (var botao in botoesSincronizacao)
             {
-                botao.SetActive(false);
-                Debug.Log($"[SincronizacaoManager] Botão {botao.name} desativado");
+                if (botao != null)
+                {
+                    botao.SetActive(false);
+                    Debug.Log($"[SincronizacaoManager] Botão {botao.name} desativado");
+                }
             }
         }
+    }
+
+    // NOVO: Método para verificar se a sincronização está ativa
+    public bool IsSincronizacaoAtiva()
+    {
+        return sincronizacaoAtiva;
+    }
+
+    // NOVO: Método para verificar se a sincronização foi concluída
+    public bool IsSincronizacaoConcluida()
+    {
+        return sincronizacaoConcluida;
     }
 }

@@ -20,8 +20,11 @@ public class ColetarCaixasManager : MonoBehaviourPun
     [Header("Config")]
     public float tempoLimite = 60f;
     private float tempoAtual;
-    private int caixasColetadas = 0;
-    private int totalCaixas;
+    
+    // NOVO: Tornar público para acesso do MissaoFase3Manager
+    public int caixasColetadas = 0;
+    public int totalCaixas;
+    
     private bool faseAtiva = false;
 
     private void Awake()
@@ -38,9 +41,12 @@ public class ColetarCaixasManager : MonoBehaviourPun
 
         for (int i = 0; i < totalCaixas; i++)
         {
-            posicoesIniciais[i] = caixasOriginais[i].transform.position;
-            rotacoesIniciais[i] = caixasOriginais[i].transform.rotation;
-            caixasOriginais[i].gameObject.SetActive(false);
+            if (caixasOriginais[i] != null)
+            {
+                posicoesIniciais[i] = caixasOriginais[i].transform.position;
+                rotacoesIniciais[i] = caixasOriginais[i].transform.rotation;
+                caixasOriginais[i].gameObject.SetActive(false);
+            }
         }
     }
 
@@ -50,13 +56,13 @@ public class ColetarCaixasManager : MonoBehaviourPun
         if (!PhotonNetwork.IsMasterClient) return;
 
         caixasColetadas++;
-
         photonView.RPC("RPC_SincronizarUI", RpcTarget.AllBuffered, caixasColetadas);
 
         if (caixasColetadas >= totalCaixas)
         {
             faseAtiva = false;
-            MissaoFase1Manager.instancia.MissaoFinalizada();
+            // NOVO: Notificar NPC que tarefa está concluída
+            NotificarTarefaConcluida();
         }
     }
 
@@ -67,7 +73,23 @@ public class ColetarCaixasManager : MonoBehaviourPun
         AtualizarUI();
     }
 
-    // Ativar caixas no início
+    // NOVO: Método para notificar que a tarefa foi concluída
+    private void NotificarTarefaConcluida()
+    {
+        // Encontra o NPC da Zona 1 e notifica que a tarefa está concluída
+        DialogoNPC[] npcs = FindObjectsOfType<DialogoNPC>();
+        foreach (DialogoNPC npc in npcs)
+        {
+            if (npc.ehNPCZona1)
+            {
+                npc.TarefaConcluida();
+                Debug.Log("[ColetarCaixasManager] NPC Zona 1 notificado sobre conclusão da tarefa!");
+                break;
+            }
+        }
+    }
+
+    // Ativar caixas no inicio
     public void AtivarCaixasParaMissao()
     {
         caixasColetadas = 0;
@@ -76,16 +98,21 @@ public class ColetarCaixasManager : MonoBehaviourPun
 
         for (int i = 0; i < totalCaixas; i++)
         {
-            caixasOriginais[i].transform.position = posicoesIniciais[i];
-            caixasOriginais[i].transform.rotation = rotacoesIniciais[i];
-            caixasOriginais[i].gameObject.SetActive(true);
+            if (caixasOriginais[i] != null)
+            {
+                caixasOriginais[i].transform.position = posicoesIniciais[i];
+                caixasOriginais[i].transform.rotation = rotacoesIniciais[i];
+                caixasOriginais[i].gameObject.SetActive(true);
+                caixasOriginais[i].ResetarCaixa();
+            }
         }
 
-        AtualizarUI();
-        botaoReset.SetActive(false);
+        photonView.RPC("RPC_SincronizarUI", RpcTarget.AllBuffered, caixasColetadas);
+        
+        if (botaoReset != null)
+            botaoReset.SetActive(false);
     }
 
-    // Atualizar Relógio
     private void Update()
     {
         if (!faseAtiva) return;
@@ -97,7 +124,7 @@ public class ColetarCaixasManager : MonoBehaviourPun
             tempoAtual = 0;
             faseAtiva = false;
 
-            if (PhotonNetwork.IsMasterClient)
+            if (PhotonNetwork.IsMasterClient && botaoReset != null)
                 botaoReset.SetActive(true);
         }
 
@@ -121,17 +148,26 @@ public class ColetarCaixasManager : MonoBehaviourPun
         tempoAtual = tempoLimite;
         faseAtiva = true;
 
-        // Reativa todas as caixas e volta elas para posição original
         for (int i = 0; i < totalCaixas; i++)
         {
-            caixasOriginais[i].transform.position = posicoesIniciais[i];
-            rotacoesIniciais[i] = caixasOriginais[i].transform.rotation;
-            caixasOriginais[i].gameObject.SetActive(true);
+            if (caixasOriginais[i] != null)
+            {
+                caixasOriginais[i].transform.position = posicoesIniciais[i];
+                caixasOriginais[i].transform.rotation = rotacoesIniciais[i];
+                caixasOriginais[i].gameObject.SetActive(true);
+                caixasOriginais[i].ResetarCaixa();
+            }
         }
 
         photonView.RPC("RPC_SincronizarUI", RpcTarget.AllBuffered, caixasColetadas);
 
-        botaoReset.SetActive(false);
+        if (botaoReset != null)
+            botaoReset.SetActive(false);
     }
 
+    // NOVO: Método para verificar se a missão está ativa
+    public bool IsMissaoAtiva()
+    {
+        return faseAtiva;
+    }
 }
