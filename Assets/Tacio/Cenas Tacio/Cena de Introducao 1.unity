@@ -3510,7 +3510,7 @@ MonoBehaviour:
   player1Terminou: 0
   player2Terminou: 0
   plateManager: {fileID: 6900256535217134046}
-  nomeCenaDestino: PI Fase 1
+  nomeCenaDestino: PI Fase 3
 --- !u!1001 &937632082
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5085,14 +5085,18 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3586929879803048255, guid: a16fbe47462a31f4f917c20b937a0fce, type: 3}
       propertyPath: cenasJogaveis.Array.size
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3586929879803048255, guid: a16fbe47462a31f4f917c20b937a0fce, type: 3}
       propertyPath: cenasJogaveis.Array.data[5]
-      value: PI Fase 3 -DvD
+      value: PI Fase 3
       objectReference: {fileID: 0}
     - target: {fileID: 3586929879803048255, guid: a16fbe47462a31f4f917c20b937a0fce, type: 3}
       propertyPath: cenasJogaveis.Array.data[6]
+      value: PI Fase 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3586929879803048255, guid: a16fbe47462a31f4f917c20b937a0fce, type: 3}
+      propertyPath: cenasJogaveis.Array.data[7]
       value: PI Fase 3
       objectReference: {fileID: 0}
     - target: {fileID: 5628647789220568681, guid: a16fbe47462a31f4f917c20b937a0fce, type: 3}
@@ -9074,7 +9078,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1900838266182818047, guid: bd5d0e71107fde0489397fb7ed13eb95, type: 3}
       propertyPath: proximaCena
-      value: PI Fase 1
+      value: PI Fase 3
       objectReference: {fileID: 0}
     - target: {fileID: 2377690126370057793, guid: bd5d0e71107fde0489397fb7ed13eb95, type: 3}
       propertyPath: m_Name
@@ -9201,7 +9205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aaefc1eb25290b42ab4f203e7acf32f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sceneToLoad: PI Fase 1
+  _sceneToLoad: PI Fase 3
   apenasMasterCarrega: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

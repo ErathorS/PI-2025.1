@@ -16,9 +16,9 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
     public TMP_Text textoNpcs;
 
     [Header("Configurações de Objetivos")]
-    public int npcsImportantesTotais = 2; // NOVO: 2 NPCs para Fase 3
+    public int npcsImportantesTotais = 1; // NOVO: 2 NPCs para Fase 3
     public int jornaisTotais = 8;         // Ajuste conforme Fase 3
-    public int lugaresTotais = 5;         // Ajuste conforme Fase 3
+    public int lugaresTotais = 3;         // Ajuste conforme Fase 3
 
     [Header("Cores e Velocidade")]
     public Image fillImage;
@@ -68,9 +68,9 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
         string cenaAtual = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
         if (cenaAtual == "PI Fase 3" || cenaAtual.Contains("Fase3"))
         {
-            npcsImportantesTotais = 2; // DOIS NPCs importantes
+            npcsImportantesTotais = 1; // DOIS NPCs importantes
             jornaisTotais = 8;         // Ajuste conforme necessário
-            lugaresTotais = 5;         // Ajuste conforme necessário
+            lugaresTotais = 3;         // Ajuste conforme necessário
         }
 
         if (!inicializado)

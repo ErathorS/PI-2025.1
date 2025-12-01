@@ -53,9 +53,15 @@ public class DialogoNPCIntroducao : MonoBehaviourPun
 
             if (plateManager != null)
             {
-                plateManager.proximaCena = nomeCenaDestino;
+                // NÃO sobrescreve se já estiver configurado no Inspector
+                if (plateManager.proximaCena == "PI Fase 1" && !string.IsNullOrEmpty(nomeCenaDestino))
+                {
+                    // Só altera se for o valor padrão
+                    plateManager.proximaCena = nomeCenaDestino;
+                }
+                
                 plateManager.EnableListening();
-                Debug.Log($"[DialogoNPCIntroducao] Placas ativadas para {nomeCenaDestino}");
+                Debug.Log($"[DialogoNPCIntroducao] Placas ativadas para {plateManager.proximaCena}");
             }
             else
             {
