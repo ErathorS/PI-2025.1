@@ -5084,8 +5084,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3586929879803048255, guid: a16fbe47462a31f4f917c20b937a0fce, type: 3}
+      propertyPath: cenasJogaveis.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3586929879803048255, guid: a16fbe47462a31f4f917c20b937a0fce, type: 3}
       propertyPath: cenasJogaveis.Array.data[5]
       value: PI Fase 3 -DvD
+      objectReference: {fileID: 0}
+    - target: {fileID: 3586929879803048255, guid: a16fbe47462a31f4f917c20b937a0fce, type: 3}
+      propertyPath: cenasJogaveis.Array.data[6]
+      value: PI Fase 3
       objectReference: {fileID: 0}
     - target: {fileID: 5628647789220568681, guid: a16fbe47462a31f4f917c20b937a0fce, type: 3}
       propertyPath: m_Name

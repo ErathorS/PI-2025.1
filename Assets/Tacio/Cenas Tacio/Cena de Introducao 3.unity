@@ -3988,7 +3988,7 @@ MonoBehaviour:
   player1Terminou: 0
   player2Terminou: 0
   plateManager: {fileID: 6900256535217134046}
-  nomeCenaDestino: PI Fase 3 -DvD
+  nomeCenaDestino: PI Fase 3
 --- !u!1 &928062167
 GameObject:
   m_ObjectHideFlags: 0
@@ -9791,7 +9791,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1900838266182818047, guid: bd5d0e71107fde0489397fb7ed13eb95, type: 3}
       propertyPath: proximaCena
-      value: PI Fase 3 -DvD
+      value: PI Fase 3
       objectReference: {fileID: 0}
     - target: {fileID: 2377690126370057793, guid: bd5d0e71107fde0489397fb7ed13eb95, type: 3}
       propertyPath: m_Name
@@ -9918,7 +9918,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aaefc1eb25290b42ab4f203e7acf32f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sceneToLoad: PI Fase 3 -DvD
+  _sceneToLoad: PI Fase 3
   apenasMasterCarrega: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
