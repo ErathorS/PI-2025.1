@@ -9072,6 +9072,10 @@ PrefabInstance:
       propertyPath: plateTag
       value: Plate
       objectReference: {fileID: 0}
+    - target: {fileID: 1900838266182818047, guid: bd5d0e71107fde0489397fb7ed13eb95, type: 3}
+      propertyPath: proximaCena
+      value: PI Fase 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2377690126370057793, guid: bd5d0e71107fde0489397fb7ed13eb95, type: 3}
       propertyPath: m_Name
       value: PlatePressureManager
