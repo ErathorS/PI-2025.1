@@ -221,7 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  MoverParaFrente: 1
+  MoverParaFrente: 0
   RaycastParaFrente: 1
   raycastDistance: 20
   stoppingDistance: 3
@@ -450,7 +450,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  MoverParaFrente: 1
+  MoverParaFrente: 0
   RaycastParaFrente: 1
   raycastDistance: 20
   stoppingDistance: 3
@@ -4314,7 +4314,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  MoverParaFrente: 1
+  MoverParaFrente: 0
   RaycastParaFrente: 1
   raycastDistance: 20
   stoppingDistance: 3
@@ -7734,7 +7734,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  MoverParaFrente: 1
+  MoverParaFrente: 0
   RaycastParaFrente: 1
   raycastDistance: 20
   stoppingDistance: 3
@@ -8542,7 +8542,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  MoverParaFrente: 1
+  MoverParaFrente: 0
   RaycastParaFrente: 1
   raycastDistance: 20
   stoppingDistance: 3
@@ -11288,7 +11288,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  MoverParaFrente: 1
+  MoverParaFrente: 0
   RaycastParaFrente: 1
   raycastDistance: 20
   stoppingDistance: 3
@@ -12225,6 +12225,8 @@ MonoBehaviour:
   textoMissao: {fileID: 923896482}
   sincronizacaoManager: {fileID: 1481708932}
   npcImportante: {fileID: 901488092}
+  usarSincronizacao: 1
+  autoFinalizarMissao: 0
 --- !u!4 &905706079
 Transform:
   m_ObjectHideFlags: 0
@@ -16988,7 +16990,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  MoverParaFrente: 1
+  MoverParaFrente: 0
   RaycastParaFrente: 1
   raycastDistance: 20
   stoppingDistance: 3
@@ -19589,6 +19591,8 @@ MonoBehaviour:
   - {fileID: 957970749}
   - {fileID: 1476006099}
   - {fileID: 1142727477}
+  ehParaFase2: 0
+  ehParaFase3: 0
 --- !u!4 &1481708933
 Transform:
   m_ObjectHideFlags: 0
@@ -20322,7 +20326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  MoverParaFrente: 1
+  MoverParaFrente: 0
   RaycastParaFrente: 1
   raycastDistance: 20
   stoppingDistance: 3
@@ -20624,7 +20628,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  MoverParaFrente: 1
+  MoverParaFrente: 0
   RaycastParaFrente: 1
   raycastDistance: 20
   stoppingDistance: 3
@@ -22299,7 +22303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  MoverParaFrente: 1
+  MoverParaFrente: 0
   RaycastParaFrente: 1
   raycastDistance: 20
   stoppingDistance: 3
@@ -24042,7 +24046,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  MoverParaFrente: 1
+  MoverParaFrente: 0
   RaycastParaFrente: 1
   raycastDistance: 20
   stoppingDistance: 3
@@ -24775,7 +24779,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  MoverParaFrente: 1
+  MoverParaFrente: 0
   RaycastParaFrente: 1
   raycastDistance: 20
   stoppingDistance: 3
@@ -25487,7 +25491,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  MoverParaFrente: 1
+  MoverParaFrente: 0
   RaycastParaFrente: 1
   raycastDistance: 20
   stoppingDistance: 3
@@ -26369,7 +26373,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  MoverParaFrente: 1
+  MoverParaFrente: 0
   RaycastParaFrente: 1
   raycastDistance: 20
   stoppingDistance: 3
