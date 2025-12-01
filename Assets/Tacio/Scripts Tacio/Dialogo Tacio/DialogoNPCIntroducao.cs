@@ -49,14 +49,12 @@ public class DialogoNPCIntroducao : MonoBehaviourPun
 
         if (player1Terminou && player2Terminou)
         {
-            Debug.Log("[DialogoNPCIntroducao] ✅ Ambos jogadores prontos!");
+            Debug.Log("[DialogoNPCIntroducao] Ambos jogadores prontos!");
 
             if (plateManager != null)
             {
-                // NÃO sobrescreve se já estiver configurado no Inspector
                 if (plateManager.proximaCena == "PI Fase 1" && !string.IsNullOrEmpty(nomeCenaDestino))
                 {
-                    // Só altera se for o valor padrão
                     plateManager.proximaCena = nomeCenaDestino;
                 }
                 
@@ -70,7 +68,6 @@ public class DialogoNPCIntroducao : MonoBehaviourPun
         }
     }
 
-    // Métodos auxiliares
     public void ResetarEstado()
     {
         player1Terminou = false;

@@ -25,29 +25,23 @@ public class CarMovement : MonoBehaviour
 
     void Update()
     {
-        // CORREÇÃO: Direção do movimento baseada em MoverParaFrente
         float moveDirection = MoverParaFrente ? 1f : -1f;
         Vector3 moveVector = transform.right * moveDirection;
 
-        // CORREÇÃO: Direção do raycast DEVE SER A MESMA do movimento
         float rayDirection = MoverParaFrente ? 1f : -1f;
         Vector3 raycastVector = transform.right * rayDirection;
 
-        // Verifica semáforo e carro da frente
         VerificarSemaforo(raycastVector);
         VerificarCarroFrente(raycastVector);
 
-        // Se semáforo detectado OU carro da frente detectado, para o carro
         if (semaforoDetectado || carroFrenteDetectado)
         {
             speed = 0f;
         }
         else
         {
-            // Movimento do carro
             transform.Translate(moveVector * Time.deltaTime * speed);
 
-            // Aceleração natural
             if (speed < 15f)
             {
                 speed += 0.1f;
@@ -61,10 +55,8 @@ public class CarMovement : MonoBehaviour
 
         if (Physics.Raycast(transform.position, direction, out hit, raycastDistance))
         {
-            // Verifica se é um trigger de semáforo
             if (hit.collider.isTrigger && gerenciadorTransito != null)
             {
-                // Consulta o gerenciador se deve parar neste semáforo
                 if (gerenciadorTransito.DevePararNoSemaforo(hit.collider))
                 {
                     semaforoDetectado = true;
@@ -119,7 +111,6 @@ public class CarMovement : MonoBehaviour
         }
     }
 
-    // NOVO: Método para debug
     public void DebugEstado()
     {
         Debug.Log($"[CarMovement] {gameObject.name} - " +

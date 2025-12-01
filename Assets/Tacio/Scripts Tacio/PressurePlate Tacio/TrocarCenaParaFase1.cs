@@ -14,9 +14,6 @@ namespace FuroDeNoticia
 
         private bool carregando = false;
 
-        /// <summary>
-        /// Chame este método quando quiser encerrar a introdução e ir para a Fase 1.
-        /// </summary>
         public void IrParaFase1()
         {
             if (carregando) return;
@@ -36,7 +33,6 @@ namespace FuroDeNoticia
             }
             else
             {
-                // Se quiser que qualquer jogador possa carregar a cena
                 photonView.RPC(nameof(RPC_LoadSceneAll), RpcTarget.All);
             }
         }

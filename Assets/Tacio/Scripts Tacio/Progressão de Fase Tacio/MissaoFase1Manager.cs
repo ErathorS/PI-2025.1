@@ -8,8 +8,8 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
 
     [Header("UI da Missão")]
     public GameObject painelMissao;
-    public TMP_Text textoMissao; // Mostra: Caixas: X/Y e Timer: MM:SS
-    public TMP_Text textoExplicacao; // NOVO: Mostra a explicação da missão
+    public TMP_Text textoMissao; 
+    public TMP_Text textoExplicacao; 
 
     [Header("Reset e Coleta")]
     public GameObject botaoReset;
@@ -35,7 +35,6 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
     private bool missaoConcluida = false;
     private float tempoRestante;
 
-    // Controle de sincronização do timer
     private float tempoUltimaSincronizacao = 0f;
     private float intervaloDeSincronizacao = 1f;
 
@@ -68,7 +67,6 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
         if (botaoReset != null)
             botaoReset.SetActive(false);
 
-        // Inicializa textos
         if (textoExplicacao != null)
             textoExplicacao.text = textoInicial;
     }
@@ -93,9 +91,8 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
         if (botaoReset != null)
             botaoReset.SetActive(false);
 
-        tempoRestante = 240f; // 4 minutos
+        tempoRestante = 240f;
         
-        // Sincronizar timer inicial
         if (sincronizarTimerEntreJogadores)
         {
             photonView.RPC("RPC_SincronizarTimer", RpcTarget.All, tempoRestante);
@@ -104,7 +101,6 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
         if (coletor != null)
             coletor.AtivarCaixasParaMissao();
 
-        // Configurar textos iniciais
         if (textoExplicacao != null)
             textoExplicacao.text = textoInicial;
             
@@ -117,7 +113,6 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
     {
         if (!missaoAtiva || missaoConcluida) return;
 
-        // Apenas o Master controla o timer
         if (PhotonNetwork.IsMasterClient)
         {
             tempoRestante -= Time.deltaTime;
@@ -129,7 +124,6 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
                 return;
             }
 
-            // Sincronizar timer periodicamente
             if (sincronizarTimerEntreJogadores)
             {
                 tempoUltimaSincronizacao += Time.deltaTime;
@@ -140,7 +134,6 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
                 }
             }
 
-            // Atualizar UI a cada frame (só no Master)
             AtualizarUI();
         }
     }
@@ -149,24 +142,21 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
     private void RPC_SincronizarTimer(float novoTempo)
     {
         tempoRestante = novoTempo;
-        AtualizarUI(); // Atualizar também nos clientes quando recebem sincronização
+        AtualizarUI(); 
     }
 
     private void AtualizarUI()
     {
         if (textoMissao != null && coletor != null)
         {
-            // Formatar tempo
             int m = Mathf.FloorToInt(tempoRestante / 60);
             int s = Mathf.FloorToInt(tempoRestante % 60);
             string tempoFormatado = $"{m:00}:{s:00}";
             
-            // Atualizar texto de status (contador + timer)
             textoMissao.text = $"Caixas: {coletor.caixasColetadas}/{coletor.totalCaixas}\nTempo: {tempoFormatado}";
         }
     }
 
-    // Método público para quando uma caixa é coletada
     public void CaixaColetada()
     {
         AtualizarUI();
@@ -188,7 +178,6 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
         if (painelMissao != null)
             painelMissao.SetActive(true);
 
-        // Atualizar explicação
         if (textoExplicacao != null)
             textoExplicacao.text = textoFalhou;
 
@@ -216,7 +205,6 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
         missaoConcluida = false;
         tempoRestante = 240f;
 
-        // Sincronizar timer resetado
         if (sincronizarTimerEntreJogadores)
         {
             photonView.RPC("RPC_SincronizarTimer", RpcTarget.All, tempoRestante);
@@ -225,7 +213,6 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
         if (botaoReset != null)
             botaoReset.SetActive(false);
 
-        // Restaurar texto inicial
         if (textoExplicacao != null)
             textoExplicacao.text = textoInicial;
 
@@ -254,11 +241,9 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
         if (botaoReset != null)
             botaoReset.SetActive(false);
 
-        // Atualizar explicação para texto de conclusão
         if (textoExplicacao != null)
             textoExplicacao.text = textoConcluido;
 
-        // Limpar contador/timer (mostra resultado final)
         if (textoMissao != null && coletor != null)
         {
             int m = Mathf.FloorToInt(tempoRestante / 60);
@@ -291,7 +276,6 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void RPC_FinalizarEntrega()
     {
-        // Esconder UI da missão
         if (painelMissao != null)
             painelMissao.SetActive(false);
 
@@ -304,7 +288,6 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
         if (textoExplicacao != null)
             textoExplicacao.text = "";
 
-        // Notificar progresso do NPC importante
         if (ProgressaoFaseController.instancia != null)
         {
             ProgressaoFaseController.instancia.NPCImportanteConcluido();
@@ -314,14 +297,12 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
         Debug.Log("[MissaoFase1Manager] Entrega finalizada para TODOS os jogadores");
     }
 
-    // Método para atualizar explicação em tempo real (se necessário)
     public void AtualizarExplicacao(string novaExplicacao)
     {
         if (textoExplicacao != null)
         {
             textoExplicacao.text = novaExplicacao;
             
-            // Sincronizar com outros jogadores
             if (PhotonNetwork.IsMasterClient)
             {
                 photonView.RPC("RPC_SincronizarExplicacao", RpcTarget.Others, novaExplicacao);

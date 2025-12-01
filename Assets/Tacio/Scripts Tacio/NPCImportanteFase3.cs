@@ -6,7 +6,7 @@ using TMPro;
 public class NPCImportanteFase3 : MonoBehaviourPun
 {
     [Header("Configuração Fase 3")]
-    public int npcID = 1; // 1 ou 2 para identificar qual NPC é
+    public int npcID = 1; 
     public bool requerSincronizacao = false;
     
     [Header("Dialogo")]
@@ -76,7 +76,6 @@ public class NPCImportanteFase3 : MonoBehaviourPun
         {
             if (requerSincronizacao && !missaoIniciada)
             {
-                // Inicia tarefa de sincronização
                 if (sincronizacaoManager != null)
                 {
                     sincronizacaoManager.IniciarSincronizacao();
@@ -85,7 +84,6 @@ public class NPCImportanteFase3 : MonoBehaviourPun
             }
             else
             {
-                // Tarefa simples - concluir diretamente
                 ConcluirTarefa();
             }
         }
@@ -97,7 +95,6 @@ public class NPCImportanteFase3 : MonoBehaviourPun
         
         tarefaConcluida = true;
         
-        // CORREÇÃO: Usando o método correto do MissaoFase3Manager
         if (MissaoFase3Manager.instancia != null)
         {
             if (npcID == 1)
@@ -110,7 +107,6 @@ public class NPCImportanteFase3 : MonoBehaviourPun
             }
         }
 
-        // Atualizar indicador visual
         if (indicadorNPC != null)
         {
             indicadorNPC.MarcarComoConversado();
@@ -119,7 +115,6 @@ public class NPCImportanteFase3 : MonoBehaviourPun
         Debug.Log($"[NPCImportanteFase3] NPC {npcID} concluído!");
     }
 
-    // Chamado pela sincronização quando concluída
     public void SincronizacaoConcluida()
     {
         if (!tarefaConcluida)

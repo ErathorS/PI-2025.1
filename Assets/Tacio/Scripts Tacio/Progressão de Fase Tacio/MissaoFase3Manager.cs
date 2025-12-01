@@ -71,15 +71,14 @@ public class MissaoFase3Manager : MonoBehaviourPunCallbacks
 
         ConfigurarNPCs();
         
-        // INICIA COM TRÂNSITO BLOQUEADO
         if (transitoZonaA != null) 
         {
-            transitoZonaA.BloquearTransito(); // ✅ MÉTODO EXISTENTE
+            transitoZonaA.BloquearTransito(); 
             transitoZonaA.controleAutomatico = false;
         }
         if (transitoZonaB != null) 
         {
-            transitoZonaB.BloquearTransito(); // ✅ MÉTODO EXISTENTE
+            transitoZonaB.BloquearTransito(); 
             transitoZonaB.controleAutomatico = false;
         }
 
@@ -134,9 +133,6 @@ public class MissaoFase3Manager : MonoBehaviourPunCallbacks
         }
     }
 
-    // ===============================
-    // MISSÃO 1 - ZONA 1 (COLETA)
-    // ===============================
 
     public void IniciarMissao1()
     {
@@ -186,10 +182,9 @@ public class MissaoFase3Manager : MonoBehaviourPunCallbacks
             painelMissao1.SetActive(false);
         }
 
-        // ✅ LIBERAR ZONA A: Parede + Trânsito Automático
         if (transitoZonaA != null)
         {
-            transitoZonaA.LiberarTransito(); // ✅ MÉTODO EXISTENTE
+            transitoZonaA.LiberarTransito(); 
             transitoZonaA.controleAutomatico = true;
             Debug.Log("[MissaoFase3Manager] ✅ Zona A liberada! Trânsito automático ativado.");
         }
@@ -214,9 +209,6 @@ public class MissaoFase3Manager : MonoBehaviourPunCallbacks
         Debug.Log("[MissaoFase3Manager] Missão 1 falhou - tempo esgotado");
     }
 
-    // ===============================
-    // MISSÃO 2 - ZONA 2 (SINCRONIZAÇÃO)
-    // ===============================
 
     public void IniciarMissao2()
     {
@@ -265,27 +257,22 @@ public class MissaoFase3Manager : MonoBehaviourPunCallbacks
             painelMissao2.SetActive(false);
         }
 
-        // ✅ LIBERAR ZONA B: Parede + Trânsito Automático
         if (transitoZonaB != null)
         {
-            transitoZonaB.LiberarTransito(); // ✅ MÉTODO EXISTENTE
+            transitoZonaB.LiberarTransito(); 
             transitoZonaB.controleAutomatico = true;
-            Debug.Log("[MissaoFase3Manager] ✅ Zona B liberada! Trânsito automático ativado.");
+            Debug.Log("[MissaoFase3Manager] Zona B liberada! Trânsito automático ativado.");
         }
 
-        // ✅ MOSTRAR PAINEL FINAL DA FASE
         if (painelFinalFase != null)
         {
             painelFinalFase.MostrarPainelFinal();
-            Debug.Log("[MissaoFase3Manager] ✅ Painel final da fase exibido!");
+            Debug.Log("[MissaoFase3Manager] Painel final da fase exibido!");
         }
 
         Debug.Log("[MissaoFase3Manager] Missão 2 concluída! Zona 3 liberada.");
     }
 
-    // ===============================
-    // MÉTODOS PÚBLICOS
-    // ===============================
 
     public bool IsMissao1Ativa()
     {

@@ -3,9 +3,8 @@ using UnityEngine;
 public class IndicadorNpc : MonoBehaviour
 {
     [Header("Configuração do Indicador")]
-    public GameObject iconeExclamacao; // Referência ao objeto da exclamação
-    public int tipoExclamacao = 1;     // 1 = NPC normal | 2 = NPC importante
-
+    public GameObject iconeExclamacao; 
+    public int tipoExclamacao = 1;    
     private bool jogadorJaConversou = false;
     private ProgressaoFaseController progressoController;
 
@@ -24,20 +23,15 @@ public class IndicadorNpc : MonoBehaviour
         }
     }
 
-    // Chamado pelo DialogoNPC quando o diálogo com esse NPC termina
     public void MarcarComoConversado()
     {
         if (jogadorJaConversou) return;
 
         jogadorJaConversou = true;
 
-        // Esconde o ícone (local)
         if (iconeExclamacao != null)
             iconeExclamacao.SetActive(false);
 
-        // 🔴 CORREÇÃO CRÍTICA: REMOVER a contagem automática de progresso aqui!
-        // O progresso do NPC importante deve ser contado APENAS no DialogoNPC
-        // após o diálogo de entrega, não automaticamente aqui.
         
         Debug.Log($"[IndicadorNpc] NPC '{gameObject.name}' marcado como conversado. " +
                  $"Tipo: {tipoExclamacao} | Progresso NÃO contado automaticamente.");
@@ -48,12 +42,11 @@ public class IndicadorNpc : MonoBehaviour
         if (iconeExclamacao != null)
         {
             iconeExclamacao.SetActive(true);
-            jogadorJaConversou = false; // 🔴 Permite mostrar o ícone novamente
+            jogadorJaConversou = false; 
             Debug.Log($"[IndicadorNpc] Indicador ativado para entrega - {gameObject.name}");
         }
     }
 
-    // 🔴 NOVO: Método para reativar o indicador (usado no reset)
     public void ReativarIndicador()
     {
         if (iconeExclamacao != null)
@@ -64,7 +57,6 @@ public class IndicadorNpc : MonoBehaviour
         }
     }
 
-    // 🔴 NOVO: Método para verificar estado atual (debug)
     public void DebugEstado()
     {
         Debug.Log($"[IndicadorNpc] {gameObject.name} - " +

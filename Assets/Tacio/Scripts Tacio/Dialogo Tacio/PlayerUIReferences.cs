@@ -14,7 +14,6 @@ public class PlayerUIReferences : MonoBehaviour
 
     void Start()
     {
-        // 🛑 100% garante que nada aparece quando o jogo inicia
         if (painelDialogo != null)
             painelDialogo.SetActive(false);
 
@@ -25,7 +24,6 @@ public class PlayerUIReferences : MonoBehaviour
             botaoInteracao.gameObject.SetActive(false);
     }
 
-    // 🔹 Método útil para esconder rapidamente qualquer UI
     public void EsconderTudo()
     {
         if (painelDialogo != null)

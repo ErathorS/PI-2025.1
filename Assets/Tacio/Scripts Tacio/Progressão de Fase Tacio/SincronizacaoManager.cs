@@ -13,12 +13,10 @@ public class SincronizacaoManager : MonoBehaviourPun
     public GameObject[] botoesSincronizacao;
     public PostePiscando[] postesPiscando;
 
-    // NOVO: Configuração por fase
     [Header("Configuração por Fase")]
     public bool ehParaFase2 = false;
     public bool ehParaFase3 = false;
 
-    // Estado
     private HashSet<int> jogadoresQueTocaram = new HashSet<int>();
     private bool sincronizacaoAtiva = false;
     private bool sincronizacaoConcluida = false;
@@ -61,7 +59,7 @@ public class SincronizacaoManager : MonoBehaviourPun
 
     public void RegistrarToque(int actorID)
     {
-        if (!sincronizacaoAtiva || sincronizacaoConcluida) // CORREÇÃO: Removi o "!" antes de sincronizacaoAtiva
+        if (!sincronizacaoAtiva || sincronizacaoConcluida) 
         {
             Debug.Log($"[SincronizacaoManager] Sincronização não está ativa ou já concluída, ignorando toque do jogador {actorID}");
             return;
@@ -79,7 +77,7 @@ public class SincronizacaoManager : MonoBehaviourPun
     [PunRPC]
     private void RPC_RegistrarToque(int actorID)
     {
-        if (!sincronizacaoAtiva || sincronizacaoConcluida) // CORREÇÃO: Removi o "!" antes de sincronizacaoAtiva
+        if (!sincronizacaoAtiva || sincronizacaoConcluida) 
         {
             Debug.Log($"[SincronizacaoManager] Sincronização não ativa no RPC, ignorando jogador {actorID}");
             return;
@@ -92,7 +90,7 @@ public class SincronizacaoManager : MonoBehaviourPun
 
         if (PhotonNetwork.IsMasterClient && jogadoresQueTocaram.Count >= 2)
         {
-            Debug.Log($"[SincronizacaoManager] ✔️ Dois jogadores tocaram! Concluindo sincronização...");
+            Debug.Log($"[SincronizacaoManager] Dois jogadores tocaram! Concluindo sincronização...");
             ConcluirSincronizacao();
         }
         else if (PhotonNetwork.IsMasterClient)
@@ -129,9 +127,8 @@ public class SincronizacaoManager : MonoBehaviourPun
     [PunRPC]
     private void RPC_ConcluirSincronizacao()
     {
-        Debug.Log("[SincronizacaoManager] ✔✔✔️ Sincronização concluída para todos os jogadores!");
+        Debug.Log("[SincronizacaoManager] Sincronização concluída para todos os jogadores!");
 
-        // Parar as luzes de piscar
         if (postesPiscando != null)
         {
             foreach (var poste in postesPiscando)
@@ -142,7 +139,6 @@ public class SincronizacaoManager : MonoBehaviourPun
 
         EsconderBotoesSincronizacao();
 
-        // NOVO: Notificar o sistema apropriado baseado na fase
         if (ehParaFase2)
         {
             NotificarFase2Concluida();
@@ -155,12 +151,10 @@ public class SincronizacaoManager : MonoBehaviourPun
         Debug.Log("[SincronizacaoManager] Tarefa de sincronização concluída!");
     }
 
-    // NOVO: Método para notificar conclusão da Fase 2
     private void NotificarFase2Concluida()
     {
         Debug.Log("[SincronizacaoManager] Notificando conclusão da Fase 2...");
 
-        // 1. Notificar MissaoFase2Manager
         if (MissaoFase2Manager.instancia != null)
         {
             MissaoFase2Manager.instancia.MissaoConcluida();
@@ -171,7 +165,6 @@ public class SincronizacaoManager : MonoBehaviourPun
             Debug.LogError("[SincronizacaoManager] MissaoFase2Manager não encontrado!");
         }
 
-        // 2. Notificar todos os NPCs da Fase 2
         DialogoNPC[] npcs = FindObjectsOfType<DialogoNPC>();
         bool npcNotificado = false;
         
@@ -182,7 +175,7 @@ public class SincronizacaoManager : MonoBehaviourPun
                 npc.TarefaConcluida();
                 npcNotificado = true;
                 Debug.Log("[SincronizacaoManager] NPC Fase 2 notificado sobre conclusão da tarefa!");
-                break; // Notificar apenas o primeiro NPC da Fase 2 encontrado
+                break; 
             }
         }
 
@@ -192,7 +185,6 @@ public class SincronizacaoManager : MonoBehaviourPun
         }
     }
 
-    // NOVO: Método para notificar NPC da Zona 2 (Fase 3)
     private void NotificarNPCZona2()
     {
         DialogoNPC[] npcs = FindObjectsOfType<DialogoNPC>();
@@ -216,10 +208,8 @@ public class SincronizacaoManager : MonoBehaviourPun
 
         Debug.Log("[SincronizacaoManager] Sincronização resetada - tempo esgotado");
 
-        // Preparar para nova tentativa
         Debug.Log("[SincronizacaoManager] Pronto para nova tentativa...");
 
-        // Reiniciar automaticamente após 2 segundos
         Invoke("ReiniciarSincronizacao", 2f);
     }
 
@@ -283,13 +273,11 @@ public class SincronizacaoManager : MonoBehaviourPun
         }
     }
 
-    // NOVO: Método para verificar se a sincronização está ativa
     public bool IsSincronizacaoAtiva()
     {
         return sincronizacaoAtiva;
     }
 
-    // NOVO: Método para verificar se a sincronização foi concluída
     public bool IsSincronizacaoConcluida()
     {
         return sincronizacaoConcluida;

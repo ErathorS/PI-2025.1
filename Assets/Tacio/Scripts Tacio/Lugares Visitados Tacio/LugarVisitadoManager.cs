@@ -45,42 +45,35 @@ public class LugarVisitadoManager : MonoBehaviourPun
     {
         Debug.Log($"[LugarVisitadoManager] MarcarLugar chamado - Grupo: {grupoID}, Lugar: {lugarID}, Jogador: {playerID}");
 
-        // Verificações de segurança
         if (ativacoes == null) 
         {
             ativacoes = new Dictionary<(int, int), int>();
         }
 
-        // 🔴 CORREÇÃO: Verificar se jogador já ativou outro lugar no MESMO grupo
         if (JogadorJaAtivouLugarNoGrupo(playerID, grupoID))
         {
-            Debug.Log($"[LugarVisitadoManager] ❌ Jogador {playerID} JÁ ativou outro lugar no grupo {grupoID}. IMPOSSÍVEL chegar aqui!");
+            Debug.Log($"[LugarVisitadoManager] Jogador {playerID} JÁ ativou outro lugar no grupo {grupoID}. IMPOSSÍVEL chegar aqui!");
             return;
         }
 
-        // Verificar se este lugar específico já foi ativado
         if (ativacoes.ContainsKey((grupoID, lugarID)))
         {
             Debug.Log($"[LugarVisitadoManager] Lugar {grupoID}-{lugarID} já foi ativado anteriormente pelo jogador {ativacoes[(grupoID, lugarID)]}");
             return;
         }
 
-        // Adicionar ao dicionário
         ativacoes[(grupoID, lugarID)] = playerID;
         
-        Debug.Log($"[LugarVisitadoManager] ✅ Lugar marcado - Grupo: {grupoID}, Lugar: {lugarID}, Jogador: {playerID}");
+        Debug.Log($"[LugarVisitadoManager] Lugar marcado - Grupo: {grupoID}, Lugar: {lugarID}, Jogador: {playerID}");
 
-        // Sincronizar com outros jogadores
         if (photonView != null)
         {
             photonView.RPC("RPC_SincronizarLugar", RpcTarget.Others, grupoID, lugarID, playerID);
         }
 
-        // Verificar progresso do grupo
         VerificarProgressoGrupo(grupoID);
     }
 
-    // 🔴 CORREÇÃO: Método para verificar se jogador já ativou lugar no grupo
     public bool JogadorJaAtivouLugarNoGrupo(int playerID, int grupoID)
     {
         if (ativacoes == null)
@@ -93,12 +86,12 @@ public class LugarVisitadoManager : MonoBehaviourPun
         {
             if (entry.Key.grupoID == grupoID && entry.Value == playerID)
             {
-                Debug.Log($"[LugarVisitadoManager] 🔍 Jogador {playerID} já ativou o lugar {entry.Key.lugarID} no grupo {grupoID}");
+                Debug.Log($"[LugarVisitadoManager] Jogador {playerID} já ativou o lugar {entry.Key.lugarID} no grupo {grupoID}");
                 return true;
             }
         }
         
-        Debug.Log($"[LugarVisitadoManager] 🔍 Jogador {playerID} NÃO ativou nenhum lugar no grupo {grupoID}");
+        Debug.Log($"[LugarVisitadoManager] Jogador {playerID} NÃO ativou nenhum lugar no grupo {grupoID}");
         return false;
     }
 
@@ -115,7 +108,7 @@ public class LugarVisitadoManager : MonoBehaviourPun
         if (!ativacoes.ContainsKey((grupoID, lugarID)))
         {
             ativacoes[(grupoID, lugarID)] = playerID;
-            Debug.Log($"[LugarVisitadoManager] ✅ Lugar sincronizado no cliente");
+            Debug.Log($"[LugarVisitadoManager] Lugar sincronizado no cliente");
         }
     }
 
@@ -138,7 +131,6 @@ public class LugarVisitadoManager : MonoBehaviourPun
             return;
         }
 
-        // Verificar se TODOS os lugares do grupo foram visitados
         bool todosVisitados = true;
         HashSet<int> jogadoresNoGrupo = new HashSet<int>();
 
@@ -151,7 +143,6 @@ public class LugarVisitadoManager : MonoBehaviourPun
             }
             else if (lugar != null && lugar.FoiVisitado())
             {
-                // Encontrar qual jogador ativou este lugar
                 foreach (var ativacao in ativacoes)
                 {
                     if (ativacao.Key.grupoID == grupoID && ativacao.Key.lugarID == lugar.lugarID)
@@ -165,19 +156,17 @@ public class LugarVisitadoManager : MonoBehaviourPun
 
         Debug.Log($"[LugarVisitadoManager] Grupo {grupoID} - Todos visitados: {todosVisitados}, Jogadores únicos: {jogadoresNoGrupo.Count}");
 
-        // Grupo só é concluído se TODOS os lugares foram visitados
         if (todosVisitados && !grupoConcluido)
         {
             grupoConcluido = true;
 
-            Debug.Log($"[LugarVisitadoManager] ✅✅✅ GRUPO {grupoID} CONCLUÍDO! " +
+            Debug.Log($"[LugarVisitadoManager] GRUPO {grupoID} CONCLUÍDO! " +
                      $"Todos os {grupo.Count} lugares foram visitados por {jogadoresNoGrupo.Count} jogadores diferentes. Notificando progresso...");
 
-            // Notificar progresso
             if (progressoController != null)
             {
                 progressoController.LugarVisitadoConcluido();
-                Debug.Log($"[LugarVisitadoManager] ✅ Progresso de lugar notificado com sucesso!");
+                Debug.Log($"[LugarVisitadoManager] Progresso de lugar notificado com sucesso!");
             }
             else
             {
@@ -196,18 +185,16 @@ public class LugarVisitadoManager : MonoBehaviourPun
         VerificarProgressoGrupo(2);
     }
 
-    // 🔴 MÉTODO PARA DEBUG
     public void DebugEstadoAtual()
     {
         Debug.Log($"[LugarVisitadoManager] === DEBUG LUGARES ===");
-        Debug.Log($"ProgressoController: {(progressoController != null ? "✅ OK" : "❌ NULO")}");
+        Debug.Log($"ProgressoController: {(progressoController != null ? " OK" : " NULO")}");
         Debug.Log($"Grupo1 Concluído: {grupo1Concluido}");
         Debug.Log($"Grupo2 Concluído: {grupo2Concluido}");
         Debug.Log($"Ativações registradas: {ativacoes?.Count}");
         
         if (ativacoes != null)
         {
-            // Agrupar por jogador e grupo para debug
             Dictionary<int, List<(int grupo, int lugar)>> ativacoesPorJogador = new Dictionary<int, List<(int, int)>>();
             
             foreach (var ativacao in ativacoes)
@@ -230,7 +217,6 @@ public class LugarVisitadoManager : MonoBehaviourPun
             }
         }
 
-        // Verificar estado atual dos grupos
         Debug.Log($"--- ESTADO DOS GRUPOS ---");
         VerificarEstadoGrupo(1, grupo1);
         VerificarEstadoGrupo(2, grupo2);
@@ -241,7 +227,7 @@ public class LugarVisitadoManager : MonoBehaviourPun
     {
         if (grupo == null)
         {
-            Debug.Log($"Grupo {grupoID}: ❌ NULO");
+            Debug.Log($"Grupo {grupoID}: NULO");
             return;
         }
 
@@ -254,7 +240,6 @@ public class LugarVisitadoManager : MonoBehaviourPun
             {
                 visitados++;
                 
-                // Encontrar jogador que ativou este lugar
                 foreach (var ativacao in ativacoes)
                 {
                     if (ativacao.Key.grupoID == grupoID && ativacao.Key.lugarID == lugar.lugarID)
@@ -268,7 +253,6 @@ public class LugarVisitadoManager : MonoBehaviourPun
 
         Debug.Log($"Grupo {grupoID}: {visitados}/{grupo.Count} lugares visitados por {jogadoresNoGrupo.Count} jogadores");
     }
-    // 🔴 NOVO: Método para verificar se jogador pode ativar lugar
     public bool JogadorPodeAtivarLugar(int playerID, int grupoID)
     {
         return !JogadorJaAtivouLugarNoGrupo(playerID, grupoID);

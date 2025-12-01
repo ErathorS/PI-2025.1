@@ -19,13 +19,11 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
     [SerializeField]
     private string[] cenasJogaveis = { "Cena de Introducao 1", "PI Fase 1" };
 
-    // 🔹 Mantém referências únicas locais entre cenas
     private static GameObject _localUI;
     private static GameObject _localCamera;
 
     void Awake()
     {
-        // Evita múltiplas instâncias do GameManager
         if (FindObjectsOfType<NetworkGameManager>().Length > 1)
         {
             Destroy(gameObject);
@@ -34,7 +32,6 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
 
         DontDestroyOnLoad(gameObject);
 
-        // Garante sincronização automática de cenas entre jogadores
         PhotonNetwork.AutomaticallySyncScene = true;
     }
 
@@ -42,7 +39,7 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.IsConnected)
         {
-            Debug.LogError("❌ Não conectado ao Photon! (Se der Play direto nessa cena, é normal não spawnear nada)");
+            Debug.LogError("Não conectado ao Photon! (Se der Play direto nessa cena, é normal não spawnear nada)");
             return;
         }
 
@@ -81,7 +78,6 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
 
         if (CenaEhJogavel(nomeCena))
         {
-            // Delay pequeno pra garantir que tudo foi carregado
             Invoke(nameof(SpawnPlayer), 0.3f);
         }
         else
@@ -119,10 +115,8 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
         Vector3 spawnPos = spawnObj.transform.position;
         Quaternion spawnRot = spawnObj.transform.rotation;
 
-        // Instancia o jogador em rede
         GameObject player = PhotonNetwork.Instantiate(chosenPrefab.name, spawnPos, spawnRot);
 
-        // Marca o identificador do jogador
         PlayerIdentifier identifier = player.GetComponent<PlayerIdentifier>();
         if (identifier != null)
             identifier.actorID = actorID;
@@ -130,9 +124,6 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
         PhotonView pv = player.GetComponent<PhotonView>();
         if (pv != null && pv.IsMine)
         {
-            // ============================
-            // 🔹 UI ÚNICA LOCAL
-            // ============================
             if (_localUI == null)
             {
                 _localUI = Instantiate(playerUiPrefab);
@@ -150,9 +141,6 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
                 Debug.Log("[NetworkGameManager] UI já existente — reutilizando o Canvas atual");
             }
 
-            // ============================
-            // 🔹 CÂMERA ÚNICA LOCAL
-            // ============================
             if (_localCamera == null)
             {
                 _localCamera = Instantiate(cameraPrefab);
@@ -164,14 +152,12 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
                 Debug.Log("[NetworkGameManager] Câmera já existente — reutilizando a atual");
             }
 
-            // Vincula a câmera ao player
             CameraIsometricaComRotacao camScript = _localCamera.GetComponent<CameraIsometricaComRotacao>();
             if (camScript != null)
             {
                 camScript.player = player.transform;
             }
 
-            // Busca o joystick e vincula ao player
             FixedJoystick joystick = _localUI.GetComponentInChildren<FixedJoystick>();
             MovimentacaoIsometrica mov = player.GetComponent<MovimentacaoIsometrica>();
 
@@ -182,10 +168,9 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
             }
             else
             {
-                Debug.LogWarning("[NetworkGameManager] ⚠️ Referências não foram configuradas corretamente!");
+                Debug.LogWarning("[NetworkGameManager] Referências não foram configuradas corretamente!");
             }
 
-            // Desativa painel de diálogo no início
             PlayerUIReferences uiRefs = _localUI.GetComponent<PlayerUIReferences>();
             if (uiRefs != null && uiRefs.painelDialogo != null)
                 uiRefs.painelDialogo.SetActive(false);

@@ -76,7 +76,6 @@ public class CameraIsometricaComRotacao : MonoBehaviour
     {
         Vector3 targetPos = player.position + fixedOffset;
 
-        // Smooth camera movement
         transform.position = Vector3.SmoothDamp(
             transform.position,
             targetPos,

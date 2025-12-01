@@ -16,9 +16,9 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
     public TMP_Text textoNpcs;
 
     [Header("Configurações de Objetivos")]
-    public int npcsImportantesTotais = 1; // NOVO: 2 NPCs para Fase 3
-    public int jornaisTotais = 8;         // Ajuste conforme Fase 3
-    public int lugaresTotais = 3;         // Ajuste conforme Fase 3
+    public int npcsImportantesTotais = 1; 
+    public int jornaisTotais = 8;         
+    public int lugaresTotais = 3;         
 
     [Header("Cores e Velocidade")]
     public Image fillImage;
@@ -29,7 +29,6 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
     [Header("Painel Final")]
     public PainelFinalFaseController painelFinalFase;
 
-    // estados atuais
     private int npcsConcluidos = 0;
     private int jornaisColetados = 0;
     private int lugaresConcluidos = 0;
@@ -37,7 +36,6 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
     private float progressoAlvo = 0f;
     private float progressoAtual = 0f;
 
-    // Controle rigoroso
     private bool npcImportanteJaConcluido = false;
     private bool inicializado = false;
 
@@ -110,10 +108,6 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
             fillImage.color = Color.Lerp(corInicial, corFinal, progressoAtual);
     }
 
-    // ---
-    // MÉTODOS PÚBLICOS
-    // ---
-
     public void JornalColetado()
     {
         Debug.Log($"[ProgressaoFaseController] JornalColetado chamado - Master: {PhotonNetwork.IsMasterClient}");
@@ -162,9 +156,6 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
         }
     }
 
-    // ===============================
-    // RPCs
-    // ===============================
 
     [PunRPC]
     private void RPC_JornalColetado()
@@ -216,9 +207,6 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
         AtualizarUILocal();
     }
 
-    // ---
-    // SINCRONIZAÇÃO E UI
-    // ---
 
     private void SincronizarEstadoParaTodos()
     {
@@ -228,7 +216,7 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
             return;
         }
 
-        Debug.Log($"[ProgressaoFaseController] 💬️ Sincronizando estado para todos: NPCs={npcsConcluidos}, Jornais={jornaisColetados}, Lugares={lugaresConcluidos}");
+        Debug.Log($"[ProgressaoFaseController] Sincronizando estado para todos: NPCs={npcsConcluidos}, Jornais={jornaisColetados}, Lugares={lugaresConcluidos}");
 
         photonView.RPC("RPC_SincronizarEstado", RpcTarget.All, npcsConcluidos, jornaisColetados, lugaresConcluidos);
     }
@@ -236,7 +224,7 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
     [PunRPC]
     private void RPC_SincronizarEstado(int npcs, int jornais, int lugares)
     {
-        Debug.Log($"[ProgressaoFaseController] 💬️ Recebendo estado sincronizado: NPCs={npcs}, Jornais={jornais}, Lugares={lugares} | Jogador: {PhotonNetwork.LocalPlayer.ActorNumber}");
+        Debug.Log($"[ProgressaoFaseController] Recebendo estado sincronizado: NPCs={npcs}, Jornais={jornais}, Lugares={lugares} | Jogador: {PhotonNetwork.LocalPlayer.ActorNumber}");
 
         npcsConcluidos = npcs;
         jornaisColetados = jornais;
@@ -245,7 +233,7 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
 
         AtualizarUILocal();
 
-        Debug.Log($"[ProgressaoFaseController] 💬️ Estado sincronizado e UI atualizada");
+        Debug.Log($"[ProgressaoFaseController] Estado sincronizado e UI atualizada");
     }
 
     private void AtualizarUILocal()
@@ -277,10 +265,6 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
     {
         AtualizarUILocal();
     }
-
-    // ================================
-    // MÉTODOS ADICIONAIS
-    // ================================
 
     public void ForcarSincronizacao()
     {
@@ -329,10 +313,6 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
         }
     }
 
-    // ===============================
-    // MÉTODOS DE DEBUG
-    // ===============================
-
     public void DebugEstadoAtual()
     {
         Debug.Log($"[ProgressaoFaseController] === DEBUG PROGRESSO ===");
@@ -359,7 +339,6 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
         ForcarSincronizacao();
     }
 
-    // NOVO: Método para forçar verificação de lugares (debug)
     public void ForcarVerificacaoLugares()
     {
         LugarVisitadoManager lugarManager = FindObjectOfType<LugarVisitadoManager>();

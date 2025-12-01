@@ -11,7 +11,7 @@ public class LoadingTravel : MonoBehaviourPunCallbacks
     public RectTransform aviao;
     public RectTransform pontoInicial;
     public RectTransform pontoFinal;
-    public GameObject objetoUI; // GameObject da UI para controlar
+    public GameObject objetoUI; 
 
     [Header("Configuração")]
     public float duracao = 4f;
@@ -29,11 +29,9 @@ public class LoadingTravel : MonoBehaviourPunCallbacks
 
     void Awake()
     {
-        // Pega o nome da cena atual
         cenaAtual = SceneManager.GetActiveScene().name;
         Debug.Log($"[LoadingTravel] Cena atual: {cenaAtual}");
         
-        // Configura a UI baseado na cena atual
         ConfigurarUIBaseadoNaCena();
     }
 
@@ -46,13 +44,11 @@ public class LoadingTravel : MonoBehaviourPunCallbacks
         carregando = false;
         cenaCarregada = false;
 
-        // DEBUG: Verificar estado da UI
         if (objetoUI != null)
         {
             Debug.Log($"[LoadingTravel] Estado inicial da UI: {objetoUI.activeSelf} na cena {cenaAtual}");
         }
 
-        // Se não estiver conectado ao Photon
         if (!PhotonNetwork.IsConnected)
         {
             Debug.LogWarning("[LoadingTravel] Não conectado ao Photon - modo single player");
@@ -60,7 +56,6 @@ public class LoadingTravel : MonoBehaviourPunCallbacks
         }
         else
         {
-            // Verifica se pode iniciar o carregamento
             if (!apenasMasterCarrega || PhotonNetwork.IsMasterClient)
             {
                 IniciarCarregamento();
@@ -80,17 +75,14 @@ public class LoadingTravel : MonoBehaviourPunCallbacks
         
         float t = Mathf.Clamp01(tempo / duracao);
 
-        // Atualiza a barra
         if (barra != null)
             barra.fillAmount = t;
 
-        // Move o avião
         if (aviao != null && pontoInicial != null && pontoFinal != null)
         {
             aviao.position = Vector3.Lerp(pontoInicial.position, pontoFinal.position, t);
         }
 
-        // Quando terminar
         if (t >= 1f && !cenaCarregada)
         {
             cenaCarregada = true;
@@ -98,7 +90,6 @@ public class LoadingTravel : MonoBehaviourPunCallbacks
         }
     }
 
-    // CORREÇÃO: Método corrigido para configurar a UI
     private void ConfigurarUIBaseadoNaCena()
     {
         if (objetoUI == null)
@@ -109,7 +100,6 @@ public class LoadingTravel : MonoBehaviourPunCallbacks
 
         bool deveDesativar = false;
         
-        // Verifica se a cena atual está na lista de cenas para DESATIVAR
         foreach (string cena in cenasDesativarUI)
         {
             if (cenaAtual.Trim().Equals(cena.Trim(), System.StringComparison.OrdinalIgnoreCase))
@@ -120,10 +110,8 @@ public class LoadingTravel : MonoBehaviourPunCallbacks
             }
         }
 
-        // Aplica o estado correto
         if (deveDesativar)
         {
-            // Se está na lista: DESATIVA a UI
             if (objetoUI.activeSelf)
             {
                 objetoUI.SetActive(false);
@@ -132,7 +120,6 @@ public class LoadingTravel : MonoBehaviourPunCallbacks
         }
         else
         {
-            // Se NÃO está na lista: ATIVA a UI
             if (!objetoUI.activeSelf)
             {
                 objetoUI.SetActive(true);
@@ -141,7 +128,6 @@ public class LoadingTravel : MonoBehaviourPunCallbacks
         }
     }
 
-    // Método para verificar se uma cena deve ter UI desativada
     private bool CenaDeveTerUIDesativada(string nomeCena)
     {
         if (string.IsNullOrEmpty(nomeCena)) return false;
@@ -161,7 +147,6 @@ public class LoadingTravel : MonoBehaviourPunCallbacks
         carregando = true;
         Debug.Log($"[LoadingTravel] Iniciando carregamento para cena: {cenaDestino}");
 
-        // Sincroniza com outros jogadores
         if (PhotonNetwork.IsConnected && PhotonNetwork.InRoom)
         {
             photonView.RPC("RPC_IniciarCarregamento", RpcTarget.Others);
@@ -188,7 +173,6 @@ public class LoadingTravel : MonoBehaviourPunCallbacks
 
         Debug.Log($"[LoadingTravel] Carregando cena: {cenaDestino}");
 
-        // Verifica se a cena destino precisa de UI desativada
         if (CenaDeveTerUIDesativada(cenaDestino))
         {
             Debug.Log($"[LoadingTravel] Cena destino '{cenaDestino}' requer UI desativada");
@@ -204,12 +188,10 @@ public class LoadingTravel : MonoBehaviourPunCallbacks
         }
         else
         {
-            // Modo single player
             SceneManager.LoadScene(cenaDestino);
         }
     }
 
-    // Método público para ser chamado por outros scripts
     public void IniciarCarregamentoParaCena(string cena)
     {
         if (!string.IsNullOrEmpty(cena))
@@ -221,7 +203,6 @@ public class LoadingTravel : MonoBehaviourPunCallbacks
         IniciarCarregamento();
     }
 
-    // Método para ser chamado pelo PainelFinalFaseController
     public void ConfigurarEDisparar(string proximaCena)
     {
         if (!string.IsNullOrEmpty(proximaCena))
@@ -233,7 +214,6 @@ public class LoadingTravel : MonoBehaviourPunCallbacks
         IniciarCarregamento();
     }
 
-    // NOVO: Método para forçar ativação/desativação da UI
     public void ForcarEstadoUI(bool ativar)
     {
         if (objetoUI != null)
@@ -243,7 +223,6 @@ public class LoadingTravel : MonoBehaviourPunCallbacks
         }
     }
 
-    // NOVO: Método para verificar o estado atual
     public void VerificarEstadoAtual()
     {
         Debug.Log($"[LoadingTravel] === VERIFICAÇÃO ===");
@@ -262,7 +241,6 @@ public class LoadingTravel : MonoBehaviourPunCallbacks
         Debug.Log($"==================================");
     }
 
-    // NOVO: Método para adicionar debug visual no Editor
     void OnDrawGizmosSelected()
     {
         if (!Application.isPlaying) return;
@@ -270,7 +248,6 @@ public class LoadingTravel : MonoBehaviourPunCallbacks
         Debug.Log($"[LoadingTravel Debug] Cena: {cenaAtual}, UI Ativa: {objetoUI?.activeSelf}");
     }
 
-    // Método para debug
     public void DebugInfo()
     {
         Debug.Log($"[LoadingTravel] === DEBUG ===");

@@ -65,7 +65,6 @@ public class NPCImportanteFase2 : MonoBehaviourPun
 
         if (!jaConcluiu && PhotonNetwork.IsMasterClient)
         {
-            // 🔴 CORREÇÃO: Usar o SincronizacaoManager para iniciar a sincronização
             SincronizacaoManager.instancia.IniciarSincronizacao();
         }
     }
@@ -75,6 +74,5 @@ public class NPCImportanteFase2 : MonoBehaviourPun
     {
         jaConcluiu = true;
         
-        // 🔴 REMOVIDO: O SincronizacaoManager agora cuida da progressão
     }
 }

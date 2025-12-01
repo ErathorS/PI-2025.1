@@ -45,8 +45,6 @@ public class LugarVisitado : MonoBehaviourPun
 
         Debug.Log($"[LugarVisitado] Jogador {pv.OwnerActorNr} entrou no lugar {grupoID}-{lugarID}");
 
-        // 🔴 CORREÇÃO: Sempre enviar para o Master decidir se pode ativar
-        // A verificação será feita no Master, não localmente
         if (photonView != null)
         {
             photonView.RPC("RPC_TentarMarcarVisitado", RpcTarget.MasterClient, pv.OwnerActorNr);
@@ -62,24 +60,19 @@ public class LugarVisitado : MonoBehaviourPun
     {
         Debug.Log($"[LugarVisitado] RPC_TentarMarcarVisitado recebido - Lugar {grupoID}-{lugarID}, Jogador: {playerID}");
 
-        // 🔴 CORREÇÃO: Só o Master verifica se o jogador pode ativar
         LugarVisitadoManager manager = FindObjectOfType<LugarVisitadoManager>();
         if (manager != null)
         {
-            // Verificar se jogador já ativou outro lugar no mesmo grupo
             if (manager.JogadorJaAtivouLugarNoGrupo(playerID, grupoID))
             {
-                Debug.Log($"[LugarVisitado] ❌ Master: Jogador {playerID} JÁ ativou outro lugar no grupo {grupoID}. Bloqueando...");
+                Debug.Log($"[LugarVisitado] Master: Jogador {playerID} JÁ ativou outro lugar no grupo {grupoID}. Bloqueando...");
                 
-                // 🔴 CORREÇÃO: Notificar o cliente que foi bloqueado
                 photonView.RPC("RPC_AtivacaoBloqueada", RpcTarget.All, playerID);
                 return;
             }
 
-            // Se chegou aqui, jogador pode ativar este lugar
-            Debug.Log($"[LugarVisitado] ✅ Master: Jogador {playerID} pode ativar lugar {grupoID}-{lugarID}");
+            Debug.Log($"[LugarVisitado] Master: Jogador {playerID} pode ativar lugar {grupoID}-{lugarID}");
             
-            // Chamar o RPC para marcar visualmente para todos
             photonView.RPC("RPC_MarcarVisitado", RpcTarget.AllBuffered, playerID);
         }
         else
@@ -91,34 +84,28 @@ public class LugarVisitado : MonoBehaviourPun
     [PunRPC]
     private void RPC_AtivacaoBloqueada(int playerID)
     {
-        Debug.Log($"[LugarVisitado] ❌ Ativação BLOQUEADA para jogador {playerID} no lugar {grupoID}-{lugarID}");
-        
-        // 🔴 CORREÇÃO: Feedback visual ou sonoro pode ser adicionado aqui
-        // Por exemplo: tocar som de erro, mostrar mensagem, etc.
+        Debug.Log($"[LugarVisitado] Ativação BLOQUEADA para jogador {playerID} no lugar {grupoID}-{lugarID}");
     }
 
     [PunRPC]
     private void RPC_MarcarVisitado(int playerID)
     {
-        // Evitar duplicação
         if (donoDaAtivacao != -1) 
         {
             Debug.Log($"[LugarVisitado] Lugar {grupoID}-{lugarID} já foi visitado por {donoDaAtivacao}");
             return;
         }
 
-        // Atualização visual
         donoDaAtivacao = playerID;
 
         if (renderObj != null && materialVisitado != null)
         {
             renderObj.sharedMaterial = materialVisitado;
-            Debug.Log($"[LugarVisitado] ✅ Material alterado para lugar {grupoID}-{lugarID}");
+            Debug.Log($"[LugarVisitado] Material alterado para lugar {grupoID}-{lugarID}");
         }
 
         Debug.Log($"[LugarVisitado] ✅ Lugar {grupoID}-{lugarID} marcado como visitado por {playerID}");
 
-        // 🔴 CORREÇÃO: Notificar o manager APENAS no Master
         if (PhotonNetwork.IsMasterClient)
         {
             NotificarManager(playerID);
@@ -131,11 +118,11 @@ public class LugarVisitado : MonoBehaviourPun
         if (manager != null)
         {
             manager.MarcarLugar(grupoID, lugarID, playerID);
-            Debug.Log($"[LugarVisitado] ✅ Manager notificado sobre lugar {grupoID}-{lugarID}");
+            Debug.Log($"[LugarVisitado] Manager notificado sobre lugar {grupoID}-{lugarID}");
         }
         else
         {
-            Debug.LogError($"[LugarVisitado] ❌ Manager não encontrado!");
+            Debug.LogError($"[LugarVisitado] Manager não encontrado!");
         }
     }
 

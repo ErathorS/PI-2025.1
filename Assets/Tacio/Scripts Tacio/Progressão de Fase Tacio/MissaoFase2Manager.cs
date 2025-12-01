@@ -14,7 +14,6 @@ public class MissaoFase2Manager : MonoBehaviourPunCallbacks
     public SincronizacaoManager sincronizacaoManager;
     public DialogoNPC npcImportante;
 
-    // NOVO: Configuração para Fase 2
     [Header("Configuração Fase 2")]
     public bool usarSincronizacao = true;
     public bool autoFinalizarMissao = false;
@@ -50,7 +49,6 @@ public class MissaoFase2Manager : MonoBehaviourPunCallbacks
         if (painelMissao != null)
             painelMissao.SetActive(false);
 
-        // Configurar referências se necessário
         if (sincronizacaoManager != null)
         {
             sincronizacaoManager.ehParaFase2 = true;
@@ -88,7 +86,6 @@ public class MissaoFase2Manager : MonoBehaviourPunCallbacks
             Debug.LogError("[MissaoFase2Manager] painelMissao não está atribuído!");
         }
 
-        // Ativa o sistema de sincronização
         if (usarSincronizacao && sincronizacaoManager != null)
         {
             sincronizacaoManager.IniciarSincronizacao();
@@ -101,7 +98,6 @@ public class MissaoFase2Manager : MonoBehaviourPunCallbacks
         Debug.Log("[MissaoFase2Manager] Missão da Fase 2 iniciada!");
     }
 
-    // NOVO: Chamado pelo SincronizacaoManager quando a sincronização é concluída
     public void MissaoConcluida()
     {
         if (!PhotonNetwork.IsMasterClient) return;
@@ -122,7 +118,6 @@ public class MissaoFase2Manager : MonoBehaviourPunCallbacks
             textoMissao.text = "Energia restaurada! Missão concluída.\nVolte ao NPC para entregar.";
         }
 
-        // NOVO: Se autoFinalizarMissao estiver ativado, finalizar automaticamente
         if (autoFinalizarMissao)
         {
             FinalizarMissao();
@@ -131,7 +126,6 @@ public class MissaoFase2Manager : MonoBehaviourPunCallbacks
         Debug.Log("[MissaoFase2Manager] Missão da Fase 2 concluída!");
     }
 
-    // NOVO: Chamado quando o jogador entrega a missão ao NPC
     public void EntregaConcluida()
     {
         if (!PhotonNetwork.IsMasterClient) return;
@@ -171,7 +165,6 @@ public class MissaoFase2Manager : MonoBehaviourPunCallbacks
         Debug.Log("[MissaoFase2Manager] Missão finalizada para todos os jogadores!");
     }
 
-    // NOVO: Métodos para verificar estado
     public bool IsMissaoAtiva()
     {
         return missaoAtiva;
@@ -187,7 +180,6 @@ public class MissaoFase2Manager : MonoBehaviourPunCallbacks
         return tarefaEntregue;
     }
 
-    // NOVO: Método para debug
     public void DebugEstado()
     {
         Debug.Log($"[MissaoFase2Manager] === DEBUG ===");

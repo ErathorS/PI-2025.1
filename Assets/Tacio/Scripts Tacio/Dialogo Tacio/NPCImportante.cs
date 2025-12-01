@@ -25,10 +25,8 @@ public class NPCImportante : MonoBehaviourPun
             painelDialogo.SetActive(false);
     }
 
-    // Chamado pelo botão de diálogo (que só aparece para o Master)
     public void IniciarDialogo()
     {
-        // 🔒 SOMENTE O MASTER PODE FALAR COM O NPC IMPORTANTE
         if (!PhotonNetwork.IsMasterClient)
         {
             Debug.Log("[NPCImportante] Apenas o MasterClient pode iniciar este diálogo.");
@@ -76,7 +74,6 @@ public class NPCImportante : MonoBehaviourPun
 
         emDialogo = false;
 
-        // 🔥 Apenas o Master registra progresso
         if (!jaConcluiu && PhotonNetwork.IsMasterClient && progressoController != null)
         {
             progressoController.NPCImportanteConcluido();

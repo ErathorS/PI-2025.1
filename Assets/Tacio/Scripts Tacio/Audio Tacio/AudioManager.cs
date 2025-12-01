@@ -9,15 +9,14 @@ public class AudioManager : MonoBehaviour
     public AudioSource musicSource;
 
     [Header("Músicas")]
-    public AudioClip menuMusic;   // Menu, Load, Lobby
-    public AudioClip fase1Music;  // Fase 1
+    public AudioClip menuMusic;  
+    public AudioClip fase1Music;  
     
-    public AudioClip fase2Music;  // Fase 2
-    public AudioClip fase3Music;  // Fase 3
+    public AudioClip fase2Music; 
+    public AudioClip fase3Music; 
 
     private void Awake()
     {
-        // Singleton: garante que só exista um AudioManager
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -27,7 +26,6 @@ public class AudioManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // Garante que temos um AudioSource
         if (musicSource == null)
         {
             musicSource = GetComponent<AudioSource>();
@@ -44,7 +42,6 @@ public class AudioManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    // Chamado sempre que uma cena termina de carregar
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         TrocarMusicaPorCena(scene.name);
@@ -54,7 +51,6 @@ public class AudioManager : MonoBehaviour
     {
         AudioClip novaMusica = null;
 
-        // Ajuste os nomes das cenas de acordo com o que está no Build Settings
         if (sceneName == "MenuJogo" || sceneName == "Loading" || sceneName == "Lobby" || sceneName == "Credits" || sceneName == "Tutorial" || sceneName == "Tutorial2")
         {
             novaMusica = menuMusic;
@@ -72,7 +68,6 @@ public class AudioManager : MonoBehaviour
             novaMusica = fase3Music;
         }
 
-        // Se encontrou uma música e ela é diferente da atual, troca
         if (novaMusica != null && musicSource != null && musicSource.clip != novaMusica)
         {
             musicSource.clip = novaMusica;

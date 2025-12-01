@@ -22,23 +22,19 @@ public class MovimentacaoIsometrica : MonoBehaviourPun
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
 
-        // 🔹 Apenas o jogador local controla o movimento
         if (!photonView.IsMine)
         {
             enabled = false;
             return;
         }
 
-        // 🔹 Tenta buscar as referências imediatamente
         BuscarReferenciasAutomaticamente();
     }
 
     void Update()
     {
-        // 🔹 Verifica se as referências estão configuradas antes de mover
         if (!photonView.IsMine || !referenciasConfiguradas)
         {
-            // Se ainda não tem referências, tenta buscar novamente
             if (photonView.IsMine && !referenciasConfiguradas)
             {
                 BuscarReferenciasAutomaticamente();
@@ -61,7 +57,6 @@ public class MovimentacaoIsometrica : MonoBehaviourPun
     {
         bool encontrouTudo = true;
 
-        // 🔹 Busca o joystick pela tag correta
         if (joystick == null)
         {
             int actorID = PhotonNetwork.LocalPlayer.ActorNumber;
@@ -79,7 +74,6 @@ public class MovimentacaoIsometrica : MonoBehaviourPun
             
             if (joystick == null)
             {
-                // Fallback: busca em toda a cena
                 joystick = FindObjectOfType<FixedJoystick>();
                 if (joystick != null)
                 {
@@ -94,7 +88,6 @@ public class MovimentacaoIsometrica : MonoBehaviourPun
             encontrouTudo = false;
         }
 
-        // 🔹 Busca a câmera
         if (cameraTransform == null)
         {
             CameraIsometricaComRotacao camScript = FindObjectOfType<CameraIsometricaComRotacao>();
@@ -155,7 +148,6 @@ public class MovimentacaoIsometrica : MonoBehaviourPun
         }
     }
 
-    // 🔹 Método chamado pelo NetworkGameManager
     public void ConfigurarReferencias(FixedJoystick novoJoystick, Transform novaCamera)
     {
         joystick = novoJoystick;

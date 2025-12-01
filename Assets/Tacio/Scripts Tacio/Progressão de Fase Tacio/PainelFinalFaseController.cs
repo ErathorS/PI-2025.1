@@ -9,7 +9,7 @@ public class PainelFinalFaseController : MonoBehaviourPunCallbacks
 
     [Header("Cenas")]
     public string nomeCenaMenu = "MenuJogo";
-    public string nomeProximaCena = "ProximaFase"; // ADICIONE: Nome da próxima cena
+    public string nomeProximaCena = "ProximaFase"; 
 
     private bool jaMostrou = false;
 
@@ -19,9 +19,6 @@ public class PainelFinalFaseController : MonoBehaviourPunCallbacks
             painelFimDeFase.SetActive(false);
     }
 
-    /// <summary>
-    /// Chamado quando a fase é concluída
-    /// </summary>
     public void MostrarPainelFinal()
     {
         if (jaMostrou) return;
@@ -33,9 +30,6 @@ public class PainelFinalFaseController : MonoBehaviourPunCallbacks
         Debug.Log("[PainelFinalFaseController] PainelFinal exibido.");
     }
 
-    /// <summary>
-    /// Chamado pelo botão 'Voltar ao Menu' 
-    /// </summary>
     public void BotaoVoltarAoMenu()
     {
         Debug.Log($"[PainelFinalFaseController] Botão voltar ao menu pressionado. Master: {PhotonNetwork.IsMasterClient}");
@@ -52,9 +46,6 @@ public class PainelFinalFaseController : MonoBehaviourPunCallbacks
         }
     }
 
-    /// <summary>
-    /// CORREÇÃO: Botão 'Próxima Fase' agora carrega a próxima cena
-    /// </summary>
     public void BotaoIrParaProximaFase()
     {
         Debug.Log($"[PainelFinalFaseController] Botão próxima fase pressionado. Master: {PhotonNetwork.IsMasterClient}");
@@ -72,15 +63,11 @@ public class PainelFinalFaseController : MonoBehaviourPunCallbacks
         }
         else
         {
-            // Modo single player
             Debug.Log($"[PainelFinalFaseController] Carregando próxima cena: {nomeProximaCena}");
             SceneManager.LoadScene(nomeProximaCena);
         }
     }
 
-    /// <summary>
-    /// Chamado quando sai da sala Photon
-    /// </summary>
     public override void OnLeftRoom()
     {
         Debug.Log("[PainelFinalFaseController] Saiu da sala Photon, voltando ao menu");

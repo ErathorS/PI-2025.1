@@ -29,7 +29,6 @@ public class DialogoNPC : MonoBehaviourPun
     public bool tarefaConcluida = false;
     private bool missaoIniciada = false;
 
-    // Eventos para notificar conclusão de diálogo
     public Action OnDialogoInicialConcluido;
     public Action OnDialogoEntregaConcluido;
 
@@ -42,7 +41,6 @@ public class DialogoNPC : MonoBehaviourPun
     private GameObject painelDialogo;
     private Button botaoDialogo;
 
-    // Referência para o script de introdução
     private DialogoNPCIntroducao introManager;
 
     private void Start()
@@ -50,7 +48,6 @@ public class DialogoNPC : MonoBehaviourPun
         if (painelDialogo != null)
             painelDialogo.SetActive(false);
 
-        // Buscar automaticamente o DialogoNPCIntroducao se for NPC de introdução
         if (ehNPCIntroducao)
         {
             introManager = GetComponent<DialogoNPCIntroducao>();
@@ -70,7 +67,6 @@ public class DialogoNPC : MonoBehaviourPun
         }
     }
 
-    // Métodos de configuração para diferentes fases
     public void ConfigurarComoNPCFase1()
     {
         ehNPCFase1 = true;
@@ -129,14 +125,12 @@ public class DialogoNPC : MonoBehaviourPun
         painelDialogo.SetActive(false);
         dialogoAtivo = false;
 
-        // Marca como já conversado (apenas visual)
         if (indicadorNPC != null)
         {
             indicadorNPC.MarcarComoConversado();
             photonView.RPC("DesativarIndicadorGlobal", RpcTarget.AllBuffered);
         }
 
-        // NOTIFICAR EVENTOS
         if (!dialogoDeEntregaAtivo && OnDialogoInicialConcluido != null)
         {
             OnDialogoInicialConcluido.Invoke();
@@ -149,12 +143,10 @@ public class DialogoNPC : MonoBehaviourPun
             Debug.Log("[DialogoNPC] Evento OnDialogoEntregaConcluido disparado");
         }
 
-        // LÓGICA PARA NPC DE INTRODUÇÃO
         if (ehNPCIntroducao && !dialogoDeEntregaAtivo)
         {
             Debug.Log("[DialogoNPC] NPC de introdução - Notificando sistema");
             
-            // Notificar o DialogoNPCIntroducao que um jogador conversou
             if (introManager != null)
             {
                 int playerID = PhotonNetwork.LocalPlayer.ActorNumber;
@@ -168,13 +160,11 @@ public class DialogoNPC : MonoBehaviourPun
             return;
         }
 
-        // LÓGICA ESPECÍFICA PARA FASE 1 (diálogo inicial)
         if (ehNPCFase1 && !dialogoDeEntregaAtivo && !missaoIniciada)
         {
             missaoIniciada = true;
             Debug.Log("[DialogoNPC] NPC da Fase 1 - Iniciando missão de coleta!");
             
-            // Notificar o MissaoFase1Manager para iniciar a missão
             if (MissaoFase1Manager.instancia != null)
             {
                 MissaoFase1Manager.instancia.IniciarMissao();
@@ -186,13 +176,11 @@ public class DialogoNPC : MonoBehaviourPun
             return;
         }
 
-        // SE FOR NPC DA FASE 2 (diálogo inicial)
         if (ehNPCFase2 && !dialogoDeEntregaAtivo && !missaoIniciada)
         {
             missaoIniciada = true;
             Debug.Log("[DialogoNPC] Missão da Fase 2 INICIADA");
 
-            // Iniciar missão da Fase 2
             if (MissaoFase2Manager.instancia != null)
             {
                 MissaoFase2Manager.instancia.IniciarMissao();
@@ -200,13 +188,11 @@ public class DialogoNPC : MonoBehaviourPun
             return;
         }
 
-        // SE FOR NPC DA ZONA 1 (diálogo inicial)
         if (ehNPCZona1 && !dialogoDeEntregaAtivo && !missaoIniciada)
         {
             missaoIniciada = true;
             Debug.Log("[DialogoNPC] Missão da Zona 1 INICIADA");
             
-            // Iniciar missão da Zona 1 (Fase 3)
             if (MissaoFase3Manager.instancia != null)
             {
                 MissaoFase3Manager.instancia.IniciarMissao1();
@@ -214,13 +200,11 @@ public class DialogoNPC : MonoBehaviourPun
             return;
         }
 
-        // SE FOR NPC DA ZONA 2 (diálogo inicial)
         if (ehNPCZona2 && !dialogoDeEntregaAtivo && !missaoIniciada)
         {
             missaoIniciada = true;
             Debug.Log("[DialogoNPC] Missão da Zona 2 INICIADA");
             
-            // Iniciar missão da Zona 2 (Fase 3)
             if (MissaoFase3Manager.instancia != null)
             {
                 MissaoFase3Manager.instancia.IniciarMissao2();
@@ -228,43 +212,37 @@ public class DialogoNPC : MonoBehaviourPun
             return;
         }
 
-        // SÓ conta progresso se for diálogo de ENTREGA
         if (dialogoDeEntregaAtivo && !missaoJaEntregue)
         {
             missaoJaEntregue = true;
 
             if (ehNPCFase1)
             {
-                Debug.Log("[DialogoNPC] ✅ Diálogo de ENTREGA concluído - Fase 1 finalizada!");
+                Debug.Log("[DialogoNPC] Diálogo de ENTREGA concluído - Fase 1 finalizada!");
                 if (MissaoFase1Manager.instancia != null)
                 {
-                    // CORREÇÃO: Chamar FinalizarEntrega
                     MissaoFase1Manager.instancia.FinalizarEntrega();
                 }
                 
-                // CORREÇÃO: Resetar estados após entrega
                 missaoIniciada = false;
                 tarefaConcluida = false;
                 dialogoDeEntregaAtivo = false;
-                missaoJaEntregue = true; // IMPORTANTE: Marcar como já entregue
+                missaoJaEntregue = true; 
             }
             else if (ehNPCFase2)
             {
-                Debug.Log("[DialogoNPC] ✅ Diálogo de ENTREGA concluído - Fase 2 finalizada!");
+                Debug.Log("[DialogoNPC] Diálogo de ENTREGA concluído - Fase 2 finalizada!");
                 
-                // CORREÇÃO: Notificar MissaoFase2Manager sobre a entrega
                 if (MissaoFase2Manager.instancia != null)
                 {
                     MissaoFase2Manager.instancia.EntregaConcluida();
                 }
                 
-                // Notificar ProgressaoFaseController para contar o NPC importante
                 if (ProgressaoFaseController.instancia != null)
                 {
                     ProgressaoFaseController.instancia.NPCImportanteConcluido();
                 }
 
-                // CORREÇÃO: Resetar estados após entrega
                 missaoIniciada = false;
                 tarefaConcluida = false;
                 dialogoDeEntregaAtivo = false;
@@ -272,8 +250,7 @@ public class DialogoNPC : MonoBehaviourPun
             }
             else if (ehNPCZona2)
             {
-                Debug.Log("[DialogoNPC] ✅ Diálogo de ENTREGA concluído - Zona 2 finalizada!");
-                // Notificar ProgressaoFaseController para contar o NPC importante
+                Debug.Log("[DialogoNPC] Diálogo de ENTREGA concluído - Zona 2 finalizada!");
                 if (ProgressaoFaseController.instancia != null)
                 {
                     ProgressaoFaseController.instancia.NPCImportanteConcluido();
@@ -281,8 +258,7 @@ public class DialogoNPC : MonoBehaviourPun
             }
             else if (ehNPCZona1)
             {
-                Debug.Log("[DialogoNPC] ✅ Diálogo de ENTREGA concluído - Zona 1 finalizada!");
-                // Notificar ProgressaoFaseController para contar o NPC importante
+                Debug.Log("[DialogoNPC] Diálogo de ENTREGA concluído - Zona 1 finalizada!");
                 if (ProgressaoFaseController.instancia != null)
                 {
                     ProgressaoFaseController.instancia.NPCImportanteConcluido();
@@ -303,8 +279,8 @@ public class DialogoNPC : MonoBehaviourPun
     private void RPC_TarefaConcluida()
     {
         tarefaConcluida = true;
-        missaoIniciada = false; // CORREÇÃO: Resetar para permitir novo diálogo
-        dialogoDeEntregaAtivo = false; // CORREÇÃO: Resetar estado de diálogo
+        missaoIniciada = false; 
+        dialogoDeEntregaAtivo = false; 
         
         Debug.Log("[DialogoNPC] Tarefa concluída! Agora pode fazer diálogo de entrega.");
         
@@ -314,7 +290,6 @@ public class DialogoNPC : MonoBehaviourPun
             Debug.Log("[DialogoNPC] Indicador reativado para entrega");
         }
 
-        // CORREÇÃO: Forçar atualização do estado visual
         photonView.RPC("RPC_AtualizarEstadoVisual", RpcTarget.AllBuffered, tarefaConcluida);
     }
 
@@ -331,22 +306,17 @@ public class DialogoNPC : MonoBehaviourPun
         Debug.Log($"[DialogoNPC] Estado visual atualizado: TarefaConcluida={tarefaConcluida}");
     }
 
-    // Método para verificar se o NPC está interagível
     public bool PodeInteragir()
     {
         if (ehNPCIntroducao)
-            return true; // NPC de introdução sempre interagível
+            return true; 
         
         if (ehNPCFase1 || ehNPCFase2 || ehNPCZona1 || ehNPCZona2)
         {
-            // Pode interagir se:
-            // 1. Não iniciou missão ainda, OU
-            // 2. Tarefa concluída e não entregue, OU  
-            // 3. Missão em andamento (para ver progresso)
             return !missaoIniciada || (tarefaConcluida && !missaoJaEntregue) || (missaoIniciada && !tarefaConcluida);
         }
         
-        return true; // NPCs normais sempre interagíveis
+        return true;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -356,11 +326,9 @@ public class DialogoNPC : MonoBehaviourPun
         PhotonView pv = other.GetComponent<PhotonView>();
         if (pv == null || !pv.IsMine) return;
 
-        // NPC de introdução - ambos jogadores podem dialogar
         if (apenasMasterPodeDialogar && !PhotonNetwork.IsMasterClient && !ehNPCIntroducao) 
             return;
 
-        // Verificar se pode interagir
         if (!PodeInteragir())
         {
             Debug.LogWarning($"[DialogoNPC] NPC não está interagível no momento. Estado: MissaoIniciada={missaoIniciada}, TarefaConcluida={tarefaConcluida}, MissaoJaEntregue={missaoJaEntregue}");
@@ -369,25 +337,20 @@ public class DialogoNPC : MonoBehaviourPun
 
         jogadorAtual = other.gameObject;
 
-        // Lógica para determinar o tipo de diálogo
         if (ehNPCFase1 || ehNPCFase2 || ehNPCZona1 || ehNPCZona2 || ehNPCIntroducao)
         {
-            // Verificar se a tarefa está concluída para mostrar botão de entrega
             if (tarefaConcluida && !missaoJaEntregue)
             {
-                // Preparar para diálogo de ENTREGA
                 dialogoDeEntregaAtivo = true;
                 Debug.Log("[DialogoNPC] Tarefa concluída - pronto para diálogo de ENTREGA");
             }
             else if (!missaoIniciada || ehNPCIntroducao)
             {
-                // Diálogo inicial (sempre para introdução)
                 dialogoDeEntregaAtivo = false;
                 Debug.Log("[DialogoNPC] Pronto para diálogo INICIAL");
             }
             else if (missaoIniciada && !tarefaConcluida)
             {
-                // Tarefa em andamento - permitir diálogo para ver progresso
                 dialogoDeEntregaAtivo = false;
                 Debug.Log("[DialogoNPC] Tarefa em andamento - permitindo diálogo para ver progresso");
             }
@@ -435,11 +398,9 @@ public class DialogoNPC : MonoBehaviourPun
     {
         if (dialogoAtivo) return;
         
-        // NPC de introdução - ambos jogadores podem dialogar
         if (apenasMasterPodeDialogar && !PhotonNetwork.IsMasterClient && !ehNPCIntroducao) 
             return;
 
-        // Verificação mais rigorosa do estado
         if (ehNPCFase1 || ehNPCFase2 || ehNPCZona1 || ehNPCZona2 || ehNPCIntroducao)
         {
             if (missaoIniciada && !tarefaConcluida && !ehNPCIntroducao)
@@ -448,7 +409,6 @@ public class DialogoNPC : MonoBehaviourPun
                 return;
             }
 
-            // SÓ ativa diálogo de entrega se a tarefa estiver concluída E missão não entregue (não para introdução)
             if (tarefaConcluida && !missaoJaEntregue && !ehNPCIntroducao)
             {
                 dialogoDeEntregaAtivo = true;
@@ -456,7 +416,6 @@ public class DialogoNPC : MonoBehaviourPun
             }
             else if (!missaoIniciada || ehNPCIntroducao)
             {
-                // Diálogo inicial (sempre para introdução)
                 dialogoDeEntregaAtivo = false;
                 Debug.Log("[DialogoNPC] Iniciando diálogo INICIAL");
             }
@@ -479,7 +438,6 @@ public class DialogoNPC : MonoBehaviourPun
 
         painelDialogo.SetActive(true);
 
-        // Escolher o dialogo correto baseado no estado
         if (dialogoDeEntregaAtivo)
         {
             textoDialogo.text = dialogoAposEntrega[linhaAtual];
@@ -538,7 +496,6 @@ public class DialogoNPC : MonoBehaviourPun
             indicadorNPC.iconeExclamacao.SetActive(false);
     }
 
-    // MÉTODO PARA DEBUG: Resetar estado do NPC
     public void ResetarEstadoNPC()
     {
         if (!PhotonNetwork.IsMasterClient) return;
@@ -581,7 +538,6 @@ public class DialogoNPC : MonoBehaviourPun
         }
     }
 
-    // Método para debug
     public void DebugEstado()
     {
         Debug.Log($"[DialogoNPC] === DEBUG ===");
@@ -596,7 +552,6 @@ public class DialogoNPC : MonoBehaviourPun
         Debug.Log($"=====================");
     }
 
-    // Método temporário para debug - chame via console ou botão
     public void DebugEstadoInteracao()
     {
         Debug.Log($"[DialogoNPC] === DEBUG INTERAÇÃO ===");

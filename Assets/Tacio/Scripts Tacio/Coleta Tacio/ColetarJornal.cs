@@ -29,19 +29,15 @@ public class ColetarJornal : MonoBehaviourPun
 
             Debug.Log($"[ColetarJornal] Jornal {jornalID} coletado por jogador {pv.OwnerActorNr}");
 
-            // 🔴 CORREÇÃO: Processar imediatamente e sincronizar
             if (PhotonNetwork.IsMasterClient)
             {
-                // Master processa diretamente
                 ProcessarColeta();
             }
             else
             {
-                // Cliente envia para master
                 photonView.RPC("RPC_ColetarJornal", RpcTarget.MasterClient, jornalID);
             }
 
-            // 🔴 CORREÇÃO: Destruir visualmente para todos imediatamente
             photonView.RPC("RPC_DestruirJornal", RpcTarget.AllBuffered);
         }
     }
@@ -61,7 +57,7 @@ public class ColetarJornal : MonoBehaviourPun
         if (progresso != null)
         {
             progresso.JornalColetado();
-            Debug.Log($"[ColetarJornal] ✅ Jornal {jornalID} processado pelo Master");
+            Debug.Log($"[ColetarJornal] Jornal {jornalID} processado pelo Master");
         }
     }
 
@@ -71,7 +67,7 @@ public class ColetarJornal : MonoBehaviourPun
         if (gameObject != null)
         {
             Destroy(gameObject);
-            Debug.Log($"[ColetarJornal] 🗑️ Jornal {jornalID} destruído para todos");
+            Debug.Log($"[ColetarJornal] Jornal {jornalID} destruído para todos");
         }
     }
 }
