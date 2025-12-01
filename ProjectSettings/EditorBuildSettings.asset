@@ -36,9 +36,6 @@ EditorBuildSettings:
     path: Assets/Tacio/Cenas Tacio/Cena de Introducao 3.unity
     guid: 8c08f9dd622debe48a910e9642ec0065
   - enabled: 1
-    path: Assets/DvD/PI Fase 3 -DvD.unity
-    guid: 3729860a30e4001428a20e77a2e6e82b
-  - enabled: 1
     path: Assets/DvD/PI Fase 3.unity
     guid: dc3cde9fbece2cf4bb408527b0457bee
   m_configObjects:
