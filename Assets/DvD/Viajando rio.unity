@@ -380,8 +380,14 @@ MonoBehaviour:
   aviao: {fileID: 484019557}
   pontoInicial: {fileID: 1825195693}
   pontoFinal: {fileID: 1130959117}
+  objetoUI: {fileID: 1986514061674809623, guid: 56f26fa35f0df874aa51891f01e38f31, type: 3}
   duracao: 4
   cenaDestino: PI Fase 2
+  apenasMasterCarrega: 1
+  cenasDesativarUI:
+  - Viajando sao paulo
+  - Viajando rio
+  - Final
 --- !u!4 &898744229
 Transform:
   m_ObjectHideFlags: 0

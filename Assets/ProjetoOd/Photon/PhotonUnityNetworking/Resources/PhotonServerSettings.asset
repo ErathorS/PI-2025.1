@@ -140,6 +140,8 @@ MonoBehaviour:
   - RPC_EntregaConcluida
   - RPC_SincronizarContador
   - RPC_SincronizarExplicacao
+  - RPC_IniciarCarregamento
+  - RPC_SincronizarProgresso
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

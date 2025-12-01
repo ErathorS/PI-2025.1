@@ -194,6 +194,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Joystick Movimento Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4765778456143022306, guid: 95a9703ce4d9433458391969c3feae96, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
