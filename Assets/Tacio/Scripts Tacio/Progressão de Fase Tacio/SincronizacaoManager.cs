@@ -13,6 +13,11 @@ public class SincronizacaoManager : MonoBehaviourPun
     public GameObject[] botoesSincronizacao;
     public PostePiscando[] postesPiscando;
 
+    // NOVO: Configuração por fase
+    [Header("Configuração por Fase")]
+    public bool ehParaFase2 = false;
+    public bool ehParaFase3 = false;
+
     // Estado
     private HashSet<int> jogadoresQueTocaram = new HashSet<int>();
     private bool sincronizacaoAtiva = false;
@@ -56,25 +61,25 @@ public class SincronizacaoManager : MonoBehaviourPun
 
     public void RegistrarToque(int actorID)
     {
-        if (!sincronizacaoAtiva || sincronizacaoConcluida)
+        if (!sincronizacaoAtiva || sincronizacaoConcluida) // CORREÇÃO: Removi o "!" antes de sincronizacaoAtiva
         {
-            Debug.Log($"[SincronizacaoManager] Sincronização não está ativa, ignorando toque do jogador {actorID}");
+            Debug.Log($"[SincronizacaoManager] Sincronização não está ativa ou já concluída, ignorando toque do jogador {actorID}");
             return;
         }
-
+        
         if (photonView == null)
         {
             Debug.LogError("[SincronizacaoManager] PhotonView é null no RegistrarToque!");
             return;
         }
-
+        
         photonView.RPC("RPC_RegistrarToque", RpcTarget.All, actorID);
     }
 
     [PunRPC]
     private void RPC_RegistrarToque(int actorID)
     {
-        if (!sincronizacaoAtiva || sincronizacaoConcluida)
+        if (!sincronizacaoAtiva || sincronizacaoConcluida) // CORREÇÃO: Removi o "!" antes de sincronizacaoAtiva
         {
             Debug.Log($"[SincronizacaoManager] Sincronização não ativa no RPC, ignorando jogador {actorID}");
             return;
@@ -124,7 +129,7 @@ public class SincronizacaoManager : MonoBehaviourPun
     [PunRPC]
     private void RPC_ConcluirSincronizacao()
     {
-        Debug.Log("[SincronizacaoManager] ✅✅✅ Sincronização concluída para todos os jogadores!");
+        Debug.Log("[SincronizacaoManager] ✔✔✔️ Sincronização concluída para todos os jogadores!");
 
         // Parar as luzes de piscar
         if (postesPiscando != null)
@@ -137,13 +142,57 @@ public class SincronizacaoManager : MonoBehaviourPun
 
         EsconderBotoesSincronizacao();
 
-        // NOVO: Notificar NPC da Zona 2 que a tarefa está concluída
-        NotificarNPCZona2();
+        // NOVO: Notificar o sistema apropriado baseado na fase
+        if (ehParaFase2)
+        {
+            NotificarFase2Concluida();
+        }
+        else if (ehParaFase3)
+        {
+            NotificarNPCZona2();
+        }
 
         Debug.Log("[SincronizacaoManager] Tarefa de sincronização concluída!");
     }
 
-    // NOVO: Método para notificar NPC da Zona 2
+    // NOVO: Método para notificar conclusão da Fase 2
+    private void NotificarFase2Concluida()
+    {
+        Debug.Log("[SincronizacaoManager] Notificando conclusão da Fase 2...");
+
+        // 1. Notificar MissaoFase2Manager
+        if (MissaoFase2Manager.instancia != null)
+        {
+            MissaoFase2Manager.instancia.MissaoConcluida();
+            Debug.Log("[SincronizacaoManager] MissaoFase2Manager notificado!");
+        }
+        else
+        {
+            Debug.LogError("[SincronizacaoManager] MissaoFase2Manager não encontrado!");
+        }
+
+        // 2. Notificar todos os NPCs da Fase 2
+        DialogoNPC[] npcs = FindObjectsOfType<DialogoNPC>();
+        bool npcNotificado = false;
+        
+        foreach (DialogoNPC npc in npcs)
+        {
+            if (npc.ehNPCFase2)
+            {
+                npc.TarefaConcluida();
+                npcNotificado = true;
+                Debug.Log("[SincronizacaoManager] NPC Fase 2 notificado sobre conclusão da tarefa!");
+                break; // Notificar apenas o primeiro NPC da Fase 2 encontrado
+            }
+        }
+
+        if (!npcNotificado)
+        {
+            Debug.LogWarning("[SincronizacaoManager] Nenhum NPC da Fase 2 encontrado para notificar!");
+        }
+    }
+
+    // NOVO: Método para notificar NPC da Zona 2 (Fase 3)
     private void NotificarNPCZona2()
     {
         DialogoNPC[] npcs = FindObjectsOfType<DialogoNPC>();
@@ -198,6 +247,7 @@ public class SincronizacaoManager : MonoBehaviourPun
             if (botao != null)
             {
                 var botaoScript = botao.GetComponent<BotaoSincronizacaoFase2>();
+                
                 if (botaoScript != null)
                 {
                     botaoScript.AtivarParaMissao();

@@ -14,14 +14,19 @@ public class MissaoFase2Manager : MonoBehaviourPunCallbacks
     public SincronizacaoManager sincronizacaoManager;
     public DialogoNPC npcImportante;
 
+    // NOVO: Configuração para Fase 2
+    [Header("Configuração Fase 2")]
+    public bool usarSincronizacao = true;
+    public bool autoFinalizarMissao = false;
+
     private bool missaoAtiva = false;
     private bool missaoConcluida = false;
+    private bool tarefaEntregue = false;
 
-    private PhotonView photonView; // 🔴 CORREÇÃO: Referência explícita
+    private PhotonView photonView;
 
     private void Awake()
     {
-        // 🔴 CORREÇÃO: Garantir que só há uma instância
         if (instancia == null)
         {
             instancia = this;
@@ -32,44 +37,46 @@ public class MissaoFase2Manager : MonoBehaviourPunCallbacks
             return;
         }
 
-        // 🔴 CORREÇÃO: Obter referência do PhotonView
         photonView = GetComponent<PhotonView>();
         if (photonView == null)
         {
             Debug.LogError("[MissaoFase2Manager] PhotonView não encontrado no GameObject!");
+            photonView = gameObject.AddComponent<PhotonView>();
         }
+    }
 
-        // Inicializar UI
+    private void Start()
+    {
         if (painelMissao != null)
             painelMissao.SetActive(false);
+
+        // Configurar referências se necessário
+        if (sincronizacaoManager != null)
+        {
+            sincronizacaoManager.ehParaFase2 = true;
+            sincronizacaoManager.ehParaFase3 = false;
+        }
     }
 
     public void IniciarMissao()
     {
         if (!PhotonNetwork.IsMasterClient) return;
-        
+
         if (sincronizacaoManager == null)
         {
             Debug.LogError("[MissaoFase2Manager] sincronizacaoManager não está atribuído!");
             return;
         }
 
-        // 🔴 CORREÇÃO: Usar referência local do PhotonView
-        if (photonView != null)
-        {
-            photonView.RPC("RPC_IniciarMissao", RpcTarget.AllBuffered);
-        }
-        else
-        {
-            Debug.LogError("[MissaoFase2Manager] photonView é null!");
-        }
+        photonView.RPC("RPC_IniciarMissao", RpcTarget.AllBuffered);
     }
 
-    [PunRPC] // 🔴 CORREÇÃO: Garantir que está marcado como PunRPC
+    [PunRPC]
     private void RPC_IniciarMissao()
     {
         missaoAtiva = true;
         missaoConcluida = false;
+        tarefaEntregue = false;
 
         if (painelMissao != null)
         {
@@ -82,34 +89,28 @@ public class MissaoFase2Manager : MonoBehaviourPunCallbacks
         }
 
         // Ativa o sistema de sincronização
-        if (sincronizacaoManager != null)
+        if (usarSincronizacao && sincronizacaoManager != null)
         {
             sincronizacaoManager.IniciarSincronizacao();
         }
-        else
+        else if (!usarSincronizacao)
         {
-            Debug.LogError("[MissaoFase2Manager] sincronizacaoManager é null no RPC!");
+            Debug.LogWarning("[MissaoFase2Manager] Sincronização desativada por configuração!");
         }
 
         Debug.Log("[MissaoFase2Manager] Missão da Fase 2 iniciada!");
     }
 
+    // NOVO: Chamado pelo SincronizacaoManager quando a sincronização é concluída
     public void MissaoConcluida()
     {
         if (!PhotonNetwork.IsMasterClient) return;
-        
-        // 🔴 CORREÇÃO: Usar referência local do PhotonView
-        if (photonView != null)
-        {
-            photonView.RPC("RPC_MissaoConcluida", RpcTarget.AllBuffered);
-        }
-        else
-        {
-            Debug.LogError("[MissaoFase2Manager] photonView é null no MissaoConcluida!");
-        }
+
+        Debug.Log("[MissaoFase2Manager] Missão concluída - enviando para todos");
+        photonView.RPC("RPC_MissaoConcluida", RpcTarget.AllBuffered);
     }
 
-    [PunRPC] // 🔴 CORREÇÃO: Garantir que está marcado como PunRPC
+    [PunRPC]
     private void RPC_MissaoConcluida()
     {
         missaoConcluida = true;
@@ -118,15 +119,36 @@ public class MissaoFase2Manager : MonoBehaviourPunCallbacks
         if (painelMissao != null)
         {
             painelMissao.SetActive(true);
-            textoMissao.text = "Energia restaurada! Missão concluída.";
+            textoMissao.text = "Energia restaurada! Missão concluída.\nVolte ao NPC para entregar.";
+        }
+
+        // NOVO: Se autoFinalizarMissao estiver ativado, finalizar automaticamente
+        if (autoFinalizarMissao)
+        {
+            FinalizarMissao();
         }
 
         Debug.Log("[MissaoFase2Manager] Missão da Fase 2 concluída!");
     }
 
+    // NOVO: Chamado quando o jogador entrega a missão ao NPC
+    public void EntregaConcluida()
+    {
+        if (!PhotonNetwork.IsMasterClient) return;
+
+        photonView.RPC("RPC_EntregaConcluida", RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    private void RPC_EntregaConcluida()
+    {
+        tarefaEntregue = true;
+        FinalizarMissao();
+        Debug.Log("[MissaoFase2Manager] Entrega concluída!");
+    }
+
     public void FinalizarMissao()
     {
-        // 🔴 CORREÇÃO: Usar referência local do PhotonView
         if (photonView != null)
         {
             photonView.RPC("RPC_FinalizarMissao", RpcTarget.AllBuffered);
@@ -137,7 +159,7 @@ public class MissaoFase2Manager : MonoBehaviourPunCallbacks
         }
     }
 
-    [PunRPC] // 🔴 CORREÇÃO: Garantir que está marcado como PunRPC
+    [PunRPC]
     private void RPC_FinalizarMissao()
     {
         if (painelMissao != null)
@@ -145,5 +167,35 @@ public class MissaoFase2Manager : MonoBehaviourPunCallbacks
             painelMissao.SetActive(false);
             textoMissao.text = "";
         }
+
+        Debug.Log("[MissaoFase2Manager] Missão finalizada para todos os jogadores!");
+    }
+
+    // NOVO: Métodos para verificar estado
+    public bool IsMissaoAtiva()
+    {
+        return missaoAtiva;
+    }
+
+    public bool IsMissaoConcluida()
+    {
+        return missaoConcluida;
+    }
+
+    public bool IsTarefaEntregue()
+    {
+        return tarefaEntregue;
+    }
+
+    // NOVO: Método para debug
+    public void DebugEstado()
+    {
+        Debug.Log($"[MissaoFase2Manager] === DEBUG ===");
+        Debug.Log($"MissaoAtiva: {missaoAtiva}");
+        Debug.Log($"MissaoConcluida: {missaoConcluida}");
+        Debug.Log($"TarefaEntregue: {tarefaEntregue}");
+        Debug.Log($"SincronizacaoManager: {sincronizacaoManager != null}");
+        Debug.Log($"NPCImportante: {npcImportante != null}");
+        Debug.Log($"===================================");
     }
 }

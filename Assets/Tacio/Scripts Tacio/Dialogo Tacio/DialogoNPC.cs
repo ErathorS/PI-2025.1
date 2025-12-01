@@ -186,6 +186,48 @@ public class DialogoNPC : MonoBehaviourPun
             return;
         }
 
+        // SE FOR NPC DA FASE 2 (diálogo inicial)
+        if (ehNPCFase2 && !dialogoDeEntregaAtivo && !missaoIniciada)
+        {
+            missaoIniciada = true;
+            Debug.Log("[DialogoNPC] Missão da Fase 2 INICIADA");
+
+            // Iniciar missão da Fase 2
+            if (MissaoFase2Manager.instancia != null)
+            {
+                MissaoFase2Manager.instancia.IniciarMissao();
+            }
+            return;
+        }
+
+        // SE FOR NPC DA ZONA 1 (diálogo inicial)
+        if (ehNPCZona1 && !dialogoDeEntregaAtivo && !missaoIniciada)
+        {
+            missaoIniciada = true;
+            Debug.Log("[DialogoNPC] Missão da Zona 1 INICIADA");
+            
+            // Iniciar missão da Zona 1 (Fase 3)
+            if (MissaoFase3Manager.instancia != null)
+            {
+                MissaoFase3Manager.instancia.IniciarMissao1();
+            }
+            return;
+        }
+
+        // SE FOR NPC DA ZONA 2 (diálogo inicial)
+        if (ehNPCZona2 && !dialogoDeEntregaAtivo && !missaoIniciada)
+        {
+            missaoIniciada = true;
+            Debug.Log("[DialogoNPC] Missão da Zona 2 INICIADA");
+            
+            // Iniciar missão da Zona 2 (Fase 3)
+            if (MissaoFase3Manager.instancia != null)
+            {
+                MissaoFase3Manager.instancia.IniciarMissao2();
+            }
+            return;
+        }
+
         // SÓ conta progresso se for diálogo de ENTREGA
         if (dialogoDeEntregaAtivo && !missaoJaEntregue)
         {
@@ -209,11 +251,24 @@ public class DialogoNPC : MonoBehaviourPun
             else if (ehNPCFase2)
             {
                 Debug.Log("[DialogoNPC] ✅ Diálogo de ENTREGA concluído - Fase 2 finalizada!");
+                
+                // CORREÇÃO: Notificar MissaoFase2Manager sobre a entrega
+                if (MissaoFase2Manager.instancia != null)
+                {
+                    MissaoFase2Manager.instancia.EntregaConcluida();
+                }
+                
                 // Notificar ProgressaoFaseController para contar o NPC importante
                 if (ProgressaoFaseController.instancia != null)
                 {
                     ProgressaoFaseController.instancia.NPCImportanteConcluido();
                 }
+
+                // CORREÇÃO: Resetar estados após entrega
+                missaoIniciada = false;
+                tarefaConcluida = false;
+                dialogoDeEntregaAtivo = false;
+                missaoJaEntregue = true;
             }
             else if (ehNPCZona2)
             {
@@ -235,49 +290,6 @@ public class DialogoNPC : MonoBehaviourPun
             }
 
             dialogoDeEntregaAtivo = false;
-            return;
-        }
-
-        // SE FOR NPC DA FASE 2 (diálogo inicial)
-        if (ehNPCFase2 && !missaoJaEntregue && !missaoIniciada)
-        {
-            missaoIniciada = true;
-            Debug.Log("[DialogoNPC] Missão da Fase 2 INICIADA");
-            
-            // Iniciar missão da Fase 2
-            if (MissaoFase2Manager.instancia != null)
-            {
-                MissaoFase2Manager.instancia.IniciarMissao();
-            }
-            return;
-        }
-
-        // SE FOR NPC DA ZONA 1 (diálogo inicial)
-        if (ehNPCZona1 && !missaoJaEntregue && !missaoIniciada)
-        {
-            missaoIniciada = true;
-            Debug.Log("[DialogoNPC] Missão da Zona 1 INICIADA");
-            
-            // Iniciar missão da Zona 1 (Fase 3)
-            if (MissaoFase3Manager.instancia != null)
-            {
-                MissaoFase3Manager.instancia.IniciarMissao1();
-            }
-            return;
-        }
-
-        // SE FOR NPC DA ZONA 2 (diálogo inicial)
-        if (ehNPCZona2 && !missaoJaEntregue && !missaoIniciada)
-        {
-            missaoIniciada = true;
-            Debug.Log("[DialogoNPC] Missão da Zona 2 INICIADA");
-            
-            // Iniciar missão da Zona 2 (Fase 3)
-            if (MissaoFase3Manager.instancia != null)
-            {
-                MissaoFase3Manager.instancia.IniciarMissao2();
-            }
-            return;
         }
     }
 
