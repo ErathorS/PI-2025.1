@@ -35728,7 +35728,7 @@ MonoBehaviour:
   botaoReset: {fileID: 1323990676}
   coletor: {fileID: 1762421116}
   npcEntrega: {fileID: 1571860944}
-  painelFinalFase: {fileID: 0}
+  painelFinalFase: {fileID: 8897240587062997348}
 --- !u!114 &1762421116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58910,7 +58910,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   painelFimDeFase: {fileID: 112458082}
-  nomeCenaHQ: PI Fase 3 -DvD
+  nomeCenaMenu: MenuJogo
+  nomeProximaCena: PI Fase 3 -DvD
 --- !u!1001 &8904113109228802089
 PrefabInstance:
   m_ObjectHideFlags: 0

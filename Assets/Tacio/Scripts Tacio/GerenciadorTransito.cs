@@ -19,21 +19,16 @@ public class GerenciadorTransito : MonoBehaviour
     public bool controleAutomatico = true;
     public float tempoTrocaSemaforo = 10f;
 
-    // NOVO: Variável para guardar o estado inicial
-    private bool estadoInicialConfigurado = false;
     private float tempoDecorrido = 0f;
 
     void Start()
     {
-        // CORREÇÃO: Apenas atualizar estados, NÃO resetar
         AtualizarEstadosSemaforos();
-        estadoInicialConfigurado = true;
-        Debug.Log($"[GerenciadorTransito] Inicializado com {semaforos.Count} semáforos");
     }
 
     void Update()
     {
-        if (controleAutomatico && estadoInicialConfigurado)
+        if (controleAutomatico)
         {
             tempoDecorrido += Time.deltaTime;
             if (tempoDecorrido >= tempoTrocaSemaforo)
@@ -50,7 +45,6 @@ public class GerenciadorTransito : MonoBehaviour
     {
         foreach (SemaforoConfig semaforo in semaforos)
         {
-            // CORREÇÃO: Aplicar o estado atual do semáforo
             foreach (Collider parede in semaforo.paredesBarreira)
             {
                 if (parede != null)
@@ -75,131 +69,68 @@ public class GerenciadorTransito : MonoBehaviour
         Debug.Log("[GerenciadorTransito] Estados dos semáforos trocados automaticamente");
     }
 
-    // NOVO: Método para liberar o trânsito
+    // ✅ MÉTODOS QUE O MISSÃOFASE3MANAGER PRECISA:
+
     public void LiberarTransito()
     {
         foreach (SemaforoConfig semaforo in semaforos)
         {
-            semaforo.semaforoAtivo = true; // Libera o trânsito
+            semaforo.semaforoAtivo = true;
         }
-        
         AtualizarEstadosSemaforos();
         Debug.Log("[GerenciadorTransito] Trânsito liberado!");
     }
 
-    // NOVO: Método para bloquear o trânsito
     public void BloquearTransito()
     {
         foreach (SemaforoConfig semaforo in semaforos)
         {
-            semaforo.semaforoAtivo = false; // Bloqueia o trânsito
+            semaforo.semaforoAtivo = false;
         }
-        
         AtualizarEstadosSemaforos();
         Debug.Log("[GerenciadorTransito] Trânsito bloqueado!");
+    }
+
+    public void LiberarPassagemJogadores()
+    {
+        // Mesma lógica do LiberarTransito para compatibilidade
+        LiberarTransito();
+    }
+
+    public void BloquearPassagemJogadores()
+    {
+        // Mesma lógica do BloquearTransito para compatibilidade
+        BloquearTransito();
+    }
+
+    public bool IsPassagemLiberada()
+    {
+        if (semaforos.Count > 0)
+        {
+            return semaforos[0].semaforoAtivo;
+        }
+        return false;
     }
 
     public bool DevePararNoSemaforo(Collider triggerDetectado)
     {
         foreach (SemaforoConfig semaforo in semaforos)
         {
-            if (semaforo.triggerSemaforo == triggerDetectado && semaforo.semaforoAtivo)
+            if (semaforo.triggerSemaforo == triggerDetectado)
             {
-                return true;
+                return semaforo.semaforoAtivo;
             }
         }
         return false;
     }
 
-    // Métodos para controle manual dos semáforos
-    public void AtivarSemaforo(int index)
-    {
-        if (index >= 0 && index < semaforos.Count)
-        {
-            semaforos[index].semaforoAtivo = true;
-            AtualizarEstadosSemaforos();
-            Debug.Log($"Semáforo {semaforos[index].nome} ativado");
-        }
-    }
-
-    public void DesativarSemaforo(int index)
-    {
-        if (index >= 0 && index < semaforos.Count)
-        {
-            semaforos[index].semaforoAtivo = false;
-            AtualizarEstadosSemaforos();
-            Debug.Log($"Semáforo {semaforos[index].nome} desativado");
-        }
-    }
-
-    public void AlternarSemaforo(int index)
-    {
-        if (index >= 0 && index < semaforos.Count)
-        {
-            semaforos[index].semaforoAtivo = !semaforos[index].semaforoAtivo;
-            AtualizarEstadosSemaforos();
-            Debug.Log($"Semáforo {semaforos[index].nome} alternado para: {semaforos[index].semaforoAtivo}");
-        }
-    }
-
-    public void SetarEstadoSemaforo(int index, bool estado)
-    {
-        if (index >= 0 && index < semaforos.Count)
-        {
-            semaforos[index].semaforoAtivo = estado;
-            AtualizarEstadosSemaforos();
-            Debug.Log($"Semáforo {semaforos[index].nome} estado para: {estado}");
-        }
-    }
-
-    // NOVO: Método para verificar estado atual
-    public bool IsTransitoLiberado()
-    {
-        if (semaforos.Count > 0)
-        {
-            return semaforos[0].semaforoAtivo; // Retorna estado do primeiro semáforo
-        }
-        return false;
-    }
-
-    // NOVO: Método para debug
     public void DebugEstadoAtual()
     {
-        Debug.Log($"[GerenciadorTransito] === DEBUG TRANSPORTE ===");
+        Debug.Log($"[GerenciadorTransito] === DEBUG ===");
         foreach (SemaforoConfig semaforo in semaforos)
         {
-            Debug.Log($"Semáforo {semaforo.nome}: {(semaforo.semaforoAtivo ? "LIBERADO" : "BLOQUEADO")}");
+            Debug.Log($"Semáforo {semaforo.nome}: {(semaforo.semaforoAtivo ? "ATIVO" : "INATIVO")}");
         }
-        Debug.Log($"===================================");
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        foreach (SemaforoConfig semaforo in semaforos)
-        {
-            if (semaforo.triggerSemaforo != null)
-            {
-                Gizmos.color = semaforo.semaforoAtivo ? Color.red : Color.green;
-
-                if (semaforo.triggerSemaforo is BoxCollider boxCollider)
-                {
-                    Gizmos.matrix = semaforo.triggerSemaforo.transform.localToWorldMatrix;
-                    Gizmos.DrawWireCube(boxCollider.center, boxCollider.size);
-                }
-            }
-
-            Gizmos.color = semaforo.semaforoAtivo ? Color.blue : Color.yellow;
-            foreach (Collider parede in semaforo.paredesBarreira)
-            {
-                if (parede != null)
-                {
-                    if (parede is BoxCollider boxParede)
-                    {
-                        Gizmos.matrix = parede.transform.localToWorldMatrix;
-                        Gizmos.DrawWireCube(boxParede.center, boxParede.size);
-                    }
-                }
-            }
-        }
+        Debug.Log($"=====================");
     }
 }

@@ -30,6 +30,9 @@ public class MissaoFase3Manager : MonoBehaviourPunCallbacks
     [Header("Sistema de Sincronização (Missão 2)")]
     public SincronizacaoManager sincronizadorMissao2;
 
+    [Header("Painel Final")]
+    public PainelFinalFaseController painelFinalFase;
+
     [Header("Configurações")]
     public float tempoLimiteMissao1 = 180f;
 
@@ -68,11 +71,19 @@ public class MissaoFase3Manager : MonoBehaviourPunCallbacks
 
         ConfigurarNPCs();
         
-        // Inicia com trânsito bloqueado
-        // if (transitoZonaA != null) 
-        //     transitoZonaA.BloquearTransito();
-        // if (transitoZonaB != null) 
-        //     transitoZonaB.BloquearTransito();
+        // INICIA COM TRÂNSITO BLOQUEADO
+        if (transitoZonaA != null) 
+        {
+            transitoZonaA.BloquearTransito(); // ✅ MÉTODO EXISTENTE
+            transitoZonaA.controleAutomatico = false;
+        }
+        if (transitoZonaB != null) 
+        {
+            transitoZonaB.BloquearTransito(); // ✅ MÉTODO EXISTENTE
+            transitoZonaB.controleAutomatico = false;
+        }
+
+        Debug.Log("[MissaoFase3Manager] Fase 3 iniciada - Zonas bloqueadas");
     }
 
     private void ConfigurarNPCs()
@@ -124,7 +135,7 @@ public class MissaoFase3Manager : MonoBehaviourPunCallbacks
     }
 
     // ===============================
-    // MISSÃO 1 - ZONA 1
+    // MISSÃO 1 - ZONA 1 (COLETA)
     // ===============================
 
     public void IniciarMissao1()
@@ -175,10 +186,12 @@ public class MissaoFase3Manager : MonoBehaviourPunCallbacks
             painelMissao1.SetActive(false);
         }
 
+        // ✅ LIBERAR ZONA A: Parede + Trânsito Automático
         if (transitoZonaA != null)
         {
-            transitoZonaA.LiberarTransito();
-            Debug.Log("[MissaoFase3Manager] Trânsito A liberado!");
+            transitoZonaA.LiberarTransito(); // ✅ MÉTODO EXISTENTE
+            transitoZonaA.controleAutomatico = true;
+            Debug.Log("[MissaoFase3Manager] ✅ Zona A liberada! Trânsito automático ativado.");
         }
 
         Debug.Log("[MissaoFase3Manager] Missão 1 concluída! Zona 2 liberada.");
@@ -202,7 +215,7 @@ public class MissaoFase3Manager : MonoBehaviourPunCallbacks
     }
 
     // ===============================
-    // MISSÃO 2 - ZONA 2
+    // MISSÃO 2 - ZONA 2 (SINCRONIZAÇÃO)
     // ===============================
 
     public void IniciarMissao2()
@@ -252,32 +265,27 @@ public class MissaoFase3Manager : MonoBehaviourPunCallbacks
             painelMissao2.SetActive(false);
         }
 
+        // ✅ LIBERAR ZONA B: Parede + Trânsito Automático
         if (transitoZonaB != null)
         {
-            transitoZonaB.LiberarTransito();
-            Debug.Log("[MissaoFase3Manager] Trânsito B liberado!");
+            transitoZonaB.LiberarTransito(); // ✅ MÉTODO EXISTENTE
+            transitoZonaB.controleAutomatico = true;
+            Debug.Log("[MissaoFase3Manager] ✅ Zona B liberada! Trânsito automático ativado.");
         }
 
-        // Notificar progresso do NPC importante
-        if (ProgressaoFaseController.instancia != null)
+        // ✅ MOSTRAR PAINEL FINAL DA FASE
+        if (painelFinalFase != null)
         {
-            ProgressaoFaseController.instancia.NPCImportanteConcluido();
+            painelFinalFase.MostrarPainelFinal();
+            Debug.Log("[MissaoFase3Manager] ✅ Painel final da fase exibido!");
         }
 
-        Debug.Log("[MissaoFase3Manager] Missão 2 concluída! Fase 3 completa.");
+        Debug.Log("[MissaoFase3Manager] Missão 2 concluída! Zona 3 liberada.");
     }
 
     // ===============================
     // MÉTODOS PÚBLICOS
     // ===============================
-
-    // CORREÇÃO: Método renomeado para compatibilidade
-    public void NPCConcluido()
-    {
-        // Este método é chamado pelos NPCs quando são concluídos
-        // Na Fase 3, usamos o sistema de missões separadas
-        Debug.Log("[MissaoFase3Manager] NPCConcluido chamado - usando sistema de missões separadas");
-    }
 
     public bool IsMissao1Ativa()
     {
@@ -317,6 +325,10 @@ public class MissaoFase3Manager : MonoBehaviourPunCallbacks
     // Método para debug
     public void DebugEstado()
     {
-        Debug.Log($"[MissaoFase3Manager] Estado: M1_Ativa={missao1Ativa}, M1_Concluida={missao1Concluida}, M2_Ativa={missao2Ativa}, M2_Concluida={missao2Concluida}");
+        Debug.Log($"[MissaoFase3Manager] === DEBUG FASE 3 ===");
+        Debug.Log($"M1_Ativa: {missao1Ativa}, M1_Concluida: {missao1Concluida}");
+        Debug.Log($"M2_Ativa: {missao2Ativa}, M2_Concluida: {missao2Concluida}");
+        Debug.Log($"PainelFinal: {painelFinalFase != null}");
+        Debug.Log($"===================================");
     }
 }

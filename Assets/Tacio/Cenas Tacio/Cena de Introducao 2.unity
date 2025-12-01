@@ -3884,6 +3884,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 919132149155446097, guid: a186d2548c018924388c7f418c207f0c, type: 3}
     - target: {fileID: 7660439255949543271, guid: 1b8a6df0a5d7e1645affd635052f95b4, type: 3}
+      propertyPath: ehNPCIntroducao
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7660439255949543271, guid: 1b8a6df0a5d7e1645affd635052f95b4, type: 3}
       propertyPath: linhasDialogo.Array.size
       value: 5
       objectReference: {fileID: 0}
@@ -3982,6 +3986,7 @@ MonoBehaviour:
   player1Terminou: 0
   player2Terminou: 0
   plateManager: {fileID: 6900256535217134046}
+  nomeCenaDestino: PI Fase 2
 --- !u!1 &928062167
 GameObject:
   m_ObjectHideFlags: 0

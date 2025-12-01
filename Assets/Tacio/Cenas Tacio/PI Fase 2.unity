@@ -954,7 +954,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   painelFimDeFase: {fileID: 1126432380}
-  nomeCenaHQ: Cena de Introducao 3
+  nomeCenaMenu: MenuJogo
+  nomeProximaCena: Cena de Introducao 3
 --- !u!1 &18633837
 GameObject:
   m_ObjectHideFlags: 0
