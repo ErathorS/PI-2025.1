@@ -21,7 +21,6 @@ public class ColetarCaixasManager : MonoBehaviourPun
     public float tempoLimite = 60f;
     private float tempoAtual;
     
-    // NOVO: Tornar público para acesso do MissaoFase3Manager
     public int caixasColetadas = 0;
     public int totalCaixas;
     
@@ -29,7 +28,15 @@ public class ColetarCaixasManager : MonoBehaviourPun
 
     private void Awake()
     {
-        instancia = this;
+        if (instancia == null)
+        {
+            instancia = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
     }
 
     private void Start()
@@ -56,13 +63,25 @@ public class ColetarCaixasManager : MonoBehaviourPun
         if (!PhotonNetwork.IsMasterClient) return;
 
         caixasColetadas++;
+        Debug.Log($"[ColetarCaixasManager] Caixa coletada! Total: {caixasColetadas}/{totalCaixas}");
+
+        // CORREÇÃO: Sincronizar com todos os jogadores
         photonView.RPC("RPC_SincronizarUI", RpcTarget.AllBuffered, caixasColetadas);
 
         if (caixasColetadas >= totalCaixas)
         {
             faseAtiva = false;
-            // NOVO: Notificar NPC que tarefa está concluída
-            NotificarTarefaConcluida();
+            Debug.Log("[ColetarCaixasManager] TODAS as caixas coletadas! Finalizando missão...");
+            
+            // CORREÇÃO: Notificar MissaoFase1Manager para finalizar a missão
+            if (MissaoFase1Manager.instancia != null)
+            {
+                MissaoFase1Manager.instancia.MissaoFinalizada();
+            }
+            else
+            {
+                Debug.LogError("[ColetarCaixasManager] MissaoFase1Manager não encontrado!");
+            }
         }
     }
 
@@ -71,22 +90,7 @@ public class ColetarCaixasManager : MonoBehaviourPun
     {
         caixasColetadas = novoValor;
         AtualizarUI();
-    }
-
-    // NOVO: Método para notificar que a tarefa foi concluída
-    private void NotificarTarefaConcluida()
-    {
-        // Encontra o NPC da Zona 1 e notifica que a tarefa está concluída
-        DialogoNPC[] npcs = FindObjectsOfType<DialogoNPC>();
-        foreach (DialogoNPC npc in npcs)
-        {
-            if (npc.ehNPCZona1)
-            {
-                npc.TarefaConcluida();
-                Debug.Log("[ColetarCaixasManager] NPC Zona 1 notificado sobre conclusão da tarefa!");
-                break;
-            }
-        }
+        Debug.Log($"[ColetarCaixasManager] UI sincronizada: {caixasColetadas}/{totalCaixas}");
     }
 
     // Ativar caixas no inicio
@@ -107,25 +111,32 @@ public class ColetarCaixasManager : MonoBehaviourPun
             }
         }
 
+        // CORREÇÃO: Sincronizar estado inicial
         photonView.RPC("RPC_SincronizarUI", RpcTarget.AllBuffered, caixasColetadas);
         
         if (botaoReset != null)
             botaoReset.SetActive(false);
+            
+        Debug.Log("[ColetarCaixasManager] Caixas ativadas para missão");
     }
 
     private void Update()
     {
         if (!faseAtiva) return;
 
-        tempoAtual -= Time.deltaTime;
-
-        if (tempoAtual <= 0)
+        // CORREÇÃO: Apenas Master controla o timer
+        if (PhotonNetwork.IsMasterClient)
         {
-            tempoAtual = 0;
-            faseAtiva = false;
+            tempoAtual -= Time.deltaTime;
 
-            if (PhotonNetwork.IsMasterClient && botaoReset != null)
-                botaoReset.SetActive(true);
+            if (tempoAtual <= 0)
+            {
+                tempoAtual = 0;
+                faseAtiva = false;
+
+                if (botaoReset != null)
+                    botaoReset.SetActive(true);
+            }
         }
 
         AtualizarUI();
@@ -159,13 +170,16 @@ public class ColetarCaixasManager : MonoBehaviourPun
             }
         }
 
+        // CORREÇÃO: Sincronizar reset
         photonView.RPC("RPC_SincronizarUI", RpcTarget.AllBuffered, caixasColetadas);
 
         if (botaoReset != null)
             botaoReset.SetActive(false);
+            
+        Debug.Log("[ColetarCaixasManager] Fase resetada");
     }
 
-    // NOVO: Método para verificar se a missão está ativa
+    // Método para verificar se a missão está ativa
     public bool IsMissaoAtiva()
     {
         return faseAtiva;

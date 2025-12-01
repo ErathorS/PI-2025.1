@@ -134,6 +134,8 @@ MonoBehaviour:
   - RPC_ConcluirMissao2
   - RPC_IniciarMissao1
   - RPC_IniciarMissao2
+  - RPC_AtualizarEstadoVisual
+  - RPC_MissaoFalhou
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

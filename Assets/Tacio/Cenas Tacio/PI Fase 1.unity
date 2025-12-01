@@ -2636,7 +2636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -3445,7 +3445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -6706,7 +6706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -9301,7 +9301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -13935,7 +13935,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -14623,7 +14623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -14886,7 +14886,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -15672,7 +15672,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -16983,7 +16983,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -18747,7 +18747,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -19509,7 +19509,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -20156,7 +20156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -20985,7 +20985,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -21110,7 +21110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -24434,7 +24434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -28495,7 +28495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -30349,7 +30349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -30685,7 +30685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -31151,7 +31151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -31434,7 +31434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -31731,7 +31731,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -32051,9 +32051,11 @@ MonoBehaviour:
     vandalismo. Foi negar o direito da senhora existir com a sua f\xE9. "
   - "Dona Cida: (sorri, cansada) \xC9 isso, meu filho. Quando chutam o acaraj\xE9,
     n\xE3o chutam s\xF3 farinha e feij\xE3o-fradinho  chutam um peda\xE7o da Bahia."
+  ehNPCFase1: 1
+  ehNPCFase2: 0
   ehNPCZona1: 0
   ehNPCZona2: 0
-  ehNPCFase2: 0
+  ehNPCIntroducao: 0
   tarefaConcluida: 0
 --- !u!1 &1573767159
 GameObject:
@@ -34842,7 +34844,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -35721,11 +35723,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   painelMissao: {fileID: 1405900279}
-  textoMissao: {fileID: 2012321726}
-  textoTimer: {fileID: 2007018566}
+  textoMissao: {fileID: 0}
+  textoTimer: {fileID: 0}
   botaoReset: {fileID: 1323990676}
   coletor: {fileID: 1762421116}
   npcEntrega: {fileID: 1571860944}
+  painelFinalFase: {fileID: 0}
 --- !u!114 &1762421116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36714,7 +36717,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -37108,7 +37111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -39703,7 +39706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -40060,7 +40063,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 240s
+  m_text: 03:00
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 96aec8f2b03140a4cbc99c900eff3fbc, type: 2}
   m_sharedMaterial: {fileID: 4810043910364526431, guid: 96aec8f2b03140a4cbc99c900eff3fbc, type: 2}
@@ -40559,7 +40562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -40792,7 +40795,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -42730,7 +42733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
+  speed: 0
   MoverParaFrente: 1
   RaycastParaFrente: 1
   raycastDistance: 20
@@ -59603,10 +59606,10 @@ SceneRoots:
   - {fileID: 1471984435}
   - {fileID: 916278380493442217}
   - {fileID: 2593304044583119321}
-  - {fileID: 8831000139045013492}
   - {fileID: 2070667541}
   - {fileID: 1132269873}
   - {fileID: 1762421113}
+  - {fileID: 8831000139045013492}
   - {fileID: 3209913062569101227}
   - {fileID: 40339339}
   - {fileID: 1667884524}

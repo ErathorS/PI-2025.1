@@ -16,18 +16,47 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
     public ColetarCaixasManager coletor; 
     public DialogoNPC npcEntrega;
 
+    [Header("Painel Final")]
+    public PainelFinalFaseController painelFinalFase;
+
     private bool missaoAtiva = false; 
     private bool missaoConcluida = false; 
     private float tempoRestante;
 
+    private PhotonView photonView;
+
     private void Awake() 
     {
-        instancia = this;
+        if (instancia == null)
+        {
+            instancia = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        photonView = GetComponent<PhotonView>();
+        if (photonView == null)
+        {
+            photonView = gameObject.AddComponent<PhotonView>();
+        }
+    }
+
+    private void Start()
+    {
+        if (painelMissao != null)
+            painelMissao.SetActive(false);
+        
+        if (botaoReset != null)
+            botaoReset.SetActive(false);
     }
 
     public void IniciarMissao() 
     {
         if (!PhotonNetwork.IsMasterClient) return; 
+        Debug.Log("[MissaoFase1Manager] Iniciando missão via RPC");
         photonView.RPC("RPC_IniciarMissao", RpcTarget.AllBuffered); 
     }
 
@@ -37,26 +66,36 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
         missaoAtiva = true; 
         missaoConcluida = false;
 
-        painelMissao.SetActive(true); 
-        botaoReset.SetActive(false);
+        if (painelMissao != null)
+            painelMissao.SetActive(true); 
+        
+        if (botaoReset != null)
+            botaoReset.SetActive(false);
 
         tempoRestante = 240f;
 
-        coletor.AtivarCaixasParaMissao();
+        if (coletor != null)
+            coletor.AtivarCaixasParaMissao();
+        
         AtualizarUI();
+        
+        Debug.Log("[MissaoFase1Manager] Missão iniciada para TODOS os jogadores!");
     }
 
     private void Update()
     {
         if (!missaoAtiva || missaoConcluida) return;
 
-        tempoRestante -= Time.deltaTime;
-
-        if (tempoRestante <= 0)
+        // CORREÇÃO: Apenas o Master controla o timer
+        if (PhotonNetwork.IsMasterClient)
         {
-            tempoRestante = 0;
-            missaoAtiva = false;
-            MissaoFalhou();
+            tempoRestante -= Time.deltaTime;
+
+            if (tempoRestante <= 0)
+            {
+                tempoRestante = 0;
+                MissaoFalhou();
+            }
         }
 
         AtualizarUI();
@@ -64,43 +103,77 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
 
     private void AtualizarUI()
     {
-        int m = Mathf.FloorToInt(tempoRestante / 60);
-        int s = Mathf.FloorToInt(tempoRestante % 60);
-        textoTimer.text = $"{m:00}:{s:00}";
+        if (textoTimer != null)
+        {
+            int m = Mathf.FloorToInt(tempoRestante / 60);
+            int s = Mathf.FloorToInt(tempoRestante % 60);
+            textoTimer.text = $"{m:00}:{s:00}";
+        }
+        
+        if (textoMissao != null && coletor != null)
+        {
+            textoMissao.text = $"Caixas: {coletor.caixasColetadas}/{coletor.totalCaixas}\nTempo: {textoTimer.text}";
+        }
     }
 
     private void MissaoFalhou()
     {
-        painelMissao.SetActive(true);
-        textoMissao.text = "O tempo acabou!\nVocês querem tentar novamente?";
+        if (!PhotonNetwork.IsMasterClient) return;
+        
+        Debug.Log("[MissaoFase1Manager] Missão falhou - enviando para todos");
+        photonView.RPC("RPC_MissaoFalhou", RpcTarget.AllBuffered);
+    }
 
-        if (PhotonNetwork.IsMasterClient)
+    [PunRPC]
+    private void RPC_MissaoFalhou()
+    {
+        missaoAtiva = false;
+
+        if (painelMissao != null)
+            painelMissao.SetActive(true);
+            
+        if (textoMissao != null)
+            textoMissao.text = "O tempo acabou!\nVocês querem tentar novamente?";
+
+        if (PhotonNetwork.IsMasterClient && botaoReset != null)
             botaoReset.SetActive(true);
+
+        Debug.Log("[MissaoFase1Manager] Missão falhou para TODOS os jogadores");
     }
 
     public void BotaoResetarMissao()
     {
         if (!PhotonNetwork.IsMasterClient) return;
+        Debug.Log("[MissaoFase1Manager] Resetando missão via RPC");
         photonView.RPC("RPC_ResetarMissao", RpcTarget.AllBuffered);
     }
 
     [PunRPC]
     private void RPC_ResetarMissao()
     {
-        coletor.ResetarFase();
+        if (coletor != null)
+            coletor.ResetarFase();
 
         missaoAtiva = true;
         missaoConcluida = false;
         tempoRestante = 240f;
 
-        botaoReset.SetActive(false);
-        textoMissao.text = "Procurem as caixas!";
+        if (botaoReset != null)
+            botaoReset.SetActive(false);
+            
+        if (textoMissao != null)
+            textoMissao.text = "Procurem as caixas!";
+            
         AtualizarUI();
+
+        Debug.Log("[MissaoFase1Manager] Missão resetada para TODOS os jogadores");
     }
 
+    // CORREÇÃO: Chamado quando todas as caixas são coletadas
     public void MissaoFinalizada()
     {
         if (!PhotonNetwork.IsMasterClient) return;
+        Debug.Log("[MissaoFase1Manager] Missão finalizada - enviando para todos");
         photonView.RPC("RPC_MissaoFinalizada", RpcTarget.AllBuffered);
     }
 
@@ -108,44 +181,87 @@ public class MissaoFase1Manager : MonoBehaviourPunCallbacks
     private void RPC_MissaoFinalizada()
     {
         missaoConcluida = true;
-        missaoAtiva = false;
+        missaoAtiva = false; // CORREÇÃO: Para o timer para TODOS os jogadores
 
-        painelMissao.SetActive(true);
-        botaoReset.SetActive(false);
+        if (painelMissao != null)
+            painelMissao.SetActive(true);
+            
+        if (botaoReset != null)
+            botaoReset.SetActive(false);
 
-        textoMissao.text = "Excelente trabalho\nFalem com Dona Cida para entregar.";
+        if (textoMissao != null)
+            textoMissao.text = "Excelente trabalho!\nFalem com o NPC para entregar.";
 
-        // CORREÇÃO: Verificar se o NPC existe
+        // CORREÇÃO: Notificar o NPC que a tarefa está concluída
         if (npcEntrega != null)
         {
-            // Para Fase 1, usar o método original
-            // CORREÇÃO: Removida verificação de ehNPCFase2 para compatibilidade
-            npcEntrega.AtivarDialogoDeEntrega();
+            npcEntrega.TarefaConcluida();
+            Debug.Log("[MissaoFase1Manager] NPC notificado sobre conclusão da tarefa");
         }
         else
         {
             Debug.LogError("[MissaoFase1Manager] npcEntrega não está atribuído!");
         }
+
+        Debug.Log("[MissaoFase1Manager] Missão finalizada para TODOS os jogadores - timer PARADO");
     }
 
+    // CORREÇÃO: Chamado quando a entrega é feita ao NPC
     public void FinalizarEntrega()
     {
+        if (!PhotonNetwork.IsMasterClient) return;
+        Debug.Log("[MissaoFase1Manager] Finalizando entrega - enviando para todos");
         photonView.RPC("RPC_FinalizarEntrega", RpcTarget.AllBuffered);
     }
 
     [PunRPC]
     private void RPC_FinalizarEntrega()
     {
-        painelMissao.SetActive(false);
-        botaoReset.SetActive(false);
+        // Esconder UI da missão
+        if (painelMissao != null)
+            painelMissao.SetActive(false);
+            
+        if (botaoReset != null)
+            botaoReset.SetActive(false);
 
-        textoTimer.text = "";
-        textoMissao.text = "";
+        if (textoTimer != null)
+            textoTimer.text = "";
+            
+        if (textoMissao != null)
+            textoMissao.text = "";
 
-        if (coletor != null)
+        // CORREÇÃO: Mostrar painel final da fase
+        if (painelFinalFase != null)
         {
-            coletor.textoCaixas.text = "";
-            coletor.textoTempo.text = "";
+            painelFinalFase.MostrarPainelFinal();
+            Debug.Log("[MissaoFase1Manager] Painel final da fase exibido");
         }
+        else
+        {
+            Debug.LogError("[MissaoFase1Manager] painelFinalFase não está atribuído!");
+        }
+
+        // CORREÇÃO: Notificar progresso do NPC importante
+        if (ProgressaoFaseController.instancia != null)
+        {
+            ProgressaoFaseController.instancia.NPCImportanteConcluido();
+            Debug.Log("[MissaoFase1Manager] Progresso do NPC importante registrado");
+        }
+
+        Debug.Log("[MissaoFase1Manager] Entrega finalizada para TODOS os jogadores");
+    }
+
+    // CORREÇÃO: Método para debug do estado atual
+    public void DebugEstado()
+    {
+        Debug.Log($"[MissaoFase1Manager] === DEBUG ===");
+        Debug.Log($"MissaoAtiva: {missaoAtiva}");
+        Debug.Log($"MissaoConcluida: {missaoConcluida}");
+        Debug.Log($"TempoRestante: {tempoRestante}");
+        Debug.Log($"MasterClient: {PhotonNetwork.IsMasterClient}");
+        Debug.Log($"Coletor: {coletor != null}");
+        Debug.Log($"NPCEntrega: {npcEntrega != null}");
+        Debug.Log($"PainelFinal: {painelFinalFase != null}");
+        Debug.Log($"=====================");
     }
 }

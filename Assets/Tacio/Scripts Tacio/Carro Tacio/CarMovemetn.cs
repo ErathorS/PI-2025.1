@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class CarMovemetn : MonoBehaviour
+public class CarMovement : MonoBehaviour
 {
     [Header("Configurações de Movimento")]
-    public float DeSlow = 0;
+    public float speed = 0f;
     public bool MoverParaFrente = true;
-    
+
     [Header("Configurações de Raycast")]
     public bool RaycastParaFrente = true;
     public float raycastDistance = 20f;
@@ -25,12 +25,12 @@ public class CarMovemetn : MonoBehaviour
 
     void Update()
     {
-        // Direção do movimento
+        // CORREÇÃO: Direção do movimento baseada em MoverParaFrente
         float moveDirection = MoverParaFrente ? 1f : -1f;
         Vector3 moveVector = transform.right * moveDirection;
-        
-        // Direção do raycast (independente do movimento)
-        float rayDirection = RaycastParaFrente ? 1f : -1f;
+
+        // CORREÇÃO: Direção do raycast DEVE SER A MESMA do movimento
+        float rayDirection = MoverParaFrente ? 1f : -1f;
         Vector3 raycastVector = transform.right * rayDirection;
 
         // Verifica semáforo e carro da frente
@@ -40,17 +40,17 @@ public class CarMovemetn : MonoBehaviour
         // Se semáforo detectado OU carro da frente detectado, para o carro
         if (semaforoDetectado || carroFrenteDetectado)
         {
-            DeSlow = 0;
+            speed = 0f;
         }
         else
         {
             // Movimento do carro
-            transform.Translate(moveVector * Time.deltaTime * DeSlow);
+            transform.Translate(moveVector * Time.deltaTime * speed);
 
             // Aceleração natural
-            if (DeSlow < 15)
+            if (speed < 15f)
             {
-                DeSlow += 0.1f;
+                speed += 0.1f;
             }
         }
     }
@@ -88,13 +88,13 @@ public class CarMovemetn : MonoBehaviour
 
             if (hitInfo.transform.CompareTag("Car"))
             {
-                CarMovemetn carroFrente = hitInfo.transform.GetComponent<CarMovemetn>();
-                
+                CarMovement carroFrente = hitInfo.transform.GetComponent<CarMovement>();
+
                 if (carroFrente != null)
                 {
                     float distancia = hitInfo.distance;
-                    
-                    if (carroFrente.DeSlow == 0 || distancia < stoppingDistance)
+
+                    if (carroFrente.speed == 0f || distancia < stoppingDistance)
                     {
                         carroFrenteDetectado = true;
                         Debug.DrawRay(transform.position, direction * distancia, Color.yellow);
@@ -113,9 +113,19 @@ public class CarMovemetn : MonoBehaviour
         if (other.CompareTag("Respawn"))
         {
             transform.position = initialPosition;
-            DeSlow = Random.Range(5f, 15f);
+            speed = Random.Range(5f, 15f);
             semaforoDetectado = false;
             carroFrenteDetectado = false;
         }
+    }
+
+    // NOVO: Método para debug
+    public void DebugEstado()
+    {
+        Debug.Log($"[CarMovement] {gameObject.name} - " +
+            $"Speed: {speed}, " +
+            $"MoverParaFrente: {MoverParaFrente}, " +
+            $"SemaforoDetectado: {semaforoDetectado}, " +
+            $"CarroFrenteDetectado: {carroFrenteDetectado}");
     }
 }

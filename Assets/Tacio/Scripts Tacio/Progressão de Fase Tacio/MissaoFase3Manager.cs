@@ -69,10 +69,10 @@ public class MissaoFase3Manager : MonoBehaviourPunCallbacks
         ConfigurarNPCs();
         
         // Inicia com trânsito bloqueado
-        if (transitoZonaA != null) 
-            transitoZonaA.BloquearTransito();
-        if (transitoZonaB != null) 
-            transitoZonaB.BloquearTransito();
+        // if (transitoZonaA != null) 
+        //     transitoZonaA.BloquearTransito();
+        // if (transitoZonaB != null) 
+        //     transitoZonaB.BloquearTransito();
     }
 
     private void ConfigurarNPCs()

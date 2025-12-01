@@ -3905,8 +3905,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7660439255949543271, guid: 1b8a6df0a5d7e1645affd635052f95b4, type: 3}
       propertyPath: linhasDialogo.Array.data[3]
-      value: "Ot\xE1vio (sorrindo):\nConversem, coletem e resolvam. Mostrem que o
-        jornal ainda sabe fazer jornalismo de verdade. Boa sorte, rep\xF3rteres."
+      value: "Ot\xE1vio:\nConversem, coletem e resolvam. Mostrem que o jornal ainda
+        sabe fazer jornalismo de verdade. Boa sorte, rep\xF3rteres."
       objectReference: {fileID: 0}
     - target: {fileID: 7660439255949543271, guid: 1b8a6df0a5d7e1645affd635052f95b4, type: 3}
       propertyPath: linhasDialogo.Array.data[4]

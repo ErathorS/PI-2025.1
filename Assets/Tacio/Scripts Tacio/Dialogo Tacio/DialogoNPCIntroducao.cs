@@ -1,49 +1,78 @@
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
 
-namespace FuroDeNoticia
+public class DialogoNPCIntroducao : MonoBehaviourPun
 {
-    public class DialogoNPCIntroducao : MonoBehaviourPun
+    public bool player1Terminou = false;
+    public bool player2Terminou = false;
+
+    [Header("Manager de placas")]
+    public PlatePressureManager plateManager;
+
+    [Header("Configuração por Cena")]
+    public string nomeCenaDestino = "PI Fase 1";
+
+    private void Start()
     {
-        public bool player1Terminou = false;
-        public bool player2Terminou = false;
+        ConfigurarDestinoPorCena();
+    }
 
-        [Header("Manager de placas")]
-        public PlatePressureManager plateManager; // arraste na cena
+    private void ConfigurarDestinoPorCena()
+    {
+        string cenaAtual = SceneManager.GetActiveScene().name;
+        
+        if (cenaAtual == "Cena de Introducao 1")
+            nomeCenaDestino = "PI Fase 1";
+        else if (cenaAtual == "Cena de Introducao 2")
+            nomeCenaDestino = "PI Fase 2";
+        else if (cenaAtual == "Cena de Introducao 3")
+            nomeCenaDestino = "PI Fase 3";
+        
+        Debug.Log($"[DialogoNPCIntroducao] {cenaAtual} → {nomeCenaDestino}");
+    }
 
-        // Chamado pelo sistema de diálogo quando o jogador termina a conversa
-        public void MarcarDialogoConcluido(int playerID)
+    public void MarcarDialogoConcluido(int playerID)
+    {
+        photonView.RPC("RPC_MarcarDialogoConcluido", RpcTarget.All, playerID);
+    }
+
+    [PunRPC]
+    private void RPC_MarcarDialogoConcluido(int playerID)
+    {
+        if (playerID == 1) 
+            player1Terminou = true;
+        else if (playerID == 2) 
+            player2Terminou = true;
+
+        Debug.Log($"[DialogoNPCIntroducao] Player{playerID} conversou. P1={player1Terminou} P2={player2Terminou}");
+
+        if (player1Terminou && player2Terminou)
         {
-            photonView.RPC("RPC_MarcarDialogoConcluido", RpcTarget.All, playerID);
-        }
+            Debug.Log("[DialogoNPCIntroducao] ✅ Ambos jogadores prontos!");
 
-        [PunRPC]
-        private void RPC_MarcarDialogoConcluido(int playerID)
-        {
-            if (playerID == 1) player1Terminou = true;
-            else if (playerID == 2) player2Terminou = true;
-
-            //Debug.Log($"[DialogoNPCIntroducao] player1Terminou={player1Terminou} player2Terminou={player2Terminou}");
-
-            if (player1Terminou && player2Terminhou()) // evita typo: use helper
+            if (plateManager != null)
             {
-                // ativa o sistema de placas para aguardar os pressionamentos sincronizados
-                if (plateManager != null)
-                {
-                    plateManager.EnableListening();
-                    //Debug.Log("[DialogoNPCIntroducao] Ambos terminaram diálogo - placas ativadas.");
-                }
-                else
-                {
-                    //Debug.LogWarning("[DialogoNPCIntroducao] plateManager não atribuído!");
-                }
+                plateManager.proximaCena = nomeCenaDestino;
+                plateManager.EnableListening();
+                Debug.Log($"[DialogoNPCIntroducao] Placas ativadas para {nomeCenaDestino}");
+            }
+            else
+            {
+                Debug.LogError("[DialogoNPCIntroducao] PlateManager não configurado!");
             }
         }
+    }
 
-        private bool player2Terminhou()
-        {
-            // método auxiliar para evitar conflito com nomes
-            return player2Terminou;
-        }
+    // Métodos auxiliares
+    public void ResetarEstado()
+    {
+        player1Terminou = false;
+        player2Terminou = false;
+    }
+
+    public void DebugEstado()
+    {
+        Debug.Log($"[DialogoNPCIntroducao] P1={player1Terminou}, P2={player2Terminou}, Destino={nomeCenaDestino}");
     }
 }

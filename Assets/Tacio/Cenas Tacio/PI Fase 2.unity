@@ -220,10 +220,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 1
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &1915885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -447,10 +449,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 1
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &4706285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3423,10 +3427,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &284592639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4306,10 +4312,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 1
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &365442082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5712,10 +5720,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &517316910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7113,10 +7123,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &597276768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7481,10 +7493,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &608140687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7718,10 +7732,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 1
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &614315213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8143,10 +8159,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &652918890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8522,10 +8540,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 1
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &670960414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9207,10 +9227,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &697282126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9900,10 +9922,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &739631162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10561,10 +10585,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &782711739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11260,10 +11286,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 1
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &843976125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11928,6 +11956,10 @@ PrefabInstance:
     - target: {fileID: 518007960451841433, guid: 2d7b93edaa776914794682e1b44a0cde, type: 3}
       propertyPath: ehNPCFase2
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 518007960451841433, guid: 2d7b93edaa776914794682e1b44a0cde, type: 3}
+      propertyPath: ehNPCZona2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 518007960451841433, guid: 2d7b93edaa776914794682e1b44a0cde, type: 3}
       propertyPath: tarefaConcluida
@@ -12832,10 +12864,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &950124903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13899,11 +13933,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f48f8958a883c74ea1088a488a2bd71, type: 3}
---- !u!4 &1046151157 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1778481836974532131, guid: 6f48f8958a883c74ea1088a488a2bd71, type: 3}
-  m_PrefabInstance: {fileID: 1046151156}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1046442145
 GameObject:
   m_ObjectHideFlags: 0
@@ -14662,10 +14691,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &1129378840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15587,10 +15618,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &1172594078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16953,10 +16986,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 1
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &1298405965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19553,7 +19588,6 @@ MonoBehaviour:
   - {fileID: 957970749}
   - {fileID: 1476006099}
   - {fileID: 1142727477}
-  npcImportante: {fileID: 901488092}
 --- !u!4 &1481708933
 Transform:
   m_ObjectHideFlags: 0
@@ -20286,10 +20320,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 1
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &1533387367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20440,11 +20476,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e2c00d8bbc7d3844c9d8a7eabfe546bd, type: 3}
---- !u!4 &1553163264 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6833577351451949778, guid: e2c00d8bbc7d3844c9d8a7eabfe546bd, type: 3}
-  m_PrefabInstance: {fileID: 1553163263}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1553491430
 GameObject:
   m_ObjectHideFlags: 0
@@ -20591,10 +20622,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 1
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &1555755195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22264,10 +22297,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 1
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &1718789564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22640,10 +22675,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &1739397348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22867,10 +22904,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &1760035415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23680,10 +23719,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 0
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &1840647636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23999,10 +24040,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 1
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &1841747966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24730,10 +24773,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 1
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &1944896902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25440,10 +25485,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 1
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &1999428739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26320,10 +26367,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caced1e4c536483449ca512f2007a4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeSlow: 0
-  DirecaoContraria: 1
-  SpawnPlayer1: {fileID: 1553163264}
-  SpawnPlayer2: {fileID: 1046151157}
+  speed: 0
+  MoverParaFrente: 1
+  RaycastParaFrente: 1
+  raycastDistance: 20
+  stoppingDistance: 3
+  gerenciadorTransito: {fileID: 0}
 --- !u!114 &2034827224
 MonoBehaviour:
   m_ObjectHideFlags: 0

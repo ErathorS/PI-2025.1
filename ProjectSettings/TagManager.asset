@@ -27,6 +27,7 @@ TagManager:
   - Caixa
   - Car
   - Semaforo
+  - SemaforoTrigger
   layers:
   - Default
   - TransparentFX
