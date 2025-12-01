@@ -58911,7 +58911,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   painelFimDeFase: {fileID: 112458082}
   nomeCenaMenu: MenuJogo
-  nomeProximaCena: PI Fase 3 -DvD
+  nomeProximaCena: Cena de Introducao 2
 --- !u!1001 &8904113109228802089
 PrefabInstance:
   m_ObjectHideFlags: 0
