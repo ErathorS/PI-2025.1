@@ -138,6 +138,8 @@ MonoBehaviour:
   - RPC_MissaoFalhou
   - RPC_SincronizarTimer
   - RPC_EntregaConcluida
+  - RPC_SincronizarContador
+  - RPC_SincronizarExplicacao
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

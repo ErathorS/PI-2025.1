@@ -64,14 +64,6 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        // NOVO: Configuração específica para Fase 3
-        string cenaAtual = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-        if (cenaAtual == "PI Fase 3" || cenaAtual.Contains("Fase3"))
-        {
-            npcsImportantesTotais = 1; // DOIS NPCs importantes
-            jornaisTotais = 8;         // Ajuste conforme necessário
-            lugaresTotais = 3;         // Ajuste conforme necessário
-        }
 
         if (!inicializado)
         {

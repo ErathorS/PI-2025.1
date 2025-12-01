@@ -381,7 +381,7 @@ MonoBehaviour:
   pontoInicial: {fileID: 1825195693}
   pontoFinal: {fileID: 1130959117}
   duracao: 4
-  cenaDestino: MinhaCena
+  cenaDestino: PI Fase 2
 --- !u!4 &898744229
 Transform:
   m_ObjectHideFlags: 0

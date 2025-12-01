@@ -38,5 +38,14 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/DvD/PI Fase 3.unity
     guid: dc3cde9fbece2cf4bb408527b0457bee
+  - enabled: 1
+    path: Assets/Tacio/Cenas Tacio/Final.unity
+    guid: 25c55a56ed8d8014da5e8ff2d08b062b
+  - enabled: 1
+    path: Assets/DvD/Viajando rio.unity
+    guid: cbaa672bb2d930f4299eb92f452ffd3d
+  - enabled: 1
+    path: Assets/DvD/Viajando sao paulo.unity
+    guid: 3cd8df9ff9f92a5488f5622bd1cfe5d0
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9e7be553448fa2546aea5752021cbcf7, type: 2}

@@ -1,5 +1,4 @@
 using UnityEngine;
-using TMPro;
 using Photon.Pun;
 
 public class ColetarCaixasManager : MonoBehaviourPun
@@ -12,11 +11,6 @@ public class ColetarCaixasManager : MonoBehaviourPun
     private Vector3[] posicoesIniciais;
     private Quaternion[] rotacoesIniciais;
 
-    [Header("UI")]
-    public TMP_Text textoCaixas;
-    public TMP_Text textoTempo;
-    public GameObject botaoReset;
-
     [Header("Config")]
     public float tempoLimite = 60f;
     private float tempoAtual;
@@ -25,6 +19,9 @@ public class ColetarCaixasManager : MonoBehaviourPun
     public int totalCaixas;
     
     private bool faseAtiva = false;
+    
+    [Header("Referências")]
+    public GameObject botaoReset;
 
     private void Awake()
     {
@@ -57,7 +54,7 @@ public class ColetarCaixasManager : MonoBehaviourPun
         }
     }
 
-    // Chamado apenas pelo MasterClient
+    // Chamado apenas pelo MasterClient quando uma caixa é coletada
     public void AdicionarColetaMaster()
     {
         if (!PhotonNetwork.IsMasterClient) return;
@@ -65,15 +62,21 @@ public class ColetarCaixasManager : MonoBehaviourPun
         caixasColetadas++;
         Debug.Log($"[ColetarCaixasManager] Caixa coletada! Total: {caixasColetadas}/{totalCaixas}");
 
-        // CORREÇÃO: Sincronizar com todos os jogadores
-        photonView.RPC("RPC_SincronizarUI", RpcTarget.AllBuffered, caixasColetadas);
+        // Sincronizar com todos os jogadores
+        photonView.RPC("RPC_SincronizarContador", RpcTarget.AllBuffered, caixasColetadas);
+
+        // Notificar MissaoFase1Manager para atualizar UI
+        if (MissaoFase1Manager.instancia != null)
+        {
+            MissaoFase1Manager.instancia.CaixaColetada();
+        }
 
         if (caixasColetadas >= totalCaixas)
         {
             faseAtiva = false;
             Debug.Log("[ColetarCaixasManager] TODAS as caixas coletadas! Finalizando missão...");
             
-            // CORREÇÃO: Notificar MissaoFase1Manager para finalizar a missão
+            // Notificar MissaoFase1Manager para finalizar a missão
             if (MissaoFase1Manager.instancia != null)
             {
                 MissaoFase1Manager.instancia.MissaoFinalizada();
@@ -86,11 +89,10 @@ public class ColetarCaixasManager : MonoBehaviourPun
     }
 
     [PunRPC]
-    private void RPC_SincronizarUI(int novoValor)
+    private void RPC_SincronizarContador(int novoValor)
     {
         caixasColetadas = novoValor;
-        AtualizarUI();
-        Debug.Log($"[ColetarCaixasManager] UI sincronizada: {caixasColetadas}/{totalCaixas}");
+        Debug.Log($"[ColetarCaixasManager] Contador sincronizado: {caixasColetadas}/{totalCaixas}");
     }
 
     // Ativar caixas no inicio
@@ -111,8 +113,8 @@ public class ColetarCaixasManager : MonoBehaviourPun
             }
         }
 
-        // CORREÇÃO: Sincronizar estado inicial
-        photonView.RPC("RPC_SincronizarUI", RpcTarget.AllBuffered, caixasColetadas);
+        // Sincronizar estado inicial
+        photonView.RPC("RPC_SincronizarContador", RpcTarget.AllBuffered, caixasColetadas);
         
         if (botaoReset != null)
             botaoReset.SetActive(false);
@@ -124,7 +126,7 @@ public class ColetarCaixasManager : MonoBehaviourPun
     {
         if (!faseAtiva) return;
 
-        // CORREÇÃO: Apenas Master controla o timer
+        // Apenas Master controla o timer
         if (PhotonNetwork.IsMasterClient)
         {
             tempoAtual -= Time.deltaTime;
@@ -138,17 +140,6 @@ public class ColetarCaixasManager : MonoBehaviourPun
                     botaoReset.SetActive(true);
             }
         }
-
-        AtualizarUI();
-    }
-
-    private void AtualizarUI()
-    {
-        if (textoCaixas != null)
-            textoCaixas.text = $"Caixas: {caixasColetadas}/{totalCaixas}";
-
-        if (textoTempo != null)
-            textoTempo.text = $"{Mathf.RoundToInt(tempoAtual)}s";
     }
 
     public void ResetarFase()
@@ -170,8 +161,8 @@ public class ColetarCaixasManager : MonoBehaviourPun
             }
         }
 
-        // CORREÇÃO: Sincronizar reset
-        photonView.RPC("RPC_SincronizarUI", RpcTarget.AllBuffered, caixasColetadas);
+        // Sincronizar reset
+        photonView.RPC("RPC_SincronizarContador", RpcTarget.AllBuffered, caixasColetadas);
 
         if (botaoReset != null)
             botaoReset.SetActive(false);
@@ -183,5 +174,17 @@ public class ColetarCaixasManager : MonoBehaviourPun
     public bool IsMissaoAtiva()
     {
         return faseAtiva;
+    }
+    
+    // Método para debug
+    public void DebugInfo()
+    {
+        Debug.Log($"[ColetarCaixasManager] === DEBUG ===");
+        Debug.Log($"Caixas: {caixasColetadas}/{totalCaixas}");
+        Debug.Log($"Fase Ativa: {faseAtiva}");
+        Debug.Log($"Tempo Atual: {tempoAtual}");
+        Debug.Log($"MasterClient: {PhotonNetwork.IsMasterClient}");
+        Debug.Log($"Caixas Originais: {caixasOriginais.Length}");
+        Debug.Log($"=================================");
     }
 }
