@@ -6,10 +6,11 @@ public class PainelFinalFaseController : MonoBehaviourPunCallbacks
 {
     [Header("UI Final")]
     public GameObject painelFimDeFase;
+    public GameObject canvasFinal; // ADICIONE ESTA REFERÊNCIA NO INSPECTOR
 
     [Header("Cenas")]
     public string nomeCenaMenu = "MenuJogo";
-    public string nomeProximaCena = "ProximaFase"; 
+    public string nomeProximaCena = "ProximaFase";
 
     private bool jaMostrou = false;
 
@@ -17,6 +18,9 @@ public class PainelFinalFaseController : MonoBehaviourPunCallbacks
     {
         if (painelFimDeFase != null)
             painelFimDeFase.SetActive(false);
+
+        if (canvasFinal != null)
+            canvasFinal.SetActive(false);
     }
 
     public void MostrarPainelFinal()
@@ -32,17 +36,28 @@ public class PainelFinalFaseController : MonoBehaviourPunCallbacks
 
     public void BotaoVoltarAoMenu()
     {
-        Debug.Log($"[PainelFinalFaseController] Botão voltar ao menu pressionado. Master: {PhotonNetwork.IsMasterClient}");
+        Debug.Log($"[PainelFinalFaseController] Botão voltar ao menu pressionado.");
 
         if (PhotonNetwork.IsConnected)
         {
-            PhotonNetwork.LeaveRoom();
-            Debug.Log("[PainelFinalFaseController] Saindo da sala Photon...");
+            // Encontrar o ProgressaoFaseController e chamar RPC
+            ProgressaoFaseController progressController = FindObjectOfType<ProgressaoFaseController>();
+            if (progressController != null && progressController.photonView != null)
+            {
+                progressController.photonView.RPC("RPC_MostrarCanvasFinal", RpcTarget.All);
+            }
         }
         else
         {
-            SceneManager.LoadScene(nomeCenaMenu);
-            Debug.Log($"[PainelFinalFaseController] Carregando cena do menu: {nomeCenaMenu}");
+            // Modo single player
+            if (painelFimDeFase != null)
+                painelFimDeFase.SetActive(false);
+
+            if (canvasFinal != null)
+            {
+                canvasFinal.SetActive(true);
+                Debug.Log("[PainelFinalFaseController] Canvas final ativado.");
+            }
         }
     }
 
@@ -59,7 +74,13 @@ public class PainelFinalFaseController : MonoBehaviourPunCallbacks
             }
 
             Debug.Log($"[PainelFinalFaseController] Carregando próxima cena: {nomeProximaCena}");
-            PhotonNetwork.LoadLevel(nomeProximaCena); // USA PhotonNetwork.LoadLevel para multiplayer
+
+            // Garantir que ambos os jogadores vão para a próxima cena
+            if (PhotonNetwork.IsMasterClient)
+            {
+                // O master carrega a cena e os outros sincronizam
+                PhotonNetwork.LoadLevel(nomeProximaCena);
+            }
         }
         else
         {

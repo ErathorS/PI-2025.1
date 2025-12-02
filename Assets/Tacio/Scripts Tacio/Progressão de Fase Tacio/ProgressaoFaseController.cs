@@ -256,10 +256,34 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsMasterClient && feitos >= totalPontos && painelFinalFase != null)
         {
-            painelFinalFase.MostrarPainelFinal();
+            // Mostrar painel para todos os jogadores
+            photonView.RPC("RPC_MostrarPainelFinal", RpcTarget.All);
             Debug.Log("[ProgressaoFaseController] % TODOS OBJETIVOS CONCLUÍDOS!");
         }
     }
+
+    [PunRPC]
+    private void RPC_MostrarPainelFinal()
+    {
+        if (painelFinalFase != null)
+        {
+            painelFinalFase.MostrarPainelFinal();
+        }
+    }
+
+    [PunRPC]
+    private void RPC_MostrarCanvasFinal()
+    {
+        if (painelFinalFase != null && painelFinalFase.canvasFinal != null)
+        {
+            if (painelFinalFase.painelFimDeFase != null)
+                painelFinalFase.painelFimDeFase.SetActive(false);
+
+            painelFinalFase.canvasFinal.SetActive(true);
+            Debug.Log("[ProgressaoFaseController] Canvas final ativado via RPC.");
+        }
+    }
+
 
     private void AtualizarUI()
     {
@@ -353,4 +377,5 @@ public class ProgressaoFaseController : MonoBehaviourPunCallbacks
             Debug.LogError("[ProgressaoFaseController] LugarVisitadoManager não encontrado!");
         }
     }
+
 }

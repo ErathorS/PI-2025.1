@@ -142,6 +142,7 @@ MonoBehaviour:
   - RPC_SincronizarExplicacao
   - RPC_IniciarCarregamento
   - RPC_SincronizarProgresso
+  - RPC_MostrarCanvasFinal
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

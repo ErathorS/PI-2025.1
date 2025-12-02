@@ -17,7 +17,7 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
 
     [Header("Cenas jogáveis (onde o player deve nascer)")]
     [SerializeField]
-    private string[] cenasJogaveis = { "Cena de Introducao 1", "PI Fase 1" };
+    private string[] cenasJogaveis = { "Cena de Introducao 1", "PI Fase 1", "ProximaFase" }; // ADICIONE A CENA FINAL AQUI
 
     private static GameObject _localUI;
     private static GameObject _localCamera;
@@ -76,13 +76,14 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
 
         hasSpawned = false;
 
-        if (CenaEhJogavel(nomeCena))
+        // VERIFICA SE É A CENA FINAL E SE ESTÁ CONECTADO
+        if (CenaEhJogavel(nomeCena) && PhotonNetwork.IsConnected)
         {
             Invoke(nameof(SpawnPlayer), 0.3f);
         }
         else
         {
-            Debug.Log($"[NetworkGameManager] Cena '{nomeCena}' não é jogável — sem spawn.");
+            Debug.Log($"[NetworkGameManager] Cena '{nomeCena}' não é jogável ou não está conectado — sem spawn.");
         }
     }
 
@@ -106,10 +107,28 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
         string spawnTag = actorID == 1 ? "Spawn 1" : "Spawn 2";
         GameObject spawnObj = GameObject.FindGameObjectWithTag(spawnTag);
 
+        // SE NÃO ENCONTRAR O SPAWN, TENTA ENCONTRAR QUALQUER SPAWN DISPONÍVEL
         if (spawnObj == null)
         {
-            Debug.LogError($"[NetworkGameManager] Nenhum objeto com a tag '{spawnTag}' encontrado na cena {SceneManager.GetActiveScene().name}!");
-            return;
+            Debug.LogWarning($"[NetworkGameManager] Nenhum objeto com a tag '{spawnTag}' encontrado. Tentando encontrar qualquer spawn...");
+
+            // Procura por spawns alternativos
+            GameObject[] allSpawns = GameObject.FindGameObjectsWithTag("Spawn 1");
+            if (allSpawns.Length == 0)
+            {
+                allSpawns = GameObject.FindGameObjectsWithTag("Spawn 2");
+            }
+
+            if (allSpawns.Length > 0)
+            {
+                spawnObj = allSpawns[0];
+                Debug.Log($"[NetworkGameManager] Usando spawn alternativo: {spawnObj.tag}");
+            }
+            else
+            {
+                Debug.LogError($"[NetworkGameManager] Nenhum spawn encontrado na cena {SceneManager.GetActiveScene().name}!");
+                return;
+            }
         }
 
         Vector3 spawnPos = spawnObj.transform.position;
@@ -170,7 +189,6 @@ public class NetworkGameManager : MonoBehaviourPunCallbacks
             {
                 Debug.LogWarning("[NetworkGameManager] Referências não foram configuradas corretamente!");
             }
-
             PlayerUIReferences uiRefs = _localUI.GetComponent<PlayerUIReferences>();
             if (uiRefs != null && uiRefs.painelDialogo != null)
                 uiRefs.painelDialogo.SetActive(false);
