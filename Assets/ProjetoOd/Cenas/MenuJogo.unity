@@ -524,6 +524,7 @@ GameObject:
   - component: {fileID: 308180065}
   - component: {fileID: 308180064}
   - component: {fileID: 308180063}
+  - component: {fileID: 308180066}
   m_Layer: 5
   m_Name: Sair
   m_TagString: Untagged
@@ -595,10 +596,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 760332648}
-        m_TargetAssemblyTypeName: MenuScript, Assembly-CSharp
-        m_MethodName: sceneChange
-        m_Mode: 5
+      - m_Target: {fileID: 308180066}
+        m_TargetAssemblyTypeName: ByeScript, Assembly-CSharp
+        m_MethodName: Sair
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -645,6 +646,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 308180061}
   m_CullTransparentMesh: 1
+--- !u!114 &308180066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 308180061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ce0d116dee1a44c8279b1364193ed1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &380255199
 GameObject:
   m_ObjectHideFlags: 0
