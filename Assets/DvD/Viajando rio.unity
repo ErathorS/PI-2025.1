@@ -679,7 +679,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_TargetDisplay: 0
 --- !u!224 &1276484021
 RectTransform:
@@ -741,6 +741,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 1276484022}
+  - {fileID: 1276484024}
   sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
